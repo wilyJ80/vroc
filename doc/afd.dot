@@ -1,4 +1,7 @@
 digraph afd {
+	concentrate=true;
+	splines=polyline;
+ranksep=5;
 		subgraph cluster_id {
 				label="id";
 				style="filled";
@@ -95,19 +98,20 @@ digraph afd {
 		/* booleano? */
 		/* sinal? */
 		/* operador? */
+		/* reservadas? */
 
-		subgraph cluster_reservadas {
-				label="palavras reservadas";
-				style="filled";
-				color="#f77";
-
-				reservada_S [label=S shape=circle];
-				reservada_A [label=A shape=doublecircle];
-
-				reservada_S -> reservada_A [label="pr, init, endp, const, char, int, read, bool, do, while, endw, var, from, by, endv, if, elif, else, endi, getout, getint, getreal, getchar, putint, putreal, putchar"];
-		}
-
-		/* ligacoes entre S e subgrafos */
+		// subgraph cluster_reservadas {
+		// 		label="palavras reservadas";
+		// 		style="filled";
+		// 		color="#f77";
+		//
+		// 		reservada_S [label=S shape=circle];
+		// 		reservada_A [label=A shape=doublecircle];
+		//
+		// 		reservada_S -> reservada_A [label="pr, init, endp, const, char, int, read, bool, do, while, endw, var, from, by, endv, if, elif, else, endi, getout, getint, getreal, getchar, putint, putreal, putchar"];
+		// }
+		//
+		// /* ligacoes entre S e subgrafos */
 		S;
 		Inicio [shape=none];
 		Inicio -> S;
@@ -120,7 +124,7 @@ digraph afd {
 		S -> stringcon_S;
 		S -> ch_S;
 		S -> comentario_S;
-		S -> reservada_S;
+		// S -> reservada_S;
 
 		/* ligacoes entre subgrafos e estado final */
 		edge[label="\\0"];
@@ -132,7 +136,7 @@ digraph afd {
 		stringcon_A -> A;
 		ch_A -> A;
 		comentario_C -> A;
-		reservada_A -> A;
+		// reservada_A -> A;
 
 		/* ligacoes entre subgrafos e estado inicial */
 		edge[label="ε"];
@@ -143,5 +147,5 @@ digraph afd {
 		stringcon_A -> S;
 		ch_A -> S;
 		comentario_C -> S;
-		reservada_A -> S;
+		// reservada_A -> S;
 }
