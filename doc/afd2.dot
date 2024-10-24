@@ -41,15 +41,20 @@ digraph afd {
 		realcon_C -> realcon_C [label="intcon"];
 	}
 
+	/* Errado: levar em conta apostrofo */
 	subgraph cluster_charcon {
 		label="charcon";
 		style="filled";
 		color="darkorange";
 
 		charcon_S [label="S" shape=circle];
-		charcon_A [label="A" shape=doublecircle];
+		charcon_A [label="A" shape=circle];
+		charcon_B [label="B" shape=circle];
+		charcon_C [label="C" shape=doublecircle];
 
-		charcon_S -> charcon_A [label="ch, \\n, \\0"];
+		charcon_S -> charcon_A [label="apostrofo"];
+		charcon_A -> charcon_B [label="ch, \\n, \\0"];
+		charcon_B -> charcon_C [label="apostrofo"];
 	}
 
 	subgraph cluster_stringcon {
@@ -58,26 +63,18 @@ digraph afd {
 		color="seagreen";
 
 		stringcon_S [label="S" shape=circle];
-		stringcon_A [label="A" shape=doublecircle];
+		stringcon_A [label="A" shape=circle];
+		stringcon_B [label="B" shape=doublecircle];
+		stringcon_C [label="C" shape=circle];
 
-		stringcon_S -> stringcon_A [label="ch"];
-		stringcon_A -> stringcon_A [label="ch"];
+		stringcon_S -> stringcon_A [label="aspas"];
+		stringcon_A -> stringcon_B [label="aspas"];
+		stringcon_A -> stringcon_C [label="ch"];
+		stringcon_C -> stringcon_B [label="aspas"];
 	}
 
-	/* subgraph cluster_ch {
-		label="ch";
-		style="filled";
-		color="gold";
-
-		ch_S [label=S shape=circle];
-		ch_A [label=A shape=doublecircle];
-
-		ch_S -> ch_A [label="caracter dado por isprint do <ctype.h>, diferente de \\ e '"];
-	}
-	*/
-
-	/* idconst? */
-	/* idproc? */
+	/* idconst? leva em conta o ID: nao e lexico */
+	/* idproc?: ID: pela especificacao: nao e lexico */
 
 	subgraph cluster_comentario {
 		label="comentario";
@@ -92,12 +89,15 @@ digraph afd {
 		comentario_S -> comentario_A [label="/"];
 		comentario_A -> comentario_B [label="/"];
 		comentario_B -> comentario_B [label="caracter dado por isprint do <ctype.h>"];
-		comentario_B -> comentario_C [label="\\0"];
+		comentario_B -> comentario_C [label="\\n"];
 	}
 
-	/* booleano? */
-	/* sinal? */
-	/* operador? */
-	/* reservadas? */
+	/* sinal */
+	/* +, -, *, /, >, >=, <, <=, =, ==, (, ), [, ], ||, &, &&, ,, !, != */
+
+	/* reservadas: */
+	/* const, pr, init, endp, char, int, real, bool, do, while, endw, var, from, to, dt, by, if, endv, elif, else, endi, getout, getint, getchar, getreal, putint, putchar, putreal */
+	/* nao tem afd, verificacao por tabela de palavras reservadas */
+
 
 }
