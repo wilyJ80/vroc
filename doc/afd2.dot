@@ -41,7 +41,6 @@ digraph afd {
 		realcon_C -> realcon_C [label="intcon"];
 	}
 
-	/* Errado: levar em conta apostrofo */
 	subgraph cluster_charcon {
 		label="charcon";
 		style="filled";
@@ -73,9 +72,6 @@ digraph afd {
 		stringcon_C -> stringcon_B [label="aspas"];
 	}
 
-	/* idconst? leva em conta o ID: nao e lexico */
-	/* idproc?: ID: pela especificacao: nao e lexico */
-
 	subgraph cluster_comentario {
 		label="comentario";
 		style="filled";
@@ -86,16 +82,21 @@ digraph afd {
 		comentario_B [label=B shape=circle];
 		comentario_C [label=C shape=doublecircle];
 
-		comentario_S -> comentario_A [label="/"];
-		comentario_A -> comentario_B [label="/"];
-		comentario_B -> comentario_B [label="caracter dado por isprint do <ctype.h>"];
+		comentario_S -> comentario_A [label="barra"];
+		comentario_A -> comentario_B [label="barra"];
+		comentario_B -> comentario_B [label="outro*"];
 		comentario_B -> comentario_C [label="\\n"];
 	}
 
 	/* sinal */
+	/* tem que levar em conta outro* */
 	/* +, -, *, /, >, >=, <, <=, =, ==, (, ), [, ], ||, &, &&, ,, !, != */
 
+	/* idconst? leva em conta o ID: nao e lexico */
+	/* idproc?: ID: pela especificacao: nao e lexico */
+
 	/* reservadas: */
+	/* utilizar constantes para elas, identificando qual palavra reservada eh */
 	/* const, pr, init, endp, char, int, real, bool, do, while, endw, var, from, to, dt, by, if, endv, elif, else, endi, getout, getint, getchar, getreal, putint, putchar, putreal */
 	/* nao tem afd, verificacao por tabela de palavras reservadas */
 
