@@ -172,4 +172,87 @@ digraph {
 	}
 	0 -> 31 [label=","];
 
+	32 [shape=circle];
+	0 -> 32 [label="="];
+	subgraph cluster_comparacao {
+		label=COMPARACAO;
+		style=filled;
+		33 [shape=doublecircle];
+	}
+	32 -> 33 [label="="];
+	subgraph cluster_atribuicao {
+		label=ATRIBUICAO;
+		style=filled;
+		34 [shape=doublecircle];
+	}
+	32 -> 34 [label="outro*"];
+
+	35 [shape=circle];
+	0 -> 35 [label="&"];
+	subgraph cluster_elogico {
+		label=ELOGICO;
+		style=filled;
+		36 [shape=doublecircle];
+	}
+	35 -> 36 [label="&"];
+	subgraph cluster_referencia {
+		label=REFERENCIA;
+		style=filled;
+		37 [shape=doublecircle];
+	}
+	35 -> 37 [label="outro*"];
+
+	38 [shape=circle];
+	0 -> 38 [label="|"];
+	subgraph cluster_oulogico {
+		label=OULOGICO;
+		style=filled;
+		39 [shape=doublecircle];
+	}
+	38 -> 39 [label="|"];
+
+	40 [shape=circle];
+	0 -> 40 [label="<"];
+	subgraph cluster_menorigual {
+		label=MENORIGUAL;
+		style=filled;
+		41 [shape=doublecircle];
+	}
+	40 -> 41 [label="="];
+	subgraph cluster_menor {
+		label=MENOR;
+		style=filled;
+		42 [shape=doublecircle];
+	}
+	40 -> 42 [label="outro*"];
+
+	43 [shape=circle];
+	0 -> 43 [label=">"];
+	subgraph cluster_maiorigual {
+		label=MAIORIGUAL;
+		style=filled;
+		44 [shape=doublecircle];
+	}
+	43 -> 44 [label="="];
+	subgraph cluster_maior {
+		label=MAIOR;
+		style=filled;
+		45 [shape=doublecircle];
+	}
+	43 -> 45 [label="outro*"];
+
+	46 [shape=circle];
+	0 -> 46 [label="!"];
+	subgraph cluster_diferenca {
+		label=DIFERENCA;
+		style=filled;
+		47 [shape=doublecircle];
+	}
+	46 -> 47 [label="="];
+	subgraph cluster_negacao {
+		label=NEGACAO;
+		style=filled;
+		48 [shape=doublecircle];
+	}
+	46 -> 48 [label="outro*"];
 }
