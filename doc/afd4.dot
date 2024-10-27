@@ -6,10 +6,12 @@ digraph {
 		0 [shape=circle];
 		Inicio -> 0;
 	}
+	0 -> 0 [label="Tab, Espaco, \\n"];
 
 	subgraph cluster_id {
 		label=ID;
 		style=filled;
+		color="#d85";
 
 		1 [shape=circle];
 		2 [shape=circle];
@@ -106,4 +108,68 @@ digraph {
 		21 -> 21 [label="outro*"];
 		21 -> 22 [label="\\n"];
 	}
+
+	subgraph cluster_mais {
+		label=MAIS;
+		style=filled;
+		23 [shape=doublecircle];
+	}
+	0 -> 23 [label="+"];
+
+	subgraph cluster_menos {
+		label=MENOS;
+		style=filled;
+		24 [shape=doublecircle];
+	}
+	0 -> 24 [label="-"];
+
+	subgraph cluster_multiplicacao {
+		label=MULTIPLICACAO;
+		style=filled;
+		25 [shape=doublecircle];
+	}
+	0 -> 25 [label="*"];
+
+	subgraph cluster_divisao {
+		label=DIVISAO;
+		style=filled;
+		26 [shape=doublecircle];
+	}
+	20 -> 26 [label="outro*"];
+
+	subgraph cluster_abreparenteses {
+		label=ABREPARENTESES;
+		style=filled;
+		27 [shape=doublecircle];
+	}
+	0 -> 27 [label="("];
+
+	subgraph cluster_fechaparenteses {
+		label=FECHAPARENTESES;
+		style=filled;
+		28 [shape=doublecircle];
+	}
+	0 -> 28 [label=")"];
+
+	subgraph cluster_abrecolchete {
+		label=ABRECOLCHETE;
+		style=filled;
+		29 [shape=doublecircle];
+	}
+	0 -> 29 [label="["];
+
+	subgraph cluster_fechacolchete {
+		label=FECHACOLCHETE;
+		style=filled;
+		30 [shape=doublecircle];
+	}
+	0 -> 30 [label="]"];
+
+	subgraph cluster_virgula {
+		label=VIRGULA;
+		style=filled;
+		31 [shape=doublecircle];
+	}
+	0 -> 31 [label=","];
+
 }
