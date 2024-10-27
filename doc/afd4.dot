@@ -79,15 +79,31 @@ digraph {
 		style=filled;
 		color="#d88";
 
+		16 [shape=circle];
 		17 [shape=circle];
-		18 [shape=circle];
-		19 [shape=doublecircle];
-		20 [shape=circle];
+		18 [shape=doublecircle];
+		19 [shape=circle];
 
-		0 -> 17 [label=aspas];
-		17 -> 18 [label=aspas];
-		17 -> 20 [label=ch];
-		18 -> 19 [label="outro*"];
-		20 -> 18 [label=aspas];
+		0 -> 16 [label=aspas];
+		16 -> 17 [label=aspas];
+		16 -> 19 [label=ch];
+		17 -> 18 [label="outro*"];
+		19 -> 17 [label=aspas];
+	}
+
+	20 [shape=circle];
+	0 -> 20 [label=barra];
+	20 -> 21 [label=barra];
+
+	subgraph cluster_comentario {
+		label=COMENTARIO;
+		style=filled;
+		color="#dd8";
+
+		21 [shape=circle];
+		22 [shape=doublecircle];
+
+		21 -> 21 [label="outro*"];
+		21 -> 22 [label="\\n"];
 	}
 }
