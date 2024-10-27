@@ -1,0 +1,95 @@
+digraph {
+	subgraph cluster_start {
+		label=INICIO;
+
+		Inicio [label="", shape=none];
+		0 [shape=circle];
+		Inicio -> 0;
+	}
+
+	subgraph cluster_id {
+		label=ID;
+		style=filled;
+
+		1 [shape=circle];
+		2 [shape=circle];
+		3 [shape=doublecircle];
+
+		0 -> 1 [label=sublinha];
+		1 -> 1 [label=sublinha];
+		0 -> 2 [label=letra];
+		1 -> 2 [label=letra];
+		2 -> 3 [label="outro*"];
+	}
+
+	subgraph cluster_intcon {
+		label=INTCON;
+		style=filled;
+		color="#faf";
+
+		4 [shape=circle];
+		5 [shape=doublecircle];
+
+		0 -> 4 [label=digito];
+		4 -> 4 [label=digito];
+		4 -> 5 [label="outro*"];
+	}
+
+	subgraph cluster_realcon {
+		label=REALCON;
+		style=filled;
+		color="#88d";
+
+		6 [shape=circle];
+		7 [shape=circle];
+		8 [shape=doublecircle];
+
+		4 -> 6 [label=ponto];
+		6 -> 7 [label=digito];
+		7 -> 7 [label=digito];
+		7 -> 8 [label="outro*"];
+	}
+
+	subgraph cluster_charcon {
+		label=CHARCON;
+		style=filled;
+		color="#8d8";
+
+		9 [shape=circle];
+		10 [shape=circle];
+		11 [shape=circle];
+		12 [shape=doublecircle];
+		13 [shape=circle];
+		14 [shape=circle];
+		15 [shape=circle];
+		16 [shape=circle];
+
+		0 -> 9 [label=apostrofo];
+		9 -> 10 [label=ch];
+		9 -> 13 [label=contrabarra];
+		10 -> 11 [label=apostrofo];
+		11 -> 12 [label="outro*"];
+		13 -> 14 [label=n];
+		13 -> 15 [label=0];
+		14 -> 16 [label=apostrofo];
+		15 -> 16 [label=apostrofo];
+		16 -> 12 [label="outro*"];
+	}
+
+	subgraph cluster_stringcon {
+		label=STRINGCON;
+		style=filled;
+		color="#d88";
+
+		17 [shape=circle];
+		18 [shape=circle];
+		19 [shape=doublecircle];
+		20 [shape=circle];
+
+		0 -> 17 [label=aspas];
+		17 -> 18 [label=aspas];
+		17 -> 20 [label=ch];
+		18 -> 19 [label="outro*"];
+		20 -> 18 [label=aspas];
+	}
+}
