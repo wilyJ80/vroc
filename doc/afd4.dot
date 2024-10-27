@@ -71,7 +71,7 @@ digraph {
 		10 -> 15 [label=apostrofo];
 		15 -> 12 [label="outro*"];
 		11 -> 14 [label=n];
-		11 -> 15 [label=0];
+		11 -> 13 [label=0];
 		14 -> 15 [label=apostrofo];
 		13 -> 15 [label=apostrofo];
 	}
