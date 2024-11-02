@@ -98,15 +98,15 @@ digraph {
 	20 -> 21 [label=barra];
 
 	subgraph cluster_comentario {
-		label=COMENTARIO;
+		label="COMENTARIO (IGNORAR)";
 		style=filled;
 		color="#dd8";
 
 		21 [shape=circle];
-		22 [shape=doublecircle];
 
 		21 -> 21 [label="outro*"];
-		21 -> 22 [label="\\n"];
+
+		21 -> 0 [label="\\n"];
 	}
 
 	subgraph cluster_mais {
