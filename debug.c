@@ -24,6 +24,12 @@ int main(int argc, char *argv[]) {
     case ID:
       printf("<ID, %s>", token.lexeme);
       break;
+    case CHARCON:
+      printf("<CHARCON, %s>", token.lexeme);
+      break;
+    case INTCON:
+      printf("<INTCON, %d>", token.intValue);
+      break;
     case SIGN:
       switch (token.signCode) {
       case PLUS:
@@ -31,7 +37,7 @@ int main(int argc, char *argv[]) {
         break;
       case MINUS:
         printf("<SN, MINUS>");
-        break;
+       break;
       case STAR:
         printf("<SN, STAR>");
         break;
@@ -48,9 +54,6 @@ int main(int argc, char *argv[]) {
         printf("<SN, CLOSE_PAR>");
         break;
       }
-      break;
-    case INTCON:
-      printf("<INTCON, %d>", token.intValue);
       break;
     }
   }
