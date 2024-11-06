@@ -1,7 +1,8 @@
 #include "char.h"
 #include <ctype.h>
 
-bool isNonPrinting(char c) { return !isprint((unsigned char)c) && c != '\n' && c != '\0' && c != '\t'; }
+// Should be called "isNonPrintingOrSpace"
+bool isNonPrinting(char c) { return !isprint((unsigned char)c) || c == ' '; }
 
 bool isAlpha(char c) { return isalpha((unsigned char)c); }
 

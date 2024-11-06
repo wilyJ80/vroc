@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
   }
 
   int lineCount = 1;
-  printf("LINE 1\n");
 
   // lexing!
   while (true) {
@@ -25,8 +24,8 @@ int main(int argc, char *argv[]) {
       return EXIT_SUCCESS;
     }
     switch (token.category) {
-      case MALFORMED_TOKEN:
-      printf("ERROR: MALFORMED TOKEN %s IN LINE %d\n", token.lexeme, lineCount);
+    case MALFORMED_TOKEN:
+      printf("ERROR: MALFORMED TOKEN %s ON LINE %d\n", token.lexeme, lineCount);
       exit(EXIT_FAILURE);
     case ID:
       printf("<ID, %s>", token.lexeme);

@@ -20,7 +20,7 @@ struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
       // Target state, verification callback, category, isOther, sign type if
       // category is sign
       // State 0
-      {{0, isNonPrinting, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+      {{0, isNonPrinting, COMMENT_IGNORE, NOT_OTHER, NOT_SYMBOL},
        {1, isUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {2, isAlpha, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {4, isDigit, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
