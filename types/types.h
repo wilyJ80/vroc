@@ -19,7 +19,7 @@ enum TOKEN_CAT {
 };
 
 enum SIGN {
-  NONE,
+  NOT_SYMBOL,
   ASSIGN,
   PLUS,
   MINUS,
@@ -30,7 +30,7 @@ enum SIGN {
   OPEN_BRACK,
   CLOSE_BRACK,
   COMMA,
-  COMPARISION,
+  COMPARISON,
   REF,
   AND,
   OR,

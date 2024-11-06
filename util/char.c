@@ -58,3 +58,19 @@ bool isPeriod(char c) { return c == '.'; }
 bool isIsPrint(char c) { return isprint(c); }
 
 bool isBackSlash(char c) { return c == '\\'; }
+
+bool isTerminating(char c) { return c == '\0'; }
+
+bool isNewline(char c) { return c == '\n'; }
+
+bool isNotIsPrintAndIsNeitherNewlineNorTerminating(char c) {
+  return !isIsPrint(c) && c != '\n' && c != '\0';
+}
+
+bool isNotDoubleQuote(char c) { return c != '"'; }
+
+bool isNotSlash(char c) { return !isSlash(c); }
+
+bool isNotNewline(char c) { return !isNewline(c); }
+
+bool isNotEqual(char c) { return !isEqual(c); }

@@ -31,5 +31,12 @@ bool isNotAlpha(char c);
 bool isPeriod(char c);
 bool isIsPrint(char c);
 bool isBackSlash(char c);
+bool isTerminating(char c);
+bool isNewline(char c);
+bool isNotIsPrintAndIsNeitherNewlineNorTerminating(char c);
+bool isNotDoubleQuote(char c);
+bool isNotSlash(char c);
+bool isNotNewline(char c);
+bool isNotEqual(char c);
 
 #endif // !CHAR_H

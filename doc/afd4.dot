@@ -59,19 +59,17 @@ digraph {
 
 		9 [shape=circle];
 		10 [shape=circle];
-		12 [shape=doublecircle];
+		11 [shape=doublecircle];
+		12 [shape=circle];
 		13 [shape=circle];
-		14 [shape=circle];
-		11 [shape=circle];
 
 		0 -> 9 [label=apostrofo];
 		9 -> 10 [label=ch];
 		10 -> 11 [label=apostrofo];
-		11 -> 12 [label="outro*"];
 
-		9 -> 14 [label="\\n"];
+		9 -> 12 [label="\\n"];
 		9 -> 13 [label="\\0"];
-		14 -> 11 [label=apostrofo];
+		12 -> 11 [label=apostrofo];
 		13 -> 11 [label=apostrofo];
 	}
 
