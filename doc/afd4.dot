@@ -21,6 +21,7 @@ digraph {
 		1 -> 1 [label=sublinha];
 		0 -> 2 [label=letra];
 		1 -> 2 [label=letra];
+		2 -> 2 [label="letra, digito, apostrofo"];
 		2 -> 3 [label="outro*"];
 	}
 
@@ -85,6 +86,7 @@ digraph {
 		0 -> 14 [label=aspas];
 		14 -> 15 [label=aspas];
 		14 -> 16 [label=ch];
+		16 -> 16 [label=ch];
 		16 -> 15 [label=aspas];
 	}
 
