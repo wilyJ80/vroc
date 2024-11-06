@@ -5,3 +5,4 @@
 - [ ] sem tratamento de erro
 - [ ] nao retorna palavras reservadas
 - [ ] nao lida com lexemas maiores que o tamanho limite
+- [ ] mudar valor false de outro para enum para maior legibilidade

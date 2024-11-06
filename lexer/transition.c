@@ -28,7 +28,7 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
 
   } else {
     // accepting category
-    if (transition.isOther) {
+    if (transition.isOther == IS_OTHER) {
       ungetc(ch, fd);
     }
 

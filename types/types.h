@@ -40,6 +40,11 @@ enum SIGN {
   DIFFERENT
 };
 
+enum IS_OTHER {
+  IS_OTHER,
+  NOT_OTHER
+};
+
 struct Token {
   enum TOKEN_CAT category;
   union {
@@ -54,7 +59,7 @@ struct Transition {
   int nextState;
   bool (*charMatch)(char);
   enum TOKEN_CAT category;
-  bool isOther;
+  enum IS_OTHER isOther;
   enum SIGN signCode;
 };
 

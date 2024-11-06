@@ -6,8 +6,8 @@
 #include <stdlib.h>
 
 #define MAX_LEXEME_SIZE 50
-#define MAX_STATES 47
-#define MAX_TRANSITIONS 21
+#define MAX_STATES 44
+#define MAX_TRANSITIONS 20
 
 void error(char msg[]) {
   printf("%s\n", msg);
@@ -19,77 +19,77 @@ struct Token lexerGetNextChar(FILE *fd) {
       // Target state, verification callback, category, isOther, sign type if
       // category is sign
       // State 0
-      {{0, isNonPrinting, NON_ACCEPTING, false, NOT_SYMBOL},
-       {1, isUnderscore, NON_ACCEPTING, false, NOT_SYMBOL},
-       {2, isAlpha, NON_ACCEPTING, false, NOT_SYMBOL},
-       {4, isDigit, NON_ACCEPTING, false, NOT_SYMBOL},
-       {9, isSingleQuote, NON_ACCEPTING, false, NOT_SYMBOL},
-       {14, isDoubleQuote, NON_ACCEPTING, false, NOT_SYMBOL},
-       {17, isSlash, NON_ACCEPTING, false, NOT_SYMBOL},
-       {19, isPlus, SIGN, false, PLUS},
-       {20, isMinus, SIGN, false, MINUS},
-       {21, isStar, SIGN, false, STAR},
-       {23, isParenOpen, SIGN, false, OPEN_PAR},
-       {24, isParenClose, SIGN, false, CLOSE_PAR},
-       {25, isBracketOpen, SIGN, false, OPEN_BRACK},
-       {26, isBracketClose, SIGN, false, CLOSE_BRACK},
-       {27, isComma, SIGN, false, COMMA},
-       {28, isEqual, NON_ACCEPTING, false, NOT_SYMBOL},
-       {31, isRef, NON_ACCEPTING, false, NOT_SYMBOL},
-       {34, isPipe, NON_ACCEPTING, false, NOT_SYMBOL},
-       {36, isSmallerThan, NON_ACCEPTING, false, NOT_SYMBOL},
-       {39, isLargerThan, NON_ACCEPTING, false, NOT_SYMBOL},
-       {42, isNeg, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{0, isNonPrinting, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {1, isUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {2, isAlpha, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {4, isDigit, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {9, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {14, isDoubleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {17, isSlash, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {19, isPlus, SIGN, NOT_OTHER, PLUS},
+       {20, isMinus, SIGN, NOT_OTHER, MINUS},
+       {21, isStar, SIGN, NOT_OTHER, STAR},
+       {23, isParenOpen, SIGN, NOT_OTHER, OPEN_PAR},
+       {24, isParenClose, SIGN, NOT_OTHER, CLOSE_PAR},
+       {25, isBracketOpen, SIGN, NOT_OTHER, OPEN_BRACK},
+       {26, isBracketClose, SIGN, NOT_OTHER, CLOSE_BRACK},
+       {27, isComma, SIGN, NOT_OTHER, COMMA},
+       {28, isEqual, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {31, isRef, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {34, isPipe, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {36, isSmallerThan, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {39, isLargerThan, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {42, isNeg, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 1
-      {{1, isUnderscore, NON_ACCEPTING, false, NOT_SYMBOL},
-       {2, isAlpha, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{1, isUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {2, isAlpha, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 2
-      {{3, isNotAlpha, ID, true, NOT_SYMBOL}},
+      {{3, isNotAlpha, ID, IS_OTHER, NOT_SYMBOL}},
       // State 3: accepting
       {},
       // State 4
-      {{4, isDigit, NON_ACCEPTING, false, NOT_SYMBOL},
-       {5, isNotDigit, INTCON, true, NOT_SYMBOL},
-       {6, isPeriod, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{4, isDigit, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {5, isNotDigit, INTCON, IS_OTHER, NOT_SYMBOL},
+       {6, isPeriod, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 5: accepting
       {},
       // State 6
-      {{7, isDigit, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{7, isDigit, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 7
-      {{7, isDigit, NON_ACCEPTING, false, NOT_SYMBOL},
-       {8, isNotDigit, REALCON, true, NOT_SYMBOL}},
+      {{7, isDigit, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {8, isNotDigit, REALCON, IS_OTHER, NOT_SYMBOL}},
       // State 8: accepting
       {},
       // State 9
-      {{10, isIsPrint, NON_ACCEPTING, false, NOT_SYMBOL},
-       {13, isTerminating, NON_ACCEPTING, false, NOT_SYMBOL},
-       {14, isNewline, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{10, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {13, isTerminating, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {14, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 10
-      {{11, isSingleQuote, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{11, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 11
-      {{12, isNotIsPrintAndIsNeitherNewlineNorTerminating, CHARCON, true,
+      {{12, isNotIsPrintAndIsNeitherNewlineNorTerminating, CHARCON, IS_OTHER,
         NOT_SYMBOL}},
       // State 12: accepting
       {},
       // State 13
-      {{11, isSingleQuote, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{11, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 14
-      {{11, isSingleQuote, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{11, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 15
-      {{16, isDoubleQuote, NON_ACCEPTING, false, NOT_SYMBOL},
-       {18, isIsPrint, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{16, isDoubleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {18, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 16
-      {{17, isNotDoubleQuote, STRINGCON, true, NOT_SYMBOL}},
+      {{17, isNotDoubleQuote, STRINGCON, IS_OTHER, NOT_SYMBOL}},
       // State 17: accepting
       {},
       // State 18
-      {{16, isDoubleQuote, NON_ACCEPTING, false, NOT_SYMBOL}},
+      {{16, isDoubleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 19
-      {{20, isSlash, NON_ACCEPTING, false, NOT_SYMBOL},
-       {24, isNotSlash, SIGN, true, SLASH}},
+      {{20, isSlash, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {24, isNotSlash, SIGN, IS_OTHER, SLASH}},
       // State 20
-      {{0, isNewline, NON_ACCEPTING, false, NOT_SYMBOL},
-       {20, isNotNewline, NON_ACCEPTING, true, NOT_SYMBOL}},
+      {{0, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {20, isNotNewline, NON_ACCEPTING, IS_OTHER, NOT_SYMBOL}},
       // State 21: accepting
       {},
       // State 22: accepting
@@ -109,8 +109,8 @@ struct Token lexerGetNextChar(FILE *fd) {
       // State 29: accepting
       {},
       // State 30
-      {{32, isNotEqual, SIGN, true, COMPARISON},
-       {31, isEqual, SIGN, true, ASSIGN}},
+      {{32, isNotEqual, SIGN, IS_OTHER, COMPARISON},
+       {31, isEqual, SIGN, IS_OTHER, ASSIGN}},
       // State 31: accepting
       {},
       // State 32: accepting
@@ -126,7 +126,7 @@ struct Token lexerGetNextChar(FILE *fd) {
   struct Token token;
   token.category = NON_ACCEPTING;
 
-  while (true) {
+  while (IS_OTHER) {
     char ch = fgetc(fd);
     if (ch == EOF) {
       token.category = END_OF_FILE;
