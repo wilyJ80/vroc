@@ -18,7 +18,7 @@
 bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
                                       char *lexeme, int *lexemeSize,
                                       struct Transition transition,
-                                      int lineCount, int state) {
+                                      int *lineCount, int state) {
   // No state advancing needed, state will always advance
   if (token->category == NON_ACCEPTING) {
     // TODO: handle whitespace characters on lexer function
@@ -34,7 +34,7 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
 
   } else {
     // accepting category
-    if (transition.isOther == IS_OTHER) {
+    if (transition.isOther == IS_OTHER && ch != '\n') {
       ungetc(ch, fd);
     }
 

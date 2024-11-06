@@ -2,6 +2,7 @@
 #include "types/types.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char *argv[]) {
 
@@ -13,19 +14,25 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  int lineCount = 1;
+  printf("LINE 1\n");
+
   // lexing!
   while (true) {
-    struct Token token = lexerGetNextChar(fd);
+    struct Token token = lexerGetNextChar(fd, &lineCount);
     if (token.category == END_OF_FILE) {
       fclose(fd);
       return EXIT_SUCCESS;
     }
     switch (token.category) {
+      case MALFORMED_TOKEN:
+      printf("ERROR: MALFORMED TOKEN %s IN LINE %d\n", token.lexeme, lineCount);
+      exit(EXIT_FAILURE);
     case ID:
       printf("<ID, %s>", token.lexeme);
       break;
     case CHARCON:
-      printf("<CHARCON, %s>", token.lexeme);
+      printf("<CHARCON, %c>", token.lexeme[1]);
       break;
     case STRINGCON:
       printf("<STRINGCON, %s>", token.lexeme);

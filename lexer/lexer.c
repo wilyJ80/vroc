@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_LEXEME_SIZE 50
 #define MAX_STATES 44
@@ -14,7 +15,7 @@ void error(char msg[]) {
   exit(EXIT_FAILURE);
 }
 
-struct Token lexerGetNextChar(FILE *fd) {
+struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
   struct Transition transitionTable[MAX_STATES + 1][MAX_TRANSITIONS + 1] = {
       // Target state, verification callback, category, isOther, sign type if
       // category is sign
@@ -142,13 +143,11 @@ struct Token lexerGetNextChar(FILE *fd) {
       // State 43: accepting
       {},
       // State 44: accepting
-      {}
-  };
+      {}};
 
   int state = 0;
   char lexeme[MAX_LEXEME_SIZE] = "";
   int lexemeSize = 0;
-  int lineCount = 1;
   struct Token token;
   token.category = NON_ACCEPTING;
 
@@ -159,12 +158,18 @@ struct Token lexerGetNextChar(FILE *fd) {
       return token;
     }
 
+    if (ch == '\n') {
+      (*lineCount)++;
+    }
+
+    bool foundTransition = false;
     for (int possibleTransition = 0;
          possibleTransition < MAX_TRANSITIONS + 1 &&
          transitionTable[state][possibleTransition].charMatch != NULL;
          possibleTransition++) {
 
       if (transitionTable[state][possibleTransition].charMatch(ch)) {
+        foundTransition = true;
         token.category = transitionTable[state][possibleTransition].category;
 
         bool tokenWasBuilt = handleTransitionAndWasTokenBuilt(
@@ -177,6 +182,14 @@ struct Token lexerGetNextChar(FILE *fd) {
         // state advancing
         state = transitionTable[state][possibleTransition].nextState;
       }
+    }
+
+    if (!foundTransition) {
+      lexeme[lexemeSize] = ch;
+      lexeme[++lexemeSize] = '\0';
+      token.category = MALFORMED_TOKEN;
+      strcpy(token.lexeme, lexeme);
+      return token;
     }
   }
 }
