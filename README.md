@@ -5,7 +5,7 @@
     - [X] id
     - [X] intcon
     - [X] realcon
-    - [ ] charcon
+    - [X] charcon
     - [ ] stringcon
     - [ ] sinais
     - [ ] comentario
