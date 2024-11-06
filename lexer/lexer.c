@@ -85,7 +85,7 @@ struct Token lexerGetNextChar(FILE *fd) {
       {{18, isSlash, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {22, isNotSlash, SIGN, IS_OTHER, SLASH}},
       // State 18
-      {{0, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+      {{0, isNewline, COMMENT_IGNORE, NOT_OTHER, NOT_SYMBOL},
        {18, isNotNewline, NON_ACCEPTING, IS_OTHER, NOT_SYMBOL}},
       // State 19: accepting
       {},

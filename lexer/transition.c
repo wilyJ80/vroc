@@ -26,6 +26,12 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
     lexeme[++(*lexemeSize)] = '\0';
     return false;
 
+  } else if (token->category == COMMENT_IGNORE) {
+    // ignore the token and reset it
+    lexeme[0] = '\0';
+    *lexemeSize = 0;
+    return false;
+
   } else {
     // accepting category
     if (transition.isOther == IS_OTHER) {
