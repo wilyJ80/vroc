@@ -130,7 +130,7 @@ digraph {
 		style=filled;
 		22 [shape=doublecircle];
 	}
-	19 -> 22 [label="outro*"];
+	17 -> 22 [label="outro*"];
 
 	subgraph cluster_abreparenteses {
 		label=ABREPARENTESES;
