@@ -50,7 +50,7 @@ struct Token lexerGetNextChar(FILE *fd) {
       {},
       // State 4
       {{4, isDigit, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {5, isNotDigit, INTCON, IS_OTHER, NOT_SYMBOL},
+       {5, isNotDigitNorPeriod, INTCON, IS_OTHER, NOT_SYMBOL},
        {6, isPeriod, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 5: accepting
       {},

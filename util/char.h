@@ -39,5 +39,6 @@ bool isNotSlash(char c);
 bool isNotNewline(char c);
 bool isNotEqual(char c);
 bool isNotRef(char c);
+bool isNotDigitNorPeriod(char c);
 
 #endif // !CHAR_H

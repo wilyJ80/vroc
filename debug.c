@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
       printf("<ID, %s>", token.lexeme);
       break;
     case CHARCON:
-      printf("<CHARCON, %c>", token.lexeme[1]);
+      printf("<CHARCON, %s>", token.lexeme);
       break;
     case STRINGCON:
       printf("<STRINGCON, %s>", token.lexeme);
