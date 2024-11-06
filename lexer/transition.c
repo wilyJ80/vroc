@@ -43,7 +43,8 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
     } else if (token->category == REALCON) {
       token->doubleValue = atof(lexeme);
 
-    } else if (token->category == ID || token->category == CHARCON || token->category == STRINGCON) {
+    } else if (token->category == ID || token->category == CHARCON ||
+               token->category == STRINGCON) {
       strcpy(token->lexeme, lexeme);
     }
     return true;

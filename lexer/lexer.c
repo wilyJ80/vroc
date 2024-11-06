@@ -62,8 +62,6 @@ struct Token lexerGetNextChar(FILE *fd) {
       // State 8: accepting
       {},
       // State 9
-      // Sorry for "is is print" lmao, wanted a custom bool function for this at
-      // the time
       {{10, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {12, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {13, isTerminating, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
