@@ -38,5 +38,6 @@ bool isNotDoubleQuote(char c);
 bool isNotSlash(char c);
 bool isNotNewline(char c);
 bool isNotEqual(char c);
+bool isNotRef(char c);
 
 #endif // !CHAR_H

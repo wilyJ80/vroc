@@ -74,3 +74,5 @@ bool isNotSlash(char c) { return !isSlash(c); }
 bool isNotNewline(char c) { return !isNewline(c); }
 
 bool isNotEqual(char c) { return !isEqual(c); }
+
+bool isNotRef(char c) { return !isRef(c); }

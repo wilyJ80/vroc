@@ -44,10 +44,8 @@ struct Token lexerGetNextChar(FILE *fd) {
       {{1, isUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {2, isAlpha, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 2
-      {
-      {2, isAlnumOrUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-      {3, isNotAlpha, ID, IS_OTHER, NOT_SYMBOL}
-    },
+      {{2, isAlnumOrUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {3, isNotAlnumOrUnderscore, ID, IS_OTHER, NOT_SYMBOL}},
       // State 3: accepting
       {},
       // State 4
@@ -64,35 +62,37 @@ struct Token lexerGetNextChar(FILE *fd) {
       // State 8: accepting
       {},
       // State 9
+      // Sorry for "is is print" lmao, wanted a custom bool function for this at
+      // the time
       {{10, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {13, isTerminating, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {14, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
+       {12, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {13, isTerminating, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 10
-      {{11, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
-      // State 11
-      {{12, isNotIsPrintAndIsNeitherNewlineNorTerminating, CHARCON, IS_OTHER,
-        NOT_SYMBOL}},
-      // State 12: accepting
+      {{11, isSingleQuote, CHARCON, NOT_OTHER, NOT_SYMBOL}},
+      // State 11: accepting
       {},
+      // State 12
+      {{11, isSingleQuote, CHARCON, NOT_OTHER, NOT_SYMBOL}},
       // State 13
-      {{11, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
+      {{11, isSingleQuote, CHARCON, NOT_OTHER, NOT_SYMBOL}},
       // State 14
-      {{11, isSingleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
-      // State 15
-      {{16, isDoubleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {18, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
-      // State 16
-      {{17, isNotDoubleQuote, STRINGCON, IS_OTHER, NOT_SYMBOL}},
-      // State 17: accepting
+      {{15, isDoubleQuote, STRINGCON, NOT_OTHER, NOT_SYMBOL},
+       {16, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
+      // State 15: accepting
       {},
+      // State 16
+      {{16, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {17, isDoubleQuote, STRINGCON, NOT_OTHER, NOT_SYMBOL}},
+      // State 17
+      {{18, isSlash, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {22, isNotSlash, SIGN, IS_OTHER, SLASH}},
       // State 18
-      {{16, isDoubleQuote, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
-      // State 19
-      {{20, isSlash, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {24, isNotSlash, SIGN, IS_OTHER, SLASH}},
-      // State 20
       {{0, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {20, isNotNewline, NON_ACCEPTING, IS_OTHER, NOT_SYMBOL}},
+       {18, isNotNewline, NON_ACCEPTING, IS_OTHER, NOT_SYMBOL}},
+      // State 19: accepting
+      {},
+      // State 20: accepting
+      {},
       // State 21: accepting
       {},
       // State 22: accepting
@@ -107,19 +107,44 @@ struct Token lexerGetNextChar(FILE *fd) {
       {},
       // State 27: accepting
       {},
-      // State 28: accepting
-      {},
+      // State 28
+      {{29, isEqual, SIGN, NOT_OTHER, COMPARISON},
+       {30, isNotEqual, SIGN, IS_OTHER, ASSIGN}},
       // State 29: accepting
       {},
-      // State 30
-      {{32, isNotEqual, SIGN, IS_OTHER, COMPARISON},
-       {31, isEqual, SIGN, IS_OTHER, ASSIGN}},
-      // State 31: accepting
+      // State 30: accepting
       {},
+      // State 31
+      {{32, isRef, SIGN, NOT_OTHER, REF}, {33, isNotRef, SIGN, IS_OTHER, AND}},
       // State 32: accepting
       {},
-      // State 33
-
+      // State 33: accepting
+      {},
+      // State 34:
+      {{35, isPipe, SIGN, NOT_OTHER, OR}},
+      // State 35: accepting
+      {},
+      // State 36
+      {{37, isEqual, SIGN, NOT_OTHER, SMALLER_EQUAL},
+       {38, isNotEqual, SIGN, IS_OTHER, SMALLER_THAN}},
+      // State 37: accepting
+      {},
+      // State 38: accepting
+      {},
+      // State 39
+      {{40, isEqual, SIGN, NOT_OTHER, LARGER_EQUAL},
+       {41, isNotEqual, SIGN, IS_OTHER, LARGER_THAN}},
+      // State 40: accepting
+      {},
+      // State 41: accepting
+      {},
+      // State 42
+      {{43, isEqual, SIGN, NOT_OTHER, DIFFERENT},
+       {44, isNotEqual, SIGN, IS_OTHER, NEGATION}},
+      // State 43: accepting
+      {},
+      // State 44: accepting
+      {}
   };
 
   int state = 0;
