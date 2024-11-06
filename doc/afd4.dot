@@ -78,178 +78,178 @@ digraph {
 		style=filled;
 		color="#d88";
 
+		14 [shape=circle];
 		15 [shape=circle];
-		16 [shape=circle];
-		17 [shape=doublecircle];
-		18 [shape=circle];
+		16 [shape=doublecircle];
+		17 [shape=circle];
 
-		0 -> 15 [label=aspas];
-		15 -> 16 [label=aspas];
-		15 -> 18 [label=ch];
-		16 -> 17 [label="outro*"];
-		18 -> 16 [label=aspas];
+		0 -> 14 [label=aspas];
+		14 -> 15 [label=aspas];
+		14 -> 17 [label=ch];
+		15 -> 16 [label="outro*"];
+		17 -> 15 [label=aspas];
 	}
 
-	19 [shape=circle];
-	0 -> 19 [label=barra];
-	19 -> 20 [label=barra];
+	18 [shape=circle];
+	0 -> 18 [label=barra];
+	18 -> 19 [label=barra];
 
 	subgraph cluster_comentario {
 		label="COMENTARIO (IGNORAR)";
 		style=filled;
 		color="#dd8";
 
-		20 [shape=circle];
+		19 [shape=circle];
 
-		20 -> 20 [label="outro*"];
+		19 -> 19 [label="outro*"];
 
-		20 -> 0 [label="\\n"];
+		19 -> 0 [label="\\n"];
 	}
 
 	subgraph cluster_mais {
 		label=MAIS;
 		style=filled;
-		21 [shape=doublecircle];
+		20 [shape=doublecircle];
 	}
-	0 -> 21 [label="+"];
+	0 -> 20 [label="+"];
 
 	subgraph cluster_menos {
 		label=MENOS;
 		style=filled;
-		22 [shape=doublecircle];
+		21 [shape=doublecircle];
 	}
-	0 -> 22 [label="-"];
+	0 -> 21 [label="-"];
 
 	subgraph cluster_multiplicacao {
 		label=MULTIPLICACAO;
 		style=filled;
-		23 [shape=doublecircle];
+		22 [shape=doublecircle];
 	}
-	0 -> 23 [label="*"];
+	0 -> 22 [label="*"];
 
 	subgraph cluster_divisao {
 		label=DIVISAO;
 		style=filled;
-		24 [shape=doublecircle];
+		23 [shape=doublecircle];
 	}
-	19 -> 24 [label="outro*"];
+	18 -> 23 [label="outro*"];
 
 	subgraph cluster_abreparenteses {
 		label=ABREPARENTESES;
 		style=filled;
-		25 [shape=doublecircle];
+		24 [shape=doublecircle];
 	}
-	0 -> 25 [label="("];
+	0 -> 24 [label="("];
 
 	subgraph cluster_fechaparenteses {
 		label=FECHAPARENTESES;
 		style=filled;
-		26 [shape=doublecircle];
+		25 [shape=doublecircle];
 	}
-	0 -> 26 [label=")"];
+	0 -> 25 [label=")"];
 
 	subgraph cluster_abrecolchete {
 		label=ABRECOLCHETE;
 		style=filled;
-		27 [shape=doublecircle];
+		26 [shape=doublecircle];
 	}
-	0 -> 27 [label="["];
+	0 -> 26 [label="["];
 
 	subgraph cluster_fechacolchete {
 		label=FECHACOLCHETE;
 		style=filled;
-		28 [shape=doublecircle];
+		27 [shape=doublecircle];
 	}
-	0 -> 28 [label="]"];
+	0 -> 27 [label="]"];
 
 	subgraph cluster_virgula {
 		label=VIRGULA;
 		style=filled;
-		29 [shape=doublecircle];
+		28 [shape=doublecircle];
 	}
-	0 -> 29 [label=","];
+	0 -> 28 [label=","];
 
-	31 [shape=circle];
-	0 -> 30 [label="="];
+	30 [shape=circle];
+	0 -> 29 [label="="];
 	subgraph cluster_comparacao {
 		label=COMPARACAO;
 		style=filled;
-		31 [shape=doublecircle];
+		30 [shape=doublecircle];
 	}
-	30 -> 31 [label="="];
+	29 -> 30 [label="="];
 	subgraph cluster_atribuicao {
 		label=ATRIBUICAO;
 		style=filled;
-		32 [shape=doublecircle];
+		31 [shape=doublecircle];
 	}
-	30 -> 32 [label="outro*"];
+	29 -> 31 [label="outro*"];
 
-	33 [shape=circle];
-	0 -> 33 [label="&"];
+	32 [shape=circle];
+	0 -> 32 [label="&"];
 	subgraph cluster_elogico {
 		label=ELOGICO;
 		style=filled;
-		34 [shape=doublecircle];
+		33 [shape=doublecircle];
 	}
-	33 -> 34 [label="&"];
+	32 -> 33 [label="&"];
 	subgraph cluster_referencia {
 		label=REFERENCIA;
 		style=filled;
-		35 [shape=doublecircle];
+		34 [shape=doublecircle];
 	}
-	33 -> 35 [label="outro*"];
+	32 -> 34 [label="outro*"];
 
-	36 [shape=circle];
-	0 -> 36 [label="|"];
+	35 [shape=circle];
+	0 -> 35 [label="|"];
 	subgraph cluster_oulogico {
 		label=OULOGICO;
 		style=filled;
-		37 [shape=doublecircle];
+		36 [shape=doublecircle];
 	}
-	36 -> 37 [label="|"];
+	35 -> 36 [label="|"];
 
-	38 [shape=circle];
-	0 -> 38 [label="<"];
+	37 [shape=circle];
+	0 -> 37 [label="<"];
 	subgraph cluster_menorigual {
 		label=MENORIGUAL;
 		style=filled;
-		39 [shape=doublecircle];
+		38 [shape=doublecircle];
 	}
-	38 -> 39 [label="="];
+	37 -> 38 [label="="];
 	subgraph cluster_menor {
 		label=MENOR;
 		style=filled;
-		40 [shape=doublecircle];
+		39 [shape=doublecircle];
 	}
-	38 -> 40 [label="outro*"];
+	37 -> 39 [label="outro*"];
 
-	41 [shape=circle];
-	0 -> 41 [label=">"];
+	40 [shape=circle];
+	0 -> 40 [label=">"];
 	subgraph cluster_maiorigual {
 		label=MAIORIGUAL;
 		style=filled;
-		42 [shape=doublecircle];
+		41 [shape=doublecircle];
 	}
-	41 -> 42 [label="="];
+	40 -> 41 [label="="];
 	subgraph cluster_maior {
 		label=MAIOR;
 		style=filled;
-		43 [shape=doublecircle];
+		42 [shape=doublecircle];
 	}
-	41 -> 43 [label="outro*"];
+	40 -> 42 [label="outro*"];
 
-	44 [shape=circle];
-	0 -> 44 [label="!"];
+	43 [shape=circle];
+	0 -> 43 [label="!"];
 	subgraph cluster_diferenca {
 		label=DIFERENCA;
 		style=filled;
-		45 [shape=doublecircle];
+		44 [shape=doublecircle];
 	}
-	44 -> 45 [label="="];
+	43 -> 44 [label="="];
 	subgraph cluster_negacao {
 		label=NEGACAO;
 		style=filled;
-		46 [shape=doublecircle];
+		45 [shape=doublecircle];
 	}
-	44 -> 46 [label="outro*"];
+	43 -> 45 [label="outro*"];
 }
