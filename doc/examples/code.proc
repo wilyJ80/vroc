@@ -1,2 +1,2 @@
-11 is good,
-'victor'
+const int a = 1
+putint a
