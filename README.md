@@ -1,3 +1,7 @@
+![swag](./doc/swag.webp)
+
+![diagram](./doc/afd4.dot.svg)
+
 # uso
 
 - Compilar com:
@@ -42,3 +46,5 @@
 - [ ] imprimir string corretamente
 - [ ] refatorar tratamento de erros?
 - [ ] refatorar codigo palavras reservadas
+
+![](./doc/cute.webp)
