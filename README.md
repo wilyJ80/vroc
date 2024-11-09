@@ -46,5 +46,6 @@
 - [ ] imprimir string corretamente
 - [ ] refatorar tratamento de erros?
 - [ ] refatorar codigo palavras reservadas
+- [ ] melhorar logica categorias de transicao: precisa de um campo especifico pra outro?
 
 ![](./doc/cute.webp)
