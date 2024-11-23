@@ -31,92 +31,10 @@ int main(int argc, char *argv[]) {
     case MALFORMED_TOKEN:
       printf("ERROR: MALFORMED TOKEN %s ON LINE %d\n", token.lexeme, lineCount);
       exit(EXIT_FAILURE);
+    case RSV:
+      printf("<RSV, %s>", token.lexeme);
+      break;
     case ID:
-      if (strcmp(token.lexeme, "const") == 0) {
-        printf("<RSV, CONST>");
-        break;
-      } else if (strcmp(token.lexeme, "pr") == 0) {
-        printf("<RSV, PR>");
-        break;
-      } else if (strcmp(token.lexeme, "init") == 0) {
-        printf("<RSV, INIT>");
-        break;
-      } else if (strcmp(token.lexeme, "endp") == 0) {
-        printf("<RSV, ENDP>");
-        break;
-      } else if (strcmp(token.lexeme, "char") == 0) {
-        printf("<RSV, CHAR>");
-        break;
-      } else if (strcmp(token.lexeme, "int") == 0) {
-        printf("<RSV, INT>");
-        break;
-      } else if (strcmp(token.lexeme, "real") == 0) {
-        printf("<RSV, REAL>");
-        break;
-      } else if (strcmp(token.lexeme, "bool") == 0) {
-        printf("<RSV, BOOL>");
-        break;
-      } else if (strcmp(token.lexeme, "do") == 0) {
-        printf("<RSV, DO>");
-        break;
-      } else if (strcmp(token.lexeme, "while") == 0) {
-        printf("<RSV, WHILE>");
-        break;
-      } else if (strcmp(token.lexeme, "endw") == 0) {
-        printf("<RSV, ENDW>");
-        break;
-      } else if (strcmp(token.lexeme, "var") == 0) {
-        printf("<RSV, VAR>");
-        break;
-      } else if (strcmp(token.lexeme, "from") == 0) {
-        printf("<RSV, FROM>");
-        break;
-      } else if (strcmp(token.lexeme, "to") == 0) {
-        printf("<RSV, TO>");
-        break;
-      } else if (strcmp(token.lexeme, "dt") == 0) {
-        printf("<RSV, DT>");
-        break;
-      } else if (strcmp(token.lexeme, "by") == 0) {
-        printf("<RSV, BY>");
-        break;
-      } else if (strcmp(token.lexeme, "if") == 0) {
-        printf("<RSV, IF>");
-        break;
-      } else if (strcmp(token.lexeme, "endv") == 0) {
-        printf("<RSV, ENDV>");
-        break;
-      } else if (strcmp(token.lexeme, "elif") == 0) {
-        printf("<RSV, ELIF>");
-        break;
-      } else if (strcmp(token.lexeme, "else") == 0) {
-        printf("<RSV, ELSE>");
-        break;
-      } else if (strcmp(token.lexeme, "endi") == 0) {
-        printf("<RSV, ENDI>");
-        break;
-      } else if (strcmp(token.lexeme, "getout") == 0) {
-        printf("<RSV, GETOUT>");
-        break;
-      } else if (strcmp(token.lexeme, "getint") == 0) {
-        printf("<RSV, GETINT>");
-        break;
-      } else if (strcmp(token.lexeme, "getchar") == 0) {
-        printf("<RSV, GETCHAR>");
-        break;
-      } else if (strcmp(token.lexeme, "getreal") == 0) {
-        printf("<RSV, GETREAL>");
-        break;
-      } else if (strcmp(token.lexeme, "putint") == 0) {
-        printf("<RSV, PUTINT>");
-        break;
-      } else if (strcmp(token.lexeme, "putchar") == 0) {
-        printf("<RSV, PUTCHAR>");
-        break;
-      } else if (strcmp(token.lexeme, "putreal") == 0) {
-        printf("<RSV, PUTREAL>");
-        break;
-      }
       printf("<ID, %s>", token.lexeme);
       break;
     case CHARCON:

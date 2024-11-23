@@ -28,15 +28,15 @@ void lexerTest() {
     index++;
   }
 
-  assert(tokens[0].category == ID);
+  assert(tokens[0].category == RSV);
   assert(strcmp(tokens[0].lexeme, "pr") == 0);
 
-  assert(tokens[1].category == ID);
+  assert(tokens[1].category == RSV);
   assert(strcmp(tokens[1].lexeme, "init") == 0);
 
   assert(tokens[2].category == INTCON);
   assert(tokens[2].intValue == 2);
 
-  assert(tokens[3].category == ID);
+  assert(tokens[3].category == RSV);
   assert(strcmp(tokens[3].lexeme, "endp") == 0);
 }
