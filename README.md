@@ -42,10 +42,10 @@
 - [ ] nao lida com lexemas maiores que o tamanho limite
 - [X] mudar valor false de outro para enum para maior legibilidade
 - [X] contador de linha: retornado pelo erro com sucesso
-- [ ] refatorar codigo de print de tag token (sinal)
-- [ ] imprimir string corretamente
-- [ ] refatorar tratamento de erros?
-- [ ] refatorar codigo palavras reservadas
+- [X] refatorar codigo de print de tag token (sinal)
+- [ ] imprimir charcon corretamente?
+- [X] refatorar tratamento de erros?
+- [X] refatorar codigo palavras reservadas
 - [ ] melhorar logica categorias de transicao: precisa de um campo especifico pra outro?
 
 ![](./doc/cute.webp)

@@ -28,8 +28,7 @@ int main(int argc, char *argv[]) {
       fclose(fd);
       return EXIT_SUCCESS;
     }
-    // refactor: array with pointers to printing function, since it needs to
-    // decide the correct conversion specification. handle malformed manually to
+    // handle malformed manually to
     // keep the printing callback simple.
     switch (token.category) {
     case MALFORMED_TOKEN:
