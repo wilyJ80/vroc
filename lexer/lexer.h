@@ -1,7 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "../types/types.h"
+#include "./types.h"
 
 struct Token lexerGetNextChar(FILE *fd, int *lineCount);
 

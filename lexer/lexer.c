@@ -1,7 +1,6 @@
 #include "lexer.h"
 #include "../util/char.h"
 #include "transition.h"
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

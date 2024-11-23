@@ -1,5 +1,5 @@
 #include "./lexer/lexer.h"
-#include "types/types.h"
+#include "./lexer/types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
