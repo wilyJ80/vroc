@@ -39,7 +39,7 @@ void handleRsv(struct Token token) { printf("<RSV, %s>", token.lexeme); }
 void handleId(struct Token token) { printf("<ID, %s>", token.lexeme); }
 
 void handleCharcon(struct Token token) {
-  printf("<CHARCON, %c>", token.lexeme[1]);
+  printf("<CHARCON, %s>", token.lexeme);
 }
 
 void handleStringcon(struct Token token) {

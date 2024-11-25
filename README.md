@@ -1,16 +1,16 @@
 ![swag](./doc/swag.webp)
 
-![diagram](./doc/afd4.dot.svg)
+![diagram](./doc/flap2.png)
 
 # uso
 
 - Compilar com:
 
-`./debug.sh`
+`./build.sh`
 
 - ou:
 
-`gcc -g ./lexer/*.c ./util/*.c ./debug.c -o croc`
+`gcc -g ./lexer/*.c ./util/*.c ./main.c -o croc`
 
 - Executar com:
 
@@ -22,7 +22,11 @@
 
 - Em um so comando:
 
-`gcc -g ./lexer/*.c ./util/*.c ./debug.c -o croc && ./croc ./doc/examples/code.proc`
+`gcc -g ./lexer/*.c ./util/*.c ./main.c -o croc && ./croc ./doc/examples/code.proc`
+
+- Teste:
+
+`gcc -g ./lexer/*.c ./util/*.c ./test.c -o croc && ./croc`
 
 # problemas
 
