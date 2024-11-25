@@ -3,4 +3,6 @@
 
 void lexerTest();
 
+void lexerCharconTest();
+
 #endif // !LEXER_TEST_H
