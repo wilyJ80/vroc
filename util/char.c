@@ -78,4 +78,6 @@ bool isNotEqual(char c) { return !isEqual(c); }
 
 bool isNotRef(char c) { return !isRef(c); }
 
-bool isNotDigitNorPeriod(char c) { return isNotDigit(c) && c != '.';}
+bool isNotDigitNorPeriod(char c) { return isNotDigit(c) && c != '.'; }
+
+bool isZeroOrN(char c) { return c == '0' || c == 'n'; }

@@ -64,12 +64,12 @@ void lexerCharconTest() {
   }
 
   assert(tokens[0].category == CHARCON);
-  printf("%s\n", tokens[0].lexeme);
   assert(strcmp(tokens[0].lexeme, "'a'") == 0);
 
   assert(tokens[1].category == CHARCON);
   assert(strcmp(tokens[1].lexeme, "'b'") == 0);
 
+  printf("%d\n", tokens[2].category);
   assert(tokens[2].category == CHARCON);
-  assert(strcmp(tokens[2].lexeme, "'\\n'") == 0);
+  assert(strcmp(tokens[2].lexeme, "'\n'") == 0);
 }

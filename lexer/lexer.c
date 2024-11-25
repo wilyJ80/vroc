@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include "../util/char.h"
 #include "transition.h"
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -64,14 +65,13 @@ struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
       {},
       // State 9
       {{10, isIsPrint, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {12, isNewline, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {13, isTerminating, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
+       {12, isBackSlash, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 10
       {{11, isSingleQuote, CHARCON, NOT_OTHER, NOT_SYMBOL}},
       // State 11: accepting
       {},
       // State 12
-      {{11, isSingleQuote, CHARCON, NOT_OTHER, NOT_SYMBOL}},
+      {{13, isZeroOrN, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
       // State 13
       {{11, isSingleQuote, CHARCON, NOT_OTHER, NOT_SYMBOL}},
       // State 14
