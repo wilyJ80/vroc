@@ -67,9 +67,9 @@ void lexerCharconTest() {
   printf("%s\n", tokens[0].lexeme);
   assert(strcmp(tokens[0].lexeme, "'a'") == 0);
 
-  assert(tokens[1].category == RSV);
-  assert(strcmp(tokens[1].lexeme, "init") == 0);
+  assert(tokens[1].category == CHARCON);
+  assert(strcmp(tokens[1].lexeme, "'b'") == 0);
 
-  assert(tokens[2].category == INTCON);
-  assert(tokens[2].intValue == 2);
+  assert(tokens[2].category == CHARCON);
+  assert(strcmp(tokens[2].lexeme, "'\\n'") == 0);
 }

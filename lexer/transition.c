@@ -49,8 +49,7 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
     } else if (token->category == REALCON) {
       token->doubleValue = atof(lexeme);
 
-    } else if (token->category == ID || token->category == CHARCON ||
-               token->category == STRINGCON) {
+    } else if (token->category == ID || token->category == STRINGCON) {
       strcpy(token->lexeme, lexeme);
       // look up reserved
       const char *reservedKeywords[28] = {
@@ -64,6 +63,10 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
           token->category = RSV;
         }
       }
+    } else if (token->category == CHARCON) {
+      lexeme[*lexemeSize] = ch;
+      lexeme[++(*lexemeSize)] = '\0';
+      strcpy(token->lexeme, lexeme);
     }
     return true;
   }
