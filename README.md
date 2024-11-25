@@ -1,5 +1,9 @@
 ![swag](./doc/swag.webp)
 
+- [X] Lexer
+- [ ] Parser
+- [ ] Analise Semantica
+
 ![diagram](./doc/flap2.png)
 
 # uso
