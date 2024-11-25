@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #define MAX_LEXEME_SIZE 50
 #define MAX_STATES 44
@@ -152,6 +153,10 @@ struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
 
   while (true) {
     int ch = fgetc(fd);
+    // for debugging: ignore
+    char debugCh = (char)ch;
+    assert(debugCh != -2048);
+
     if (ch == EOF) {
       token.category = END_OF_FILE;
       return token;
