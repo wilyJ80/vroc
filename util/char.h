@@ -41,5 +41,6 @@ bool isNotEqual(char c);
 bool isNotRef(char c);
 bool isNotDigitNorPeriod(char c);
 bool isZeroOrN(char c);
+bool isIsPrintButNotBackSlash(char c);
 
 #endif // !CHAR_H

@@ -1,6 +1,6 @@
 ![swag](./doc/swag.webp)
 
-![diagram](./doc/afd4.dot.svg)
+![diagram](./doc/flap2.png)
 
 # uso
 

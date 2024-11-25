@@ -5,4 +5,8 @@ void lexerTest();
 
 void lexerCharconTest();
 
+void lexerCharconTest2();
+
+void lexerCharconTest3();
+
 #endif // !LEXER_TEST_H
