@@ -40,7 +40,7 @@
     - [X] sinais
     - [X] comentario
 - [X] \n processado corretamente
-- [ ] \n, \0 nao e reconhecido como charcon independente: tem que refazer o automato 😰
+- [X] \n, \0 nao e reconhecido como charcon independente: tem que refazer o automato 😰
 - [X] sem tratamento de erro: tokens malformados
 - [X] nao retorna palavras reservadas
 - [ ] nao lida com lexemas maiores que o tamanho limite
