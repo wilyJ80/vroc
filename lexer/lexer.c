@@ -151,7 +151,7 @@ struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
   token.category = NON_ACCEPTING;
 
   while (true) {
-    char ch = fgetc(fd);
+    int ch = fgetc(fd);
     if (ch == EOF) {
       token.category = END_OF_FILE;
       return token;
