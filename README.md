@@ -1,8 +1,8 @@
-![swag](./doc/swag.webp)
-
 - [X] Lexer
 - [ ] Parser
 - [ ] Analise Semantica
+
+![swag](./doc/swag.webp)
 
 ![diagram](./doc/flap2.png)
 
@@ -34,6 +34,8 @@
 
 # problemas
 
+- [ ] Remover transition.h e transition.c
+- [ ] Setup GitHub Actions para testes
 - [X] automato nao funciona
 - [X] funciona corretamente
     - [X] id
