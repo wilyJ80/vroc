@@ -52,12 +52,12 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
     } else if (token->category == ID || token->category == STRINGCON) {
       strcpy(token->lexeme, lexeme);
       // look up reserved
-      const char *reservedKeywords[28] = {
+      const char *reservedKeywords[32] = {
           "const",   "pr",     "init",    "endp",   "char",   "int",
           "real",    "bool",   "do",      "while",  "endw",   "var",
           "from",    "to",     "dt",      "by",     "if",     "endv",
           "elif",    "else",   "endi",    "getout", "getint", "getchar",
-          "getreal", "putint", "putchar", "putreal"};
+          "getreal", "putint", "putchar", "putreal", "getstr", "putstr", "def", "prot"};
       for (int i = 0; i < 28; i++) {
         if (strcmp(token->lexeme, reservedKeywords[i]) == 0) {
           token->category = RSV;
