@@ -36,7 +36,7 @@
 
 # problemas
 
-- [ ] Remover transition.h e transition.c
+- [ ] Refactor: remover transition.h e transition.c
 - [X] Setup GitHub Actions para testes
 - [X] automato nao funciona
 - [X] funciona corretamente
