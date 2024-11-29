@@ -37,7 +37,7 @@
 # problemas
 
 - [ ] Remover transition.h e transition.c
-- [ ] Setup GitHub Actions para testes
+- [X] Setup GitHub Actions para testes
 - [X] automato nao funciona
 - [X] funciona corretamente
     - [X] id
