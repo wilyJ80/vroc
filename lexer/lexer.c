@@ -1,5 +1,5 @@
 #include "lexer.h"
-#include "../util/char.h"
+#include "./char.h"
 #include "transition.h"
 #include "types.h"
 #include <stdio.h>
