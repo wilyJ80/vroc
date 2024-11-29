@@ -1,0 +1,28 @@
+name: C CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+    - uses: actions/checkout@v4
+
+      # Set up a basic build environment (you can install any dependencies here)
+    - name: Set up GCC
+      run: sudo apt-get update && sudo apt-get install -y gcc make
+
+      # Run the build.sh script with 'test' argument to compile and run tests
+    - name: Run build script (test)
+      run: |
+        chmod +x build.sh
+        ./build.sh test
+      # Ensure the tests fail if assertions fail
+      continue-on-error: false
