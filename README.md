@@ -6,7 +6,7 @@
 
 ![swag](./doc/swag.webp)
 
-![diagram](./doc/flap2.png)
+![diagram](./doc/flap3.png)
 
 # uso
 
