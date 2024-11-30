@@ -2,10 +2,10 @@
 #include "./char.h"
 #include "transition.h"
 #include "types.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #define MAX_LEXEME_SIZE 50
 #define MAX_STATES 44

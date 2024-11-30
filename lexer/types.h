@@ -45,10 +45,7 @@ enum SIGN {
   LARGER_EQUAL
 };
 
-enum IS_OTHER {
-  IS_OTHER,
-  NOT_OTHER
-};
+enum IS_OTHER { IS_OTHER, NOT_OTHER };
 
 struct Token {
   enum TOKEN_CAT category;

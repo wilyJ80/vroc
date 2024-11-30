@@ -37,6 +37,7 @@
 # problemas
 
 - [ ] Refactor: remover transition.h e transition.c
+- [ ] Refactor: organizar melhor as enums...
 - [X] Setup GitHub Actions para testes
 - [X] automato nao funciona
 - [X] funciona corretamente
