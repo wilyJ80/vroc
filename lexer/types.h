@@ -42,13 +42,12 @@ enum SIGN {
   NEGATION,
   DIFFERENT,
   SMALLER_EQUAL,
-  LARGER_EQUAL
+  LARGER_EQUAL,
+  OPEN_CURLY,
+  CLOSE_CURLY
 };
 
-enum IS_OTHER {
-  IS_OTHER,
-  NOT_OTHER
-};
+enum IS_OTHER { IS_OTHER, NOT_OTHER };
 
 struct Token {
   enum TOKEN_CAT category;

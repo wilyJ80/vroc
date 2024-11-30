@@ -26,7 +26,7 @@ void handleSign(struct Token token);
 
 struct SignCategoryHandler {
   int signCategory;
-  const char* signCategoryLabel;
+  const char *signCategoryLabel;
 };
 
 void printToken(struct Token token);

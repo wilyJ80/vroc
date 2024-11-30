@@ -42,5 +42,7 @@ bool isNotRef(char c);
 bool isNotDigitNorPeriod(char c);
 bool isZeroOrN(char c);
 bool isIsPrintButNotBackSlash(char c);
+bool isCurlyOpen(char c);
+bool isCurlyClose(char c);
 
 #endif // !CHAR_H

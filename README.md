@@ -6,7 +6,7 @@
 
 ![swag](./doc/swag.webp)
 
-![diagram](./doc/flap2.png)
+![diagram](./doc/flap3.png)
 
 # uso
 
@@ -36,8 +36,10 @@
 
 # problemas
 
-- [ ] Remover transition.h e transition.c
-- [ ] Setup GitHub Actions para testes
+- [ ] Adicionar especificacao da linguagem `proc` e manter atualizada
+- [ ] Refactor: remover transition.h e transition.c
+- [ ] Refactor: organizar melhor as enums...
+- [X] Setup GitHub Actions para testes
 - [X] automato nao funciona
 - [X] funciona corretamente
     - [X] id

@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #define TOKEN_CATEGORY_QTY 7
-#define SIGN_CATEGORY_QTY 20
+#define SIGN_CATEGORY_QTY 22
 
 struct TokenCategoryHandler tokenCategoryHandleData[TOKEN_CATEGORY_QTY] = {
     {RSV, handleRsv},         {ID, handleId},
@@ -32,7 +32,8 @@ struct SignCategoryHandler signCategoryHandleData[SIGN_CATEGORY_QTY] = {
     {DIFFERENT, "DIFFERENT"},
     {SMALLER_EQUAL, "SMALLER_EQUAL"},
     {LARGER_EQUAL, "LARGER_EQUAL"},
-};
+    {OPEN_CURLY, "OPEN_CURLY"},
+    {CLOSE_CURLY, "CLOSE_CURLY"}};
 
 void handleRsv(struct Token token) { printf("<RSV, %s>", token.lexeme); }
 

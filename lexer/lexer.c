@@ -2,14 +2,14 @@
 #include "./char.h"
 #include "transition.h"
 #include "types.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #define MAX_LEXEME_SIZE 50
-#define MAX_STATES 44
-#define MAX_TRANSITIONS 20
+#define MAX_STATES 46
+#define MAX_TRANSITIONS 22
 
 void error(char msg[]) {
   printf("%s\n", msg);
@@ -41,7 +41,9 @@ struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
        {34, isPipe, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {36, isSmallerThan, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {39, isLargerThan, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
-       {42, isNeg, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},
+       {42, isNeg, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
+       {45, isCurlyOpen, SIGN, NOT_OTHER, OPEN_CURLY},
+       {46, isCurlyClose, SIGN, NOT_OTHER, CLOSE_CURLY}},
       // State 1
       {{1, isUnderscore, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL},
        {2, isAlpha, NON_ACCEPTING, NOT_OTHER, NOT_SYMBOL}},

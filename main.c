@@ -12,14 +12,13 @@ int main(int argc, char *argv[]) {
   }
 
   FILE *fd;
+  int lineCount = 1;
 
   fd = fopen(argv[1], "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
   }
-
-  int lineCount = 1;
 
   // lexing!
   while (true) {
