@@ -94,32 +94,48 @@ void declVar(FILE *fd, int *lineCount, struct Token token) {
     // array: should deal with multidimensional arrays (declaration) and
     // initialization
   } else if (token.category == SIGN && token.signCode == OPEN_BRACK) {
-    arrayInitialization(fd, lineCount, token);
-    // *********************************************
-    // Refactor below to array declaration and initialization functions
-    // warning: should deal with multidimensional arrays
-    while (token.category == SIGN && token.signCode == OPEN_BRACK) {
-      // consume next
-      token = lexerGetNextChar(fd, lineCount);
-      // valid array initializer
-      if (token.category != ID && token.category != INTCON) {
-        fprintf(stderr, "Syntax error: expected valid array size\n");
-        exit(EXIT_FAILURE);
-      } else {
-        // consume next
-        token = lexerGetNextChar(fd, lineCount);
-        if (token.category != SIGN && token.signCode != CLOSE_BRACK) {
-
-          fprintf(stderr, "Syntax error: expected array bracket closing\n");
-          exit(EXIT_FAILURE);
-        } else {
-          token = lexerGetNextChar(fd, lineCount);
-        }
-      }
-      // should only break when ASSIGN is found.
-    }
-    // should deal with optional array initializer here
+    arrayDeclaration(fd, lineCount, token);
   }
 }
 
-void arrayDeclaration(FILE *fd, int *lineCount, struct Token token) {}
+void arrayDeclaration(FILE *fd, int *lineCount, struct Token token) {
+  while (token.category == SIGN && token.signCode == OPEN_BRACK) {
+    // consume next
+    token = lexerGetNextChar(fd, lineCount);
+    // valid array initializer
+    if (token.category != ID && token.category != INTCON) {
+      fprintf(stderr, "Syntax error: expected valid array size\n");
+      exit(EXIT_FAILURE);
+    } else {
+      // consume next
+      token = lexerGetNextChar(fd, lineCount);
+      if (token.category != SIGN && token.signCode != CLOSE_BRACK) {
+
+        fprintf(stderr, "Syntax error: expected array bracket closing\n");
+        exit(EXIT_FAILURE);
+      } else {
+        token = lexerGetNextChar(fd, lineCount);
+
+        if (token.category == SIGN && token.signCode == OPEN_BRACK) {
+          // dealing with multidimensional arrays
+          continue;
+
+        } else if (token.category == SIGN && token.signCode == ASSIGN) {
+          // consume next
+          token = lexerGetNextChar(fd, lineCount);
+          if (token.category != SIGN && token.signCode != OPEN_CURLY) {
+          
+          }
+          // it's optional in the grammar.
+          arrayInitialization(fd, lineCount, token);
+          break;
+
+        } else {
+          // no array declaration. what to do?
+        }
+      }
+    }
+  }
+}
+
+void arrayInitialization(FILE *fd, int *lineCount, struct Token token) {}
