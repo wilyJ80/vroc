@@ -1,13 +1,13 @@
 #include "lexer_test.h"
+#include "../lexer/lexer.h"
+#include "../lexer/types.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../lexer/types.h"
-#include "../lexer/lexer.h"
 
 void lexerTest() {
-  const char *mock_data = "pr init 2 endp\n";
+  const char *mock_data = "def init 2 endp\n";
   FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
@@ -29,7 +29,7 @@ void lexerTest() {
   }
 
   assert(tokens[0].category == RSV);
-  assert(strcmp(tokens[0].lexeme, "pr") == 0);
+  assert(strcmp(tokens[0].lexeme, "def") == 0);
 
   assert(tokens[1].category == RSV);
   assert(strcmp(tokens[1].lexeme, "init") == 0);

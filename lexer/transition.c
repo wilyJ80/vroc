@@ -1,9 +1,12 @@
+#include "transition.h"
 #include "./types.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define KEYWORD_QTY 31
 
 /*
  * TOKEN BUILDING
@@ -52,16 +55,24 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
     } else if (token->category == ID || token->category == STRINGCON) {
       strcpy(token->lexeme, lexeme);
       // look up reserved
-      const char *reservedKeywords[31] = {
-          "const",  "init",    "endp",    "char",   "int",     "real",
-          "bool",   "do",      "while",   "endw",   "var",     "from",
-          "to",     "dt",      "by",      "if",     "endv",    "elif",
-          "else",   "endi",    "getout",  "getint", "getchar", "getreal",
-          "putint", "putchar", "putreal", "getstr", "putstr",  "def",
-          "prot"};
-      for (int i = 0; i < 28; i++) {
-        if (strcmp(token->lexeme, reservedKeywords[i]) == 0) {
+      struct ReservedWord reservedKeywords[KEYWORD_QTY] = {
+          {"const", CONST},   {"init", INIT},       {"endp", ENDP},
+          {"char", CHAR},     {"int", INT},         {"real", REAL},
+          {"bool", BOOL},     {"do", DO},           {"while", WHILE},
+          {"endw", ENDW},     {"var", VAR},         {"from", FROM},
+          {"to", TO},         {"dt", DT},           {"by", BY},
+          {"if", IF},         {"endv", ENDV},       {"elif", ELIF},
+          {"else", ELSE},     {"endi", ENDI},       {"getout", GETOUT},
+          {"getint", GETINT}, {"getchar", GETCHAR}, {"getreal", GETREAL},
+          {"putint", PUTINT}, {"putchar", PUTCHAR}, {"putreal", PUTREAL},
+          {"getstr", GETSTR}, {"putstr", PUTSTR},   {"def", DEF},
+          {"prot", PROT}};
+
+      for (int i = 0; i < KEYWORD_QTY; i++) {
+        if (strcmp(token->lexeme, reservedKeywords[i].lexeme) == 0) {
           token->category = RSV;
+          token->signCode = reservedKeywords[i].reservedCode;
+          strcpy(token->lexeme, reservedKeywords[i].lexeme);
         }
       }
     } else if (token->category == CHARCON) {
