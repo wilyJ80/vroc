@@ -12,6 +12,7 @@ int main(void) {
 
   opRelTest();
   opRelTest2();
+  fatorConTest();
 
   printf("--- Parser tests passed\n");
 

@@ -7,6 +7,12 @@
 
 enum SYNTAX_ERROR op_rel(FILE *fd, int *lineCount);
 
+enum SYNTAX_ERROR fator(FILE *fd, int *lineCount);
+
+enum SYNTAX_ERROR expr(FILE *fd, int *lineCount);
+
+bool validMultidimensionalArray(FILE *fd, int *lineCount, bool (*innerTypeCallback)(FILE *fd, int *lineCount));
+
 /*void prog(FILE *fd, int *lineCount);*/
 /**/
 /*void declListVar(FILE *fd, int *lineCount, struct Token token);*/

@@ -8,10 +8,71 @@
 enum SYNTAX_ERROR op_rel(FILE *fd, int *lineCount) {
   struct Token token = lexerGetNextChar(fd, lineCount);
 
-  if (token.category != SIGN || !(token.signCode == COMPARISON || token.signCode == DIFFERENT || token.signCode == SMALLER_EQUAL || token.signCode == SMALLER_EQUAL || token.signCode == LARGER_EQUAL || token.signCode == LARGER_THAN)) {
+  if (token.category != SIGN ||
+      !(token.signCode == COMPARISON || token.signCode == DIFFERENT ||
+        token.signCode == SMALLER_EQUAL || token.signCode == SMALLER_EQUAL ||
+        token.signCode == LARGER_EQUAL || token.signCode == LARGER_THAN)) {
     return INVALID_OPERATOR;
   }
 
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
+  struct Token token = lexerGetNextChar(fd, lineCount);
+
+  if (!(token.category == ID || token.category == INTCON ||
+        token.category == REALCON || token.category == CHARCON ||
+        (token.category == SIGN && token.signCode == OPEN_PAR) ||
+        (token.category == SIGN && token.signCode == NEGATION))) {
+    return NO_FACTOR_VALID_START_SYMBOL;
+  }
+
+  // no need to validate int/real/char?
+
+  // !fator
+  if (token.category == SIGN && token.signCode == NEGATION) {
+    enum SYNTAX_ERROR error = fator(fd, lineCount);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  // (expr)
+  if (token.category == SIGN && token.signCode == OPEN_PAR) {
+    enum SYNTAX_ERROR error = expr(fd, lineCount);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  // id {[expr]}
+  if (token.category == ID) {
+    token = lexerGetNextChar(fd, lineCount);
+    if (token.category == SIGN && token.signCode == OPEN_BRACK) {
+      enum SYNTAX_ERROR error = expr(fd, lineCount);
+      if (error != NO_ERROR) {
+        return error;
+      }
+
+      if (token.category == SIGN && token.signCode == CLOSE_BRACK) {
+        token = lexerGetNextChar(fd, lineCount);
+
+      } else {
+        return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
+      }
+    }
+  }
+
+  return NO_ERROR;
+}
+
+bool validMultidimensionalArray(FILE *fd, int *lineCount, bool (*innerTypeCallback)(FILE *, int *)) {
+
+}
+
+enum SYNTAX_ERROR expr(FILE *fd, int *lineCount) {
+  // TODO:
   return NO_ERROR;
 }
 

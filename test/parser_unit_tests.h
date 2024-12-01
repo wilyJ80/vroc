@@ -8,5 +8,7 @@
 
 void opRelTest();
 void opRelTest2();
+void fatorConTest();
+void fatorNegFatorTest();
 
 #endif // !PARSER_UNIT_TESTS_H
