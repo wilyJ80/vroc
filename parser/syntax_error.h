@@ -1,7 +1,10 @@
 #ifndef SYNTAX_ERROR_H
 #define SYNTAX_ERROR_H
 
-enum SYNTAX_ERRORS {
+#include "../lexer/types.h"
+#include <stdbool.h>
+
+enum SYNTAX_ERROR {
   NO_ERROR,
   // decl_list_var
   TYPE_NOT_DETECTED,
@@ -99,10 +102,9 @@ enum SYNTAX_ERRORS {
   INVALID_FACTOR_EXPR_PAREN_CLOSE,
   NO_FACTOR_AFTER_BANG,
   // op_rel
-  OP_REL_NO_EQUAL_AFTER_EQUAL,
-  OP_REL_NO_EQUAL_AFTER_BANG,
-  OP_REL_NO_EQUAL_AFTER_SMALLER_THAN,
-  OP_REL_NO_EQUAL_AFTER_LARGER_THAN,
+  INVALID_OPERATOR,
 };
+
+void printSyntaxError(enum SYNTAX_ERROR error);
 
 #endif // !SYNTAX_ERROR_H

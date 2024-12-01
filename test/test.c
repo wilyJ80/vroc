@@ -7,7 +7,7 @@ int main(void) {
   lexerCharconTest();
   lexerCharconTest2();
 
-  printf("--- Lexer test passed\n");
+  printf("--- Lexer tests passed\n");
 
   return EXIT_SUCCESS;
 }
