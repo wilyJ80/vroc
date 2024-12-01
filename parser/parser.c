@@ -31,7 +31,7 @@ void prog(FILE *fd, int *lineCount) {
  * declaration of one or more variables.
  */
 void declListVar(FILE *fd, int *lineCount, struct Token token) {
-  // if const, read next
+  // if const (optional), read next
   if (token.signCode == CONST) {
     token = lexerGetNextChar(fd, lineCount);
   }
@@ -66,7 +66,7 @@ void tipo(FILE *fd, int *lineCount, struct Token token) {
  * Variable declaration is valid:
  * Simply declaring a identifier, or optionally initializing it.
  * Can declare as array using curly braces with size given by number or id. Can
- * optionally initialize it with square brackets.
+ * optionally initialize it with square brackets (C notation).
  */
 void declVar(FILE *fd, int *lineCount, struct Token token) {
   // id mandatory.
@@ -91,8 +91,8 @@ void declVar(FILE *fd, int *lineCount, struct Token token) {
       exit(EXIT_FAILURE);
     }
 
-    // array: should deal with multidimensional arrays (declaration) and
-    // initialization
+    // array: TODO: should deal with multidimensional arrays (declaration) and
+    // initialization. Declaration is ok. Initialization is tricky
   } else if (token.category == SIGN && token.signCode == OPEN_BRACK) {
     arrayDeclaration(fd, lineCount, token);
   }
@@ -110,12 +110,11 @@ void arrayDeclaration(FILE *fd, int *lineCount, struct Token token) {
       // consume next
       token = lexerGetNextChar(fd, lineCount);
       if (token.category != SIGN && token.signCode != CLOSE_BRACK) {
-
         fprintf(stderr, "Syntax error: expected array bracket closing\n");
         exit(EXIT_FAILURE);
+
       } else {
         token = lexerGetNextChar(fd, lineCount);
-
         if (token.category == SIGN && token.signCode == OPEN_BRACK) {
           // dealing with multidimensional arrays
           continue;
@@ -124,14 +123,14 @@ void arrayDeclaration(FILE *fd, int *lineCount, struct Token token) {
           // consume next
           token = lexerGetNextChar(fd, lineCount);
           if (token.category != SIGN && token.signCode != OPEN_CURLY) {
-          
+            // it's optional in the grammar.
+            arrayInitialization(fd, lineCount, token);
+            break;
           }
-          // it's optional in the grammar.
-          arrayInitialization(fd, lineCount, token);
-          break;
 
         } else {
           // no array declaration. what to do?
+          break;
         }
       }
     }
