@@ -36,6 +36,7 @@
 
 # problemas
 
+- [ ] Parser testes unitarios + integracao
 - [ ] Adicionar especificacao da linguagem `proc` e manter atualizada
 - [ ] Refactor: remover transition.h e transition.c
 - [ ] Refactor: organizar melhor as enums...
