@@ -7,5 +7,6 @@
 #include "../lexer/types.h"
 
 void opRelTest();
+void opRelTest2();
 
 #endif // !PARSER_UNIT_TESTS_H

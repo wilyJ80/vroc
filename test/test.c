@@ -1,4 +1,5 @@
 #include "lexer_test.h"
+#include "parser_unit_tests.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,6 +9,11 @@ int main(void) {
   lexerCharconTest2();
 
   printf("--- Lexer tests passed\n");
+
+  opRelTest();
+  opRelTest2();
+
+  printf("--- Parser tests passed\n");
 
   return EXIT_SUCCESS;
 }
