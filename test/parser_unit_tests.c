@@ -63,7 +63,7 @@ void fatorConTest() {
 }
 
 void fatorNegFatorTest() {
-  const char *mock_data = "2 !2.2 )\n";
+  const char *mock_data = "2 !2.2 !)\n";
   FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
@@ -82,8 +82,7 @@ void fatorNegFatorTest() {
   assert(realcon == NO_ERROR);
 
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
-  printf("%d\n", error);
-  assert(error == NO_FACTOR_VALID_START_SYMBOL);
+  assert(error == NO_FACTOR_AFTER_BANG);
 }
 
 void fatorArrayUniTest() {

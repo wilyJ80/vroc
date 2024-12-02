@@ -32,7 +32,7 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
   if (token.category == SIGN && token.signCode == NEGATION) {
     enum SYNTAX_ERROR error = fator(fd, lineCount);
     if (error != NO_ERROR) {
-      return error;
+      return NO_FACTOR_AFTER_BANG;
     }
   }
 
