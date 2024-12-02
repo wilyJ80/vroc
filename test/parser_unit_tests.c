@@ -108,4 +108,9 @@ void fatorArrayUniTest() {
 
   enum SYNTAX_ERROR error2 = fator(mock_file, lineCount);
   assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
+  printSyntaxError(error2, lineCount);
+}
+
+void fatorArrayMultTest() {
+
 }

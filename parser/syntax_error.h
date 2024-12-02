@@ -106,7 +106,7 @@ enum SYNTAX_ERROR {
   INVALID_OPERATOR,
 };
 
-void printSyntaxError(enum SYNTAX_ERROR error);
+void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount);
 
 struct ErrorMessage {
   enum SYNTAX_ERROR error;
