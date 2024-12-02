@@ -107,4 +107,9 @@ enum SYNTAX_ERROR {
 
 void printSyntaxError(enum SYNTAX_ERROR error);
 
+struct ErrorMessage {
+  enum SYNTAX_ERROR error;
+  const char* message;
+};
+
 #endif // !SYNTAX_ERROR_H
