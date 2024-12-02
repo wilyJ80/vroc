@@ -65,8 +65,9 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
   return NO_ERROR;
 }
 
-bool validMultidimensionalArray(FILE *fd, int *lineCount, bool (*innerTypeCallback)(FILE *, int *)) {
+enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount) {
 
+  return NO_ERROR;
 }
 
 enum SYNTAX_ERROR expr(FILE *fd, int *lineCount) {
