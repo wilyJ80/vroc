@@ -1,8 +1,11 @@
 #include "syntax_error.h"
 #include <stdbool.h>
+#include <stdio.h>
+
+#define ERROR_QTY 77
 
 void printSyntaxError(enum SYNTAX_ERROR error) {
-  struct ErrorMessage messages[80] = {
+  struct ErrorMessage messages[ERROR_QTY] = {
       {NO_ERROR, "No syntax errors\n"},
       // decl_list_var
       {TYPE_NOT_DETECTED, "Type not detected\n"},
@@ -126,7 +129,11 @@ void printSyntaxError(enum SYNTAX_ERROR error) {
       {INVALID_FACTOR_EXPR_PAREN_CLOSE, "No factor expression paren closing\n"},
       {NO_FACTOR_AFTER_BANG, "No factor detected after bang in factor\n"},
       // op_rel
-      {INVALID_OPERATOR, "Invalid operator in expression\n"}
-  };
-  // TODO: Finish function
+      {INVALID_OPERATOR, "Invalid operator in expression\n"}};
+
+  for (int i = 0; i < ERROR_QTY; i++) {
+    if (error == messages[i].error) {
+      fprintf(stderr, "%s", messages[i].message);
+    }
+  }
 }

@@ -99,6 +99,7 @@ void fatorArrayUniTest() {
   lineCount = &line;
 
   enum SYNTAX_ERROR id = fator(mock_file, lineCount);
+  printSyntaxError(id);
   assert(id == NO_ERROR);
 
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
