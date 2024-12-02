@@ -86,7 +86,7 @@ void fatorNegFatorTest() {
 }
 
 void fatorArrayUniTest() {
-  const char *mock_data = "id[1] id]\n";
+  const char *mock_data = "id[1] id] id[\n";
   FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
@@ -99,9 +99,13 @@ void fatorArrayUniTest() {
   lineCount = &line;
 
   enum SYNTAX_ERROR id = fator(mock_file, lineCount);
-  printSyntaxError(id);
   assert(id == NO_ERROR);
 
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
+  // example debugging:
+  // printSyntaxError(error);
   assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
+
+  enum SYNTAX_ERROR error2 = fator(mock_file, lineCount);
+  assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
 }

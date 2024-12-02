@@ -53,25 +53,23 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
         return error;
       }
 
-      if (token.category == SIGN && token.signCode == CLOSE_BRACK) {
-        token = lexerGetNextChar(fd, lineCount);
-
-      } else {
+      token = lexerGetNextChar(fd, lineCount);
+      if (!(token.category == SIGN && token.signCode == CLOSE_BRACK)) {
         return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
       }
+    } else {
+      return INVALID_FACTOR_ARRAY_BRACKET_OPEN;
     }
   }
 
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount) {
-
-  return NO_ERROR;
-}
+enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount) { return NO_ERROR; }
 
 enum SYNTAX_ERROR expr(FILE *fd, int *lineCount) {
   // TODO:
+  struct Token token = lexerGetNextChar(fd, lineCount);
   return NO_ERROR;
 }
 
