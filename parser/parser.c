@@ -1,9 +1,7 @@
 #include "parser.h"
 #include "../lexer/lexer.h"
-#include "../lexer/transition.h"
 #include "syntax_error.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 enum SYNTAX_ERROR op_rel(FILE *fd, int *lineCount) {
   struct Token token = lexerGetNextChar(fd, lineCount);

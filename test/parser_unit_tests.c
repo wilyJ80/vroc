@@ -84,3 +84,23 @@ void fatorNegFatorTest() {
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
   assert(error == NO_FACTOR_VALID_START_SYMBOL);
 }
+
+void fatorArrayUniTest() {
+  const char *mock_data = "id[1] id]\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  enum SYNTAX_ERROR id = fator(mock_file, lineCount);
+  assert(id == NO_ERROR);
+
+  enum SYNTAX_ERROR error = fator(mock_file, lineCount);
+  assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
+}

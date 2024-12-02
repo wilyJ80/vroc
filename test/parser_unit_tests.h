@@ -10,5 +10,6 @@ void opRelTest();
 void opRelTest2();
 void fatorConTest();
 void fatorNegFatorTest();
+void fatorArrayUniTest();
 
 #endif // !PARSER_UNIT_TESTS_H
