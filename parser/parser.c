@@ -48,7 +48,7 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
   if (token.category == ID) {
     token = lexerGetNextChar(fd, lineCount);
     if (token.category == SIGN && token.signCode == OPEN_BRACK) {
-      enum SYNTAX_ERROR error = arrayFator(fd, lineCount, token);
+      enum SYNTAX_ERROR error = arrayFator(fd, lineCount);
       if (error != NO_ERROR) {
         return error;
       }
@@ -60,8 +60,8 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount, struct Token token) {
-  token = lexerGetNextChar(fd, lineCount);
+enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount) {
+  struct Token token = lexerGetNextChar(fd, lineCount);
   enum SYNTAX_ERROR error = expr(fd, lineCount);
   if (error != NO_ERROR) {
     return error;
