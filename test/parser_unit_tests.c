@@ -18,6 +18,8 @@ void opRelTest() {
   lineCount = &line;
 
   enum SYNTAX_ERROR error = op_rel(mock_file, lineCount);
+  // example debugging:
+  // printSyntaxError(error);
   assert(error == NO_ERROR);
 }
 
@@ -102,13 +104,10 @@ void fatorArrayUniTest() {
   assert(id == NO_ERROR);
 
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
-  // example debugging:
-  // printSyntaxError(error);
   assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
 
   enum SYNTAX_ERROR error2 = fator(mock_file, lineCount);
   assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
-  printSyntaxError(error2, lineCount);
 }
 
 void fatorArrayMultTest() {
