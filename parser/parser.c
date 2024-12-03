@@ -48,7 +48,10 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
   if (token.category == ID) {
     token = lexerGetNextChar(fd, lineCount);
     if (token.category == SIGN && token.signCode == OPEN_BRACK) {
-      arrayFator(fd, lineCount, token);
+      enum SYNTAX_ERROR error = arrayFator(fd, lineCount, token);
+      if (error != NO_ERROR) {
+        return error;
+      }
     } else {
       return INVALID_FACTOR_ARRAY_BRACKET_OPEN;
     }

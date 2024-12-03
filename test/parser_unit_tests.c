@@ -104,6 +104,23 @@ void fatorArrayOutroTest() {
   assert(id == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
 }
 
+void fatorArrayOutroTest2() {
+  const char *mock_data = "id[1[\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  enum SYNTAX_ERROR id = fator(mock_file, lineCount);
+  assert(id == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
+}
+
 void fatorArrayUniTest() {
   const char *mock_data = "id[1] id] id[1[\n";
   FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
@@ -124,7 +141,6 @@ void fatorArrayUniTest() {
   assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
 
   enum SYNTAX_ERROR error2 = fator(mock_file, lineCount);
-  printSyntaxError(error, lineCount);
   assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
 }
 

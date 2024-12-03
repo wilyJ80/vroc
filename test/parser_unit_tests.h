@@ -11,6 +11,7 @@ void opRelTest2();
 void fatorConTest();
 void fatorNegFatorTest();
 void fatorArrayOutroTest();
+void fatorArrayOutroTest2();
 void fatorArrayUniTest();
 void fatorArrayMultTest();
 
