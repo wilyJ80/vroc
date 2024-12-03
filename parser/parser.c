@@ -53,7 +53,7 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
         return error;
       }
     } else {
-      return INVALID_FACTOR_ARRAY_BRACKET_OPEN;
+      return NO_ERROR;
     }
   }
 

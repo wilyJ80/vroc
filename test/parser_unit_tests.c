@@ -101,7 +101,7 @@ void fatorArrayOutroTest() {
   lineCount = &line;
 
   enum SYNTAX_ERROR id = fator(mock_file, lineCount);
-  assert(id == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
+  assert(id == NO_ERROR);
 }
 
 void fatorArrayOutroTest2() {
@@ -138,7 +138,7 @@ void fatorArrayUniTest() {
   assert(id == NO_ERROR);
 
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
-  assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
+  assert(error == NO_ERROR);
 
   enum SYNTAX_ERROR error2 = fator(mock_file, lineCount);
   assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
@@ -146,4 +146,25 @@ void fatorArrayUniTest() {
 
 void fatorArrayMultTest() {
   // TODO: ?
+}
+
+void fatorSingle() {
+  const char *mock_data = "fator funciona bem\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  enum SYNTAX_ERROR error = fator(mock_file, lineCount);
+  assert(error == NO_ERROR);
+
+  // will consume next fator
+  enum SYNTAX_ERROR error1 = fator(mock_file, lineCount);
+  assert(error1 == NO_ERROR);
 }

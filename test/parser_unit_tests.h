@@ -14,5 +14,6 @@ void fatorArrayOutroTest();
 void fatorArrayOutroTest2();
 void fatorArrayUniTest();
 void fatorArrayMultTest();
+void fatorSingle();
 
 #endif // !PARSER_UNIT_TESTS_H

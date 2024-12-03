@@ -36,6 +36,7 @@
 
 # problemas
 
+- [ ] Objeto parser com seu proprio estado (token, file, line)
 - [ ] Contador de linha esta funcionando no analisador sintatico?
 - [ ] Parser testes unitarios + integracao
 - [ ] Adicionar especificacao da linguagem `proc` e manter atualizada
