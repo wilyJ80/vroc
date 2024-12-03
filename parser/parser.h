@@ -11,7 +11,7 @@ enum SYNTAX_ERROR fator(FILE *fd, int *lineCount);
 
 enum SYNTAX_ERROR expr(FILE *fd, int *lineCount);
 
-enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount);
+enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount, struct Token token);
 
 /*void prog(FILE *fd, int *lineCount);*/
 /**/
