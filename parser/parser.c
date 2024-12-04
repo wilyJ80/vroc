@@ -95,18 +95,21 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
     while (parser->token.signCode == CONST || parser->token.signCode == CHAR ||
            parser->token.signCode == INT || parser->token.signCode == REAL ||
            parser->token.signCode == BOOL) {
-      declListVar(parser);
+      enum SYNTAX_ERROR error = declListVar(parser);
+      if (error != NO_ERROR) {
+        return error;
+      }
     }
     // Valid procedure declaration/definition tokens
     while (parser->token.signCode == DEF || parser->token.signCode == PROT) {
-      declDefProc(parser);
+      enum SYNTAX_ERROR error = declDefProc(parser);
+      if (error != NO_ERROR) {
+        return error;
+      }
     }
-  }
-
-  if (parser->token.category != END_OF_FILE) {
+  } else {
     return INVALID_PROG_START_KEYWORD;
   }
-
   return NO_ERROR;
 }
 
