@@ -25,6 +25,7 @@ int main(void) {
 
   progStartKeyword();
   declListVarInvalidType();
+  declVarNoId();
 
   printf("--- Parser integration tests passed\n");
 

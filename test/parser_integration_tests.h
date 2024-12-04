@@ -8,5 +8,6 @@
 
 void progStartKeyword();
 void declListVarInvalidType();
+void declVarNoId();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

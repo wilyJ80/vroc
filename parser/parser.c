@@ -124,6 +124,20 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
   if (!(parser->token.category == RSV && (parser->token.signCode == INT || parser->token.signCode == REAL || parser->token.signCode == CHAR || parser->token.signCode == BOOL))) {
     return INVALID_TYPE;
   }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  enum SYNTAX_ERROR error = declVar(parser);
+  if (error != NO_ERROR) {
+    return error;
+  }
+  // TODO: handle multiple variable declarations here
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declVar(struct Parser *parser) {
+  if (parser->token.category != ID) {
+    return NO_VAR_ID;
+  }
   return NO_ERROR;
 }
 
