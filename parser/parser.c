@@ -4,33 +4,33 @@
 #include "syntax_error.h"
 #include <stdio.h>
 
-enum SYNTAX_ERROR op_rel(struct Parser parser) {
-  if (parser.token.category != SIGN ||
-      !(parser.token.signCode == COMPARISON ||
-        parser.token.signCode == DIFFERENT ||
-        parser.token.signCode == SMALLER_EQUAL ||
-        parser.token.signCode == SMALLER_EQUAL ||
-        parser.token.signCode == LARGER_EQUAL ||
-        parser.token.signCode == LARGER_THAN)) {
+enum SYNTAX_ERROR op_rel(struct Parser *parser) {
+  if (parser->token.category != SIGN ||
+      !(parser->token.signCode == COMPARISON ||
+        parser->token.signCode == DIFFERENT ||
+        parser->token.signCode == SMALLER_EQUAL ||
+        parser->token.signCode == SMALLER_EQUAL ||
+        parser->token.signCode == LARGER_EQUAL ||
+        parser->token.signCode == LARGER_THAN)) {
     return INVALID_OPERATOR;
   }
 
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR fator(struct Parser parser) {
-  if (!(parser.token.category == ID || parser.token.category == INTCON ||
-        parser.token.category == REALCON || parser.token.category == CHARCON ||
-        (parser.token.category == SIGN && parser.token.signCode == OPEN_PAR) ||
-        (parser.token.category == SIGN && parser.token.signCode == NEGATION))) {
+enum SYNTAX_ERROR fator(struct Parser *parser) {
+  if (!(parser->token.category == ID || parser->token.category == INTCON ||
+        parser->token.category == REALCON || parser->token.category == CHARCON ||
+        (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) ||
+        (parser->token.category == SIGN && parser->token.signCode == NEGATION))) {
     return NO_FACTOR_VALID_START_SYMBOL;
   }
 
   // no need to validate int/real/char?
 
   // !fator
-  if (parser.token.category == SIGN && parser.token.signCode == NEGATION) {
-    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+  if (parser->token.category == SIGN && parser->token.signCode == NEGATION) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     enum SYNTAX_ERROR error = fator(parser);
     if (error != NO_ERROR) {
       return NO_FACTOR_AFTER_BANG;
@@ -38,7 +38,7 @@ enum SYNTAX_ERROR fator(struct Parser parser) {
   }
 
   // (expr)
-  if (parser.token.category == SIGN && parser.token.signCode == OPEN_PAR) {
+  if (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) {
     enum SYNTAX_ERROR error = expr(parser);
     if (error != NO_ERROR) {
       return error;
@@ -46,15 +46,15 @@ enum SYNTAX_ERROR fator(struct Parser parser) {
   }
 
   // id {[expr]}
-  if (parser.token.category == ID) {
-    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
-    if (parser.token.category == SIGN && parser.token.signCode == OPEN_BRACK) {
+  if (parser->token.category == ID) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
       enum SYNTAX_ERROR error = arrayFator(parser);
       if (error != NO_ERROR) {
         return error;
       }
-    } else if (parser.token.category == SIGN &&
-               parser.token.signCode == CLOSE_BRACK) {
+    } else if (parser->token.category == SIGN &&
+               parser->token.signCode == CLOSE_BRACK) {
       return INVALID_FACTOR_ARRAY_BRACKET_OPEN;
     } else {
       return NO_ERROR;
@@ -63,23 +63,23 @@ enum SYNTAX_ERROR fator(struct Parser parser) {
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR arrayFator(struct Parser parser) {
-  parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   enum SYNTAX_ERROR error = expr(parser);
   if (error != NO_ERROR) {
     return error;
   }
 
-  parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
-  if (!(parser.token.category == SIGN &&
-        parser.token.signCode == CLOSE_BRACK)) {
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN &&
+        parser->token.signCode == CLOSE_BRACK)) {
     return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
   }
 
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR expr(struct Parser parser) {
+enum SYNTAX_ERROR expr(struct Parser *parser) {
   // TODO:
   return NO_ERROR;
 }
@@ -88,22 +88,22 @@ enum SYNTAX_ERROR expr(struct Parser parser) {
  * prog accepts repetitions of declarations of variables (decl_list_var), or
  * procedures (decl_list_proc).
  */
-enum SYNTAX_ERROR prog(struct Parser parser) {
+enum SYNTAX_ERROR prog(struct Parser *parser) {
   // Both declaration of variables and procedures start with reserved words.
-  if (parser.token.category == RSV) {
+  if (parser->token.category == RSV) {
     // Valid variable declaration start tokens
-    while (parser.token.signCode == CONST || parser.token.signCode == CHAR ||
-           parser.token.signCode == INT || parser.token.signCode == REAL ||
-           parser.token.signCode == BOOL) {
+    while (parser->token.signCode == CONST || parser->token.signCode == CHAR ||
+           parser->token.signCode == INT || parser->token.signCode == REAL ||
+           parser->token.signCode == BOOL) {
       declListVar(parser);
     }
     // Valid procedure declaration/definition tokens
-    while (parser.token.signCode == DEF || parser.token.signCode == PROT) {
+    while (parser->token.signCode == DEF || parser->token.signCode == PROT) {
       declDefProc(parser);
     }
   }
 
-  if (parser.token.category != END_OF_FILE) {
+  if (parser->token.category != END_OF_FILE) {
     return INVALID_PROG_START_KEYWORD;
   }
 
@@ -113,18 +113,18 @@ enum SYNTAX_ERROR prog(struct Parser parser) {
 /** decl_list_var accepts optionally a `const`, followed by variable type,
  * and
 declaration of one or more variables.*/
-enum SYNTAX_ERROR declListVar(struct Parser parser) {
-  if (parser.token.signCode == CONST) {
-    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+enum SYNTAX_ERROR declListVar(struct Parser *parser) {
+  if (parser->token.signCode == CONST) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
-  if (!(parser.token.category == RSV && (parser.token.signCode == INT || parser.token.signCode == REAL || parser.token.signCode == CHAR || parser.token.signCode == BOOL))) {
+  if (!(parser->token.category == RSV && (parser->token.signCode == INT || parser->token.signCode == REAL || parser->token.signCode == CHAR || parser->token.signCode == BOOL))) {
     return INVALID_TYPE;
   }
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR declDefProc(struct Parser parser) {
+enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
   // TODO:
   return NO_ERROR;
 }

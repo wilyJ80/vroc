@@ -22,7 +22,7 @@ void progStartKeyword() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR error = prog(parser);
+  enum SYNTAX_ERROR error = prog(&parser);
   // example debugging:
   // printSyntaxError(error);
   assert(error == INVALID_PROG_START_KEYWORD);
@@ -45,6 +45,7 @@ void declListVarInvalidType() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR error = prog(parser);
+  enum SYNTAX_ERROR error = prog(&parser);
+  printSyntaxError(error, parser.lineCount);
   assert(error == INVALID_TYPE);
 }

@@ -11,18 +11,18 @@ struct Parser {
   int *lineCount;
 };
 
-enum SYNTAX_ERROR op_rel(struct Parser parser);
+enum SYNTAX_ERROR op_rel(struct Parser *parser);
 
-enum SYNTAX_ERROR fator(struct Parser parser);
+enum SYNTAX_ERROR fator(struct Parser *parser);
 
-enum SYNTAX_ERROR expr(struct Parser parser);
+enum SYNTAX_ERROR expr(struct Parser *parser);
 
-enum SYNTAX_ERROR arrayFator(struct Parser parser);
+enum SYNTAX_ERROR arrayFator(struct Parser *parser);
 
-enum SYNTAX_ERROR prog(struct Parser parser);
+enum SYNTAX_ERROR prog(struct Parser *parser);
 
-enum SYNTAX_ERROR declListVar(struct Parser parser);
-enum SYNTAX_ERROR declDefProc(struct Parser parser);
+enum SYNTAX_ERROR declListVar(struct Parser *parser);
+enum SYNTAX_ERROR declDefProc(struct Parser *parser);
 
 /*void tipo(FILE *fd, int *lineCount, struct Token token);*/
 /*void declVar(FILE *fd, int *lineCount, struct Token token);*/

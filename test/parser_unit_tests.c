@@ -24,7 +24,7 @@ void opRelTest() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR error = op_rel(parser);
+  enum SYNTAX_ERROR error = op_rel(&parser);
   // example debugging:
   // printSyntaxError(error);
   assert(error == NO_ERROR);
@@ -47,7 +47,7 @@ void opRelTest2() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR error = op_rel(parser);
+  enum SYNTAX_ERROR error = op_rel(&parser);
   assert(error == INVALID_OPERATOR);
 }
 
@@ -68,22 +68,22 @@ void fatorConTest() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR intcon = fator(parser);
+  enum SYNTAX_ERROR intcon = fator(&parser);
   assert(intcon == NO_ERROR);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR realcon = fator(parser);
+  enum SYNTAX_ERROR realcon = fator(&parser);
   assert(intcon == NO_ERROR);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR charcon = fator(parser);
+  enum SYNTAX_ERROR charcon = fator(&parser);
   assert(charcon == NO_ERROR);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR error = fator(parser);
+  enum SYNTAX_ERROR error = fator(&parser);
   assert(error == NO_FACTOR_VALID_START_SYMBOL);
 }
 
@@ -104,17 +104,17 @@ void fatorNegFatorTest() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR intcon = fator(parser);
+  enum SYNTAX_ERROR intcon = fator(&parser);
   assert(intcon == NO_ERROR);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR realcon = fator(parser);
+  enum SYNTAX_ERROR realcon = fator(&parser);
   assert(realcon == NO_ERROR);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR error = fator(parser);
+  enum SYNTAX_ERROR error = fator(&parser);
   assert(error == NO_FACTOR_AFTER_BANG);
 }
 
@@ -136,7 +136,7 @@ void fatorArrayOutroTest() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR id = fator(parser);
+  enum SYNTAX_ERROR id = fator(&parser);
   assert(id == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
 }
 
@@ -157,7 +157,7 @@ void fatorArrayOutroTest2() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR id = fator(parser);
+  enum SYNTAX_ERROR id = fator(&parser);
   assert(id == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
 }
 
@@ -178,17 +178,17 @@ void fatorArrayUniTest() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR id = fator(parser);
+  enum SYNTAX_ERROR id = fator(&parser);
   assert(id == NO_ERROR);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR error = fator(parser);
+  enum SYNTAX_ERROR error = fator(&parser);
   assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
 
   token = lexerGetNextChar(mock_file, lineCount);
   parser.token = token;
-  enum SYNTAX_ERROR error2 = fator(parser);
+  enum SYNTAX_ERROR error2 = fator(&parser);
   assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
 }
 
@@ -208,15 +208,15 @@ void fatorSingle() {
   struct Parser parser = {
       .fd = mock_file, .lineCount = lineCount, .token = token};
 
-  enum SYNTAX_ERROR error = fator(parser);
+  enum SYNTAX_ERROR error = fator(&parser);
   assert(error == NO_ERROR);
 
   // no consuming here: already consumed
-  enum SYNTAX_ERROR error1 = fator(parser);
+  enum SYNTAX_ERROR error1 = fator(&parser);
   assert(error1 == NO_ERROR);
 
   // no consuming here: already consumed
-  enum SYNTAX_ERROR error2 = fator(parser);
+  enum SYNTAX_ERROR error2 = fator(&parser);
   assert(error2 == NO_ERROR);
 }
 /**/
