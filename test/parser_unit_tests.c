@@ -94,29 +94,40 @@ void fatorConTest() {
   assert(error == NO_FACTOR_VALID_START_SYMBOL);
 }
 
-/*void fatorNegFatorTest() {*/
-/*  const char *mock_data = "2 !2.2 !)\n";*/
-/*  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");*/
-/**/
-/*  if (mock_file == NULL) {*/
-/*    fprintf(stderr, "Error opening source file.\n");*/
-/*    exit(EXIT_FAILURE);*/
-/*  }*/
-/**/
-/*  int *lineCount;*/
-/*  int line = 1;*/
-/*  lineCount = &line;*/
-/**/
-/*  enum SYNTAX_ERROR intcon = fator(mock_file, lineCount);*/
-/*  assert(intcon == NO_ERROR);*/
-/*  // recursive fator call*/
-/*  enum SYNTAX_ERROR realcon = fator(mock_file, lineCount);*/
-/*  assert(realcon == NO_ERROR);*/
-/**/
-/*  enum SYNTAX_ERROR error = fator(mock_file, lineCount);*/
-/*  assert(error == NO_FACTOR_AFTER_BANG);*/
-/*}*/
-/**/
+void fatorNegFatorTest() {
+  const char *mock_data = "2 !2.2 !)\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+  struct Parser parser = {
+    .fd = mock_file,
+    .lineCount = lineCount,
+    .token = token
+  };
+
+  enum SYNTAX_ERROR intcon = fator(parser);
+  assert(intcon == NO_ERROR);
+
+  token = lexerGetNextChar(mock_file, lineCount);
+  parser.token = token;
+  enum SYNTAX_ERROR realcon = fator(parser);
+  assert(realcon == NO_ERROR);
+
+  token = lexerGetNextChar(mock_file, lineCount);
+  parser.token = token;
+  enum SYNTAX_ERROR error = fator(parser);
+  assert(error == NO_FACTOR_AFTER_BANG);
+}
+
 /*void fatorArrayOutroTest() {*/
 /*  const char *mock_data = "id]\n";*/
 /*  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");*/

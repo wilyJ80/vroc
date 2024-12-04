@@ -29,6 +29,7 @@ enum SYNTAX_ERROR fator(struct Parser parser) {
 
   // !fator
   if (parser.token.category == SIGN && parser.token.signCode == NEGATION) {
+    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
     enum SYNTAX_ERROR error = fator(parser);
     if (error != NO_ERROR) {
       return NO_FACTOR_AFTER_BANG;

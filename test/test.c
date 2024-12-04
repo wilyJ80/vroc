@@ -13,7 +13,7 @@ int main(void) {
   opRelTest();
   opRelTest2();
   fatorConTest();
-  /*fatorNegFatorTest();*/
+  fatorNegFatorTest();
   /*fatorArrayOutroTest();*/
   /*fatorArrayOutroTest2();*/
   /*fatorArrayUniTest();*/
