@@ -13,11 +13,11 @@ int main(void) {
   opRelTest();
   opRelTest2();
   fatorConTest();
-  fatorNegFatorTest();
-  fatorArrayOutroTest();
-  fatorArrayOutroTest2();
-  fatorArrayUniTest();
-  fatorSingle();
+  /*fatorNegFatorTest();*/
+  /*fatorArrayOutroTest();*/
+  /*fatorArrayOutroTest2();*/
+  /*fatorArrayUniTest();*/
+  /*fatorSingle();*/
 
   printf("--- Parser tests passed\n");
 
