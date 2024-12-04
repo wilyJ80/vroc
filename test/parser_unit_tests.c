@@ -219,8 +219,25 @@ void fatorSingle() {
   enum SYNTAX_ERROR error2 = fator(parser);
   assert(error2 == NO_ERROR);
 }
-
-void fatorArrayMultTest() {
-  // TODO: ?
-}
-
+/**/
+/*void fatorArrayMultTest() {*/
+/*  // TODO: ?*/
+/*  const char *mock_data = "id[1][1] id[3]] id[3][4[\n";*/
+/**/
+/*  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");*/
+/**/
+/*  if (mock_file == NULL) {*/
+/*    fprintf(stderr, "Error opening source file.\n");*/
+/*    exit(EXIT_FAILURE);*/
+/*  }*/
+/**/
+/*  int *lineCount;*/
+/*  int line = 1;*/
+/*  lineCount = &line;*/
+/*  struct Token token = lexerGetNextChar(mock_file, lineCount);*/
+/*  struct Parser parser = {*/
+/*      .fd = mock_file, .lineCount = lineCount, .token = token};*/
+/**/
+/*  enum SYNTAX_ERROR error = fator(parser);*/
+/*  assert(error == NO_ERROR);*/
+/*}*/
