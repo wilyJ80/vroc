@@ -17,7 +17,16 @@ void opRelTest() {
   int line = 1;
   lineCount = &line;
 
-  enum SYNTAX_ERROR error = op_rel(mock_file, lineCount);
+  // For unit tests of individual functions like this one, that don't involve consuming tokens before
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+
+  struct Parser parser = {
+    .fd = mock_file,
+    .lineCount = lineCount,
+    .token = token
+  };
+
+  enum SYNTAX_ERROR error = op_rel(parser);
   // example debugging:
   // printSyntaxError(error);
   assert(error == NO_ERROR);
@@ -36,7 +45,15 @@ void opRelTest2() {
   int line = 1;
   lineCount = &line;
 
-  enum SYNTAX_ERROR error = op_rel(mock_file, lineCount);
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+
+  struct Parser parser = {
+    .fd = mock_file,
+    .lineCount = lineCount,
+    .token = token
+  };
+
+  enum SYNTAX_ERROR error = op_rel(parser);
   assert(error == INVALID_OPERATOR);
 }
 
@@ -61,7 +78,6 @@ void fatorConTest() {
   assert(charcon == NO_ERROR);
   enum SYNTAX_ERROR error = fator(mock_file, lineCount);
   assert(error == NO_FACTOR_VALID_START_SYMBOL);
-
 }
 
 void fatorNegFatorTest() {

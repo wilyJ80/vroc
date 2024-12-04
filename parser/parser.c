@@ -3,13 +3,13 @@
 #include "syntax_error.h"
 #include <stdio.h>
 
-enum SYNTAX_ERROR op_rel(FILE *fd, int *lineCount) {
-  struct Token token = lexerGetNextChar(fd, lineCount);
+enum SYNTAX_ERROR op_rel(struct Parser parser) {
+  // struct Token token = lexerGetNextChar(fd, lineCount);
 
-  if (token.category != SIGN ||
-      !(token.signCode == COMPARISON || token.signCode == DIFFERENT ||
-        token.signCode == SMALLER_EQUAL || token.signCode == SMALLER_EQUAL ||
-        token.signCode == LARGER_EQUAL || token.signCode == LARGER_THAN)) {
+  if (parser.token.category != SIGN ||
+      !(parser.token.signCode == COMPARISON || parser.token.signCode == DIFFERENT ||
+        parser.token.signCode == SMALLER_EQUAL || parser.token.signCode == SMALLER_EQUAL ||
+        parser.token.signCode == LARGER_EQUAL || parser.token.signCode == LARGER_THAN)) {
     return INVALID_OPERATOR;
   }
 
