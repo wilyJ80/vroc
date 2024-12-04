@@ -20,9 +20,12 @@ enum SYNTAX_ERROR op_rel(struct Parser *parser) {
 
 enum SYNTAX_ERROR fator(struct Parser *parser) {
   if (!(parser->token.category == ID || parser->token.category == INTCON ||
-        parser->token.category == REALCON || parser->token.category == CHARCON ||
-        (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) ||
-        (parser->token.category == SIGN && parser->token.signCode == NEGATION))) {
+        parser->token.category == REALCON ||
+        parser->token.category == CHARCON ||
+        (parser->token.category == SIGN &&
+         parser->token.signCode == OPEN_PAR) ||
+        (parser->token.category == SIGN &&
+         parser->token.signCode == NEGATION))) {
     return NO_FACTOR_VALID_START_SYMBOL;
   }
 
@@ -48,7 +51,8 @@ enum SYNTAX_ERROR fator(struct Parser *parser) {
   // id {[expr]}
   if (parser->token.category == ID) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
+    if (parser->token.category == SIGN &&
+        parser->token.signCode == OPEN_BRACK) {
       enum SYNTAX_ERROR error = arrayFator(parser);
       if (error != NO_ERROR) {
         return error;
@@ -121,7 +125,9 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
-  if (!(parser->token.category == RSV && (parser->token.signCode == INT || parser->token.signCode == REAL || parser->token.signCode == CHAR || parser->token.signCode == BOOL))) {
+  if (!(parser->token.category == RSV &&
+        (parser->token.signCode == INT || parser->token.signCode == REAL ||
+         parser->token.signCode == CHAR || parser->token.signCode == BOOL))) {
     return INVALID_TYPE;
   }
 
@@ -131,6 +137,14 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
     return error;
   }
   // TODO: handle multiple variable declarations here
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  while (parser->token.category == SIGN && parser->token.signCode == COMMA) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = declVar(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
   return NO_ERROR;
 }
 
@@ -138,6 +152,32 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
   if (parser->token.category != ID) {
     return NO_VAR_ID;
   }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  bool isArray = false;
+  if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
+    isArray = true;
+    while (parser->token.category == SIGN &&
+           parser->token.signCode == OPEN_BRACK) {
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+
+      if (!(parser->token.category == INTCON || parser->token.category == ID)) {
+        return INVALID_ARRAY_SUBSCRIPT_DEC;
+      }
+
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+      if (!(parser->token.category == SIGN &&
+            parser->token.signCode == CLOSE_BRACK)) {
+        return INVALID_ARRAY_BRACKET_DEC_CLOSE;
+      }
+    }
+  }
+
+  // is single variable
+  if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
+  
+  }
+
   return NO_ERROR;
 }
 

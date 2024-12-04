@@ -9,5 +9,7 @@
 void progStartKeyword();
 void declListVarInvalidType();
 void declVarNoId();
+void declVarMulti();
+void declVarArrayInvalidSubscript();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

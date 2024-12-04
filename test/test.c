@@ -26,6 +26,8 @@ int main(void) {
   progStartKeyword();
   declListVarInvalidType();
   declVarNoId();
+  declVarMulti();
+  declVarArrayInvalidSubscript();
 
   printf("--- Parser integration tests passed\n");
 
