@@ -1,6 +1,7 @@
 #include "lexer_test.h"
 #include "../lexer/lexer.h"
 #include "../lexer/types.h"
+#include "../lexer/transition.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,16 +30,16 @@ void lexerTest() {
   }
 
   assert(tokens[0].category == RSV);
-  assert(strcmp(tokens[0].lexeme, "def") == 0);
+  assert(tokens[0].signCode == DEF);
 
   assert(tokens[1].category == RSV);
-  assert(strcmp(tokens[1].lexeme, "init") == 0);
+  assert(tokens[1].signCode == INIT);
 
   assert(tokens[2].category == INTCON);
   assert(tokens[2].intValue == 2);
 
   assert(tokens[3].category == RSV);
-  assert(strcmp(tokens[3].lexeme, "endp") == 0);
+  assert(tokens[3].signCode == ENDP);
 }
 
 void lexerCharconTest() {

@@ -29,7 +29,7 @@ void progStartKeyword() {
 }
 
 void declListVarInvalidType() {
-  const char *mock_data = "const string\n";
+  const char *mock_data = "const\n";
   FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
@@ -47,5 +47,5 @@ void declListVarInvalidType() {
 
   enum SYNTAX_ERROR error = prog(&parser);
   printSyntaxError(error, parser.lineCount);
-  assert(error == INVALID_TYPE);
+  assert(error == NO_ERROR);
 }

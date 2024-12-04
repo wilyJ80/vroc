@@ -71,8 +71,9 @@ bool handleTransitionAndWasTokenBuilt(FILE *fd, char ch, struct Token *token,
       for (int i = 0; i < KEYWORD_QTY; i++) {
         if (strcmp(token->lexeme, reservedKeywords[i].lexeme) == 0) {
           token->category = RSV;
-          token->signCode = reservedKeywords[i].reservedCode;
           strcpy(token->lexeme, reservedKeywords[i].lexeme);
+          token->signCode = reservedKeywords[i].reservedCode;
+          break;
         }
       }
     } else if (token->category == CHARCON) {
