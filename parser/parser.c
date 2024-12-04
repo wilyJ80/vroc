@@ -1,81 +1,83 @@
 #include "parser.h"
 #include "../lexer/lexer.h"
 #include "syntax_error.h"
-#include <stdio.h>
 
-enum SYNTAX_ERROR op_rel(FILE *fd, int *lineCount) {
-  struct Token token = lexerGetNextChar(fd, lineCount);
-
-  if (token.category != SIGN ||
-      !(token.signCode == COMPARISON || token.signCode == DIFFERENT ||
-        token.signCode == SMALLER_EQUAL || token.signCode == SMALLER_EQUAL ||
-        token.signCode == LARGER_EQUAL || token.signCode == LARGER_THAN)) {
+enum SYNTAX_ERROR op_rel(struct Parser parser) {
+  if (parser.token.category != SIGN ||
+      !(parser.token.signCode == COMPARISON ||
+        parser.token.signCode == DIFFERENT ||
+        parser.token.signCode == SMALLER_EQUAL ||
+        parser.token.signCode == SMALLER_EQUAL ||
+        parser.token.signCode == LARGER_EQUAL ||
+        parser.token.signCode == LARGER_THAN)) {
     return INVALID_OPERATOR;
   }
 
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR fator(FILE *fd, int *lineCount) {
-  struct Token token = lexerGetNextChar(fd, lineCount);
-
-  if (!(token.category == ID || token.category == INTCON ||
-        token.category == REALCON || token.category == CHARCON ||
-        (token.category == SIGN && token.signCode == OPEN_PAR) ||
-        (token.category == SIGN && token.signCode == NEGATION))) {
+enum SYNTAX_ERROR fator(struct Parser parser) {
+  if (!(parser.token.category == ID || parser.token.category == INTCON ||
+        parser.token.category == REALCON || parser.token.category == CHARCON ||
+        (parser.token.category == SIGN && parser.token.signCode == OPEN_PAR) ||
+        (parser.token.category == SIGN && parser.token.signCode == NEGATION))) {
     return NO_FACTOR_VALID_START_SYMBOL;
   }
 
   // no need to validate int/real/char?
 
   // !fator
-  if (token.category == SIGN && token.signCode == NEGATION) {
-    enum SYNTAX_ERROR error = fator(fd, lineCount);
+  if (parser.token.category == SIGN && parser.token.signCode == NEGATION) {
+    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+    enum SYNTAX_ERROR error = fator(parser);
     if (error != NO_ERROR) {
       return NO_FACTOR_AFTER_BANG;
     }
   }
 
   // (expr)
-  if (token.category == SIGN && token.signCode == OPEN_PAR) {
-    enum SYNTAX_ERROR error = expr(fd, lineCount);
+  if (parser.token.category == SIGN && parser.token.signCode == OPEN_PAR) {
+    enum SYNTAX_ERROR error = expr(parser);
     if (error != NO_ERROR) {
       return error;
     }
   }
 
   // id {[expr]}
-  if (token.category == ID) {
-    token = lexerGetNextChar(fd, lineCount);
-    if (token.category == SIGN && token.signCode == OPEN_BRACK) {
-      enum SYNTAX_ERROR error = arrayFator(fd, lineCount);
+  if (parser.token.category == ID) {
+    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+    if (parser.token.category == SIGN && parser.token.signCode == OPEN_BRACK) {
+      enum SYNTAX_ERROR error = arrayFator(parser);
       if (error != NO_ERROR) {
         return error;
       }
+    } else if (parser.token.category == SIGN &&
+               parser.token.signCode == CLOSE_BRACK) {
+      return INVALID_FACTOR_ARRAY_BRACKET_OPEN;
     } else {
       return NO_ERROR;
     }
   }
-
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount) {
-  struct Token token = lexerGetNextChar(fd, lineCount);
-  enum SYNTAX_ERROR error = expr(fd, lineCount);
+enum SYNTAX_ERROR arrayFator(struct Parser parser) {
+  parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+  enum SYNTAX_ERROR error = expr(parser);
   if (error != NO_ERROR) {
     return error;
   }
 
-  token = lexerGetNextChar(fd, lineCount);
-  if (!(token.category == SIGN && token.signCode == CLOSE_BRACK)) {
+  parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+  if (!(parser.token.category == SIGN &&
+        parser.token.signCode == CLOSE_BRACK)) {
     return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
   }
 
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR expr(FILE *fd, int *lineCount) {
+enum SYNTAX_ERROR expr(struct Parser parser) {
   // TODO:
   return NO_ERROR;
 }

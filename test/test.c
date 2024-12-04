@@ -18,6 +18,7 @@ int main(void) {
   fatorArrayOutroTest2();
   fatorArrayUniTest();
   fatorSingle();
+  //fatorArrayMultTest();
 
   printf("--- Parser tests passed\n");
 

@@ -6,18 +6,18 @@
 #include <stdio.h>
 
 struct Parser {
-  struct Token currentToken;
+  struct Token token;
   FILE* fd;
   int *lineCount;
 };
 
-enum SYNTAX_ERROR op_rel(FILE *fd, int *lineCount);
+enum SYNTAX_ERROR op_rel(struct Parser parser);
 
-enum SYNTAX_ERROR fator(FILE *fd, int *lineCount);
+enum SYNTAX_ERROR fator(struct Parser parser);
 
-enum SYNTAX_ERROR expr(FILE *fd, int *lineCount);
+enum SYNTAX_ERROR expr(struct Parser parser);
 
-enum SYNTAX_ERROR arrayFator(FILE *fd, int *lineCount);
+enum SYNTAX_ERROR arrayFator(struct Parser parser);
 
 /*void prog(FILE *fd, int *lineCount);*/
 /**/
