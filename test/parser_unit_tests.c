@@ -128,63 +128,89 @@ void fatorNegFatorTest() {
   assert(error == NO_FACTOR_AFTER_BANG);
 }
 
-/*void fatorArrayOutroTest() {*/
-/*  const char *mock_data = "id]\n";*/
-/*  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");*/
-/**/
-/*  if (mock_file == NULL) {*/
-/*    fprintf(stderr, "Error opening source file.\n");*/
-/*    exit(EXIT_FAILURE);*/
-/*  }*/
-/**/
-/*  int *lineCount;*/
-/*  int line = 1;*/
-/*  lineCount = &line;*/
-/**/
-/*  enum SYNTAX_ERROR id = fator(mock_file, lineCount);*/
-/*  assert(id == NO_ERROR);*/
-/*}*/
-/**/
-/*void fatorArrayOutroTest2() {*/
-/*  const char *mock_data = "id[1[\n";*/
-/*  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");*/
-/**/
-/*  if (mock_file == NULL) {*/
-/*    fprintf(stderr, "Error opening source file.\n");*/
-/*    exit(EXIT_FAILURE);*/
-/*  }*/
-/**/
-/*  int *lineCount;*/
-/*  int line = 1;*/
-/*  lineCount = &line;*/
-/**/
-/*  enum SYNTAX_ERROR id = fator(mock_file, lineCount);*/
-/*  assert(id == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);*/
-/*}*/
-/**/
-/*void fatorArrayUniTest() {*/
-/*  const char *mock_data = "id[1] id] id[1[\n";*/
-/*  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");*/
-/**/
-/*  if (mock_file == NULL) {*/
-/*    fprintf(stderr, "Error opening source file.\n");*/
-/*    exit(EXIT_FAILURE);*/
-/*  }*/
-/**/
-/*  int *lineCount;*/
-/*  int line = 1;*/
-/*  lineCount = &line;*/
-/**/
-/*  enum SYNTAX_ERROR id = fator(mock_file, lineCount);*/
-/*  assert(id == NO_ERROR);*/
-/**/
-/*  enum SYNTAX_ERROR error = fator(mock_file, lineCount);*/
-/*  assert(error == NO_ERROR);*/
-/**/
-/*  enum SYNTAX_ERROR error2 = fator(mock_file, lineCount);*/
-/*  assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);*/
-/*}*/
-/**/
+void fatorArrayOutroTest() {
+  // is this test literally useless?
+  const char *mock_data = "id]\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+  struct Parser parser = {
+    .fd = mock_file,
+    .lineCount = lineCount,
+    .token = token
+  };
+
+  enum SYNTAX_ERROR id = fator(parser);
+  assert(id == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
+}
+
+void fatorArrayOutroTest2() {
+  const char *mock_data = "id[1[\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+  struct Parser parser = {
+    .fd = mock_file,
+    .lineCount = lineCount,
+    .token = token
+  };
+
+  enum SYNTAX_ERROR id = fator(parser);
+  assert(id == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
+}
+
+void fatorArrayUniTest() {
+  const char *mock_data = "id[1] id] id[1[\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+  struct Parser parser = {
+    .fd = mock_file,
+    .lineCount = lineCount,
+    .token = token
+  };
+
+  enum SYNTAX_ERROR id = fator(parser);
+  assert(id == NO_ERROR);
+
+  token = lexerGetNextChar(mock_file, lineCount);
+  parser.token = token;
+  enum SYNTAX_ERROR error = fator(parser);
+  assert(error == INVALID_FACTOR_ARRAY_BRACKET_OPEN);
+
+  token = lexerGetNextChar(mock_file, lineCount);
+  parser.token = token;
+  enum SYNTAX_ERROR error2 = fator(parser);
+  assert(error2 == INVALID_FACTOR_ARRAY_BRACKET_CLOSE);
+}
+
 /*void fatorArrayMultTest() {*/
 /*  // TODO: ?*/
 /*}*/

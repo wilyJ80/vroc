@@ -14,9 +14,9 @@ int main(void) {
   opRelTest2();
   fatorConTest();
   fatorNegFatorTest();
-  /*fatorArrayOutroTest();*/
-  /*fatorArrayOutroTest2();*/
-  /*fatorArrayUniTest();*/
+  fatorArrayOutroTest();
+  fatorArrayOutroTest2();
+  fatorArrayUniTest();
   /*fatorSingle();*/
 
   printf("--- Parser tests passed\n");

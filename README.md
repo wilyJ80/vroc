@@ -36,6 +36,7 @@
 
 # problemas
 
+- [ ] Refatorar testes: setup e teardown
 - [ ] Remover enums erros desnecessarias do parser
 - [ ] Objeto parser com seu proprio estado (token, file, line)
 - [ ] Contador de linha esta funcionando no analisador sintatico?

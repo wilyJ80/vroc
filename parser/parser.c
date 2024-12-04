@@ -1,7 +1,6 @@
 #include "parser.h"
 #include "../lexer/lexer.h"
 #include "syntax_error.h"
-#include <stdio.h>
 
 enum SYNTAX_ERROR op_rel(struct Parser parser) {
   if (parser.token.category != SIGN ||
@@ -52,11 +51,13 @@ enum SYNTAX_ERROR fator(struct Parser parser) {
       if (error != NO_ERROR) {
         return error;
       }
+    } else if (parser.token.category == SIGN &&
+               parser.token.signCode == CLOSE_BRACK) {
+      return INVALID_FACTOR_ARRAY_BRACKET_OPEN;
     } else {
       return NO_ERROR;
     }
   }
-
   return NO_ERROR;
 }
 
@@ -68,7 +69,8 @@ enum SYNTAX_ERROR arrayFator(struct Parser parser) {
   }
 
   parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
-  if (!(parser.token.category == SIGN && parser.token.signCode == CLOSE_BRACK)) {
+  if (!(parser.token.category == SIGN &&
+        parser.token.signCode == CLOSE_BRACK)) {
     return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
   }
 
