@@ -28,6 +28,7 @@ int main(void) {
   declVarNoId();
   declVarMulti();
   declVarArrayInvalidSubscript();
+  declVarArrayDidntClose();
 
   printf("--- Parser integration tests passed\n");
 

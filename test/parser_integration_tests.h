@@ -11,5 +11,6 @@ void declListVarInvalidType();
 void declVarNoId();
 void declVarMulti();
 void declVarArrayInvalidSubscript();
+void declVarArrayDidntClose();
 
 #endif // !PARSER_INTEGRATION_TESTS_H
