@@ -6,6 +6,8 @@
 
 enum SYNTAX_ERROR {
   NO_ERROR,
+  // prog
+  INVALID_PROG_START_KEYWORD,
   // decl_list_var
   TYPE_NOT_DETECTED,
   INVALID_TYPE,

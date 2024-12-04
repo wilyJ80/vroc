@@ -1,4 +1,5 @@
 #include "lexer_test.h"
+#include "parser_integration_tests.h"
 #include "parser_unit_tests.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +21,11 @@ int main(void) {
   fatorSingle();
   //fatorArrayMultTest();
 
-  printf("--- Parser tests passed\n");
+  printf("--- Parser unit tests passed\n");
+
+  progStartKeyword();
+
+  printf("--- Parser integration tests passed\n");
 
   return EXIT_SUCCESS;
 }

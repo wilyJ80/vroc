@@ -2,11 +2,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 77
+#define ERROR_QTY 78
 
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
       {NO_ERROR, "No syntax errors"},
+      // prog
+      {INVALID_PROG_START_KEYWORD, "Invalid program start keyword"},
       // decl_list_var
       {TYPE_NOT_DETECTED, "Type not detected"},
       {INVALID_TYPE, "Invalid type"},
@@ -53,8 +55,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "No closing bracket detected for function definition array parameter"},
       {INVALID_DEF_PARAM_LIST,
        "Invalid parameter list for function definition"},
-      {NO_DEF_END_KEYWORD,
-       "End keyword for function definition not detected"},
+      {NO_DEF_END_KEYWORD, "End keyword for function definition not detected"},
       // cmd
       {INVALID_CMD_CONTENT, "Invalid command keyword or content"},
       // cmd (do)
@@ -106,8 +107,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_ATRIB_EXPR, "No expression assigned to expression assign"},
       // expr
       {NO_EXPR_EXPR_SIMP, "No simple expression for expression"},
-      {NO_EXPR_EXPR_SIMP_AFTER_OP_REL,
-       "No simple expression after operation"},
+      {NO_EXPR_EXPR_SIMP_AFTER_OP_REL, "No simple expression after operation"},
       // expr_simp
       {NO_EXPR_SIMP_TERM, "No term detected in simple expression"},
       {NO_EXPR_SIMP_TERM_VALID_SIGN_BEFORE,
@@ -133,7 +133,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
 
   for (int i = 0; i < ERROR_QTY; i++) {
     if (error == messages[i].error) {
-      fprintf(stderr, "Syntax error: %s on line %d\n", messages[i].message, *lineCount);
+      fprintf(stderr, "Syntax error: %s on line %d\n", messages[i].message,
+              *lineCount);
     }
   }
 }

@@ -19,11 +19,11 @@ enum SYNTAX_ERROR expr(struct Parser parser);
 
 enum SYNTAX_ERROR arrayFator(struct Parser parser);
 
-/*void prog(FILE *fd, int *lineCount);*/
-/**/
-/*void declListVar(FILE *fd, int *lineCount, struct Token token);*/
-/*void declDefProc(FILE *fd, int *lineCount, struct Token token);*/
-/**/
+enum SYNTAX_ERROR prog(struct Parser parser);
+
+void declListVar(struct Parser parser);
+void declDefProc(struct Parser parser);
+
 /*void tipo(FILE *fd, int *lineCount, struct Token token);*/
 /*void declVar(FILE *fd, int *lineCount, struct Token token);*/
 /**/

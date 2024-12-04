@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "../lexer/lexer.h"
+#include "../lexer/transition.h"
 #include "syntax_error.h"
 
 enum SYNTAX_ERROR op_rel(struct Parser parser) {
@@ -82,29 +83,44 @@ enum SYNTAX_ERROR expr(struct Parser parser) {
   return NO_ERROR;
 }
 
-/*/***/
-/* * prog accepts repetitions of declarations of variables (decl_list_var), or*/
-/* * procedures (decl_list_proc).*/
-/* */
-/*void prog(FILE *fd, int *lineCount) {*/
-/*  struct Token token = lexerGetNextChar(fd, lineCount);*/
-/**/
-/*  // Both declaration of variables and procedures start with reserved words.*/
-/*  if (token.category == RSV) {*/
-/*    // Valid variable declaration start tokens*/
-/*    while (token.signCode == CONST || token.signCode == CHAR ||*/
-/*           token.signCode == INT || token.signCode == REAL ||*/
-/*           token.signCode == BOOL) {*/
-/*      declListVar(fd, lineCount, token);*/
-/*    }*/
-/*    // Valid procedure declaration/definition tokens*/
-/*    while (token.signCode == DEF || token.signCode == PROT) {*/
-/*      declDefProc(fd, lineCount, token);*/
-/*    }*/
-/*  }*/
-/*}*/
-/**/
-/*/***/
+/**
+ * prog accepts repetitions of declarations of variables (decl_list_var), or
+ * procedures (decl_list_proc).
+ */
+enum SYNTAX_ERROR prog(struct Parser parser) {
+  // Both declaration of variables and procedures start with reserved words.
+  if (parser.token.category == RSV) {
+    // Valid variable declaration start tokens
+    while (parser.token.signCode == CONST || parser.token.signCode == CHAR ||
+           parser.token.signCode == INT || parser.token.signCode == REAL ||
+           parser.token.signCode == BOOL) {
+      declListVar(parser);
+    }
+    // Valid procedure declaration/definition tokens
+    while (parser.token.signCode == DEF || parser.token.signCode == PROT) {
+      declDefProc(parser);
+    }
+  }
+
+  if (parser.token.category != END_OF_FILE) {
+    return INVALID_PROG_START_KEYWORD;
+  }
+
+  return NO_ERROR;
+}
+
+/** decl_list_var accepts optionally a `const`, followed by variable type,
+ * and
+declaration of one or more variables.*/
+void declListVar(struct Parser parser) {
+
+}
+
+void declDefProc(struct Parser parser) {
+
+}
+
+//**
 /* * decl_list_var accepts optionally a `const`, followed by variable type,
  * and*/
 /* * declaration of one or more variables.*/
