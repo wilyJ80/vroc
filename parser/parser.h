@@ -21,8 +21,8 @@ enum SYNTAX_ERROR arrayFator(struct Parser parser);
 
 enum SYNTAX_ERROR prog(struct Parser parser);
 
-void declListVar(struct Parser parser);
-void declDefProc(struct Parser parser);
+enum SYNTAX_ERROR declListVar(struct Parser parser);
+enum SYNTAX_ERROR declDefProc(struct Parser parser);
 
 /*void tipo(FILE *fd, int *lineCount, struct Token token);*/
 /*void declVar(FILE *fd, int *lineCount, struct Token token);*/

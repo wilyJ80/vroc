@@ -7,5 +7,6 @@
 #include "../lexer/types.h"
 
 void progStartKeyword();
+void declListVarInvalidType();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

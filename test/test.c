@@ -24,6 +24,7 @@ int main(void) {
   printf("--- Parser unit tests passed\n");
 
   progStartKeyword();
+  declListVarInvalidType();
 
   printf("--- Parser integration tests passed\n");
 

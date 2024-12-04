@@ -2,6 +2,7 @@
 #include "../lexer/lexer.h"
 #include "../lexer/transition.h"
 #include "syntax_error.h"
+#include <stdio.h>
 
 enum SYNTAX_ERROR op_rel(struct Parser parser) {
   if (parser.token.category != SIGN ||
@@ -112,12 +113,20 @@ enum SYNTAX_ERROR prog(struct Parser parser) {
 /** decl_list_var accepts optionally a `const`, followed by variable type,
  * and
 declaration of one or more variables.*/
-void declListVar(struct Parser parser) {
+enum SYNTAX_ERROR declListVar(struct Parser parser) {
+  if (parser.token.signCode == CONST) {
+    parser.token = lexerGetNextChar(parser.fd, parser.lineCount);
+  }
 
+  if (!(parser.token.category == RSV && (parser.token.signCode == INT || parser.token.signCode == REAL || parser.token.signCode == CHAR || parser.token.signCode == BOOL))) {
+    return INVALID_TYPE;
+  }
+  return NO_ERROR;
 }
 
-void declDefProc(struct Parser parser) {
-
+enum SYNTAX_ERROR declDefProc(struct Parser parser) {
+  // TODO:
+  return NO_ERROR;
 }
 
 //**
