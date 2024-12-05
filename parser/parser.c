@@ -249,6 +249,14 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
       return INVALID_PROTO_PAREN_OPEN;
     }
 
+    parser->token = lexerGetNextChar(parser->fd, parser-> lineCount);
+    if (parser->token.category == SIGN && parser->token.signCode == REF) {
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    }
+
+    if (!(parser->token.signCode == CHAR || parser->token.signCode == INT || parser->token.signCode == REAL || parser->token.signCode == BOOL)) {
+      return INVALID_PROTO_PARAM_TYPE; 
+    }
   }
 
   return NO_ERROR;

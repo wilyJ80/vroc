@@ -24,5 +24,6 @@ void declVarArrayBadClose();
 
 void declDefProcNoId();
 void declDefProcProtNoOpenParen();
+void declDefProcProtoInvalidParamType();
 
 #endif // !PARSER_INTEGRATION_TESTS_H
