@@ -12,6 +12,7 @@ void declListVarInvalidType();
 void declVarNoId();
 void declListVarMulti();
 void declListVarMultiFail();
+
 void declVarArrayInvalidSubscript();
 void declVarArrayDidntClose();
 void declVarBadInit();
@@ -22,5 +23,6 @@ void declVarArrayMultiInit();
 void declVarArrayBadClose();
 
 void declDefProcNoId();
+void declDefProcProtNoOpenParen();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

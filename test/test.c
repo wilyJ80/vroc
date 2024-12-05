@@ -40,6 +40,7 @@ int main(void) {
   declVarArrayBadClose();
 
   declDefProcNoId();
+  declDefProcProtNoOpenParen();
 
   printf("--- Parser integration tests passed\n");
 
