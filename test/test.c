@@ -42,6 +42,7 @@ int main(void) {
   declDefProcNoId();
   declDefProcProtNoOpenParen();
   declDefProcProtoInvalidParamType();
+  declDefProcProtoNoParamId();
 
   printf("--- Parser integration tests passed\n");
 

@@ -36,6 +36,7 @@
 
 # problemas
 
+- [ ] Output colorido em testes
 - [ ] Todo ID deve ser checado pelo parser se é reservado?
 - [ ] Refactor indispensável no parser: remover erros que não serão usados
 - [ ] Refatorar testes: setup e teardown

@@ -236,12 +236,12 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
 
   if (isDef) {
     if (!(parser->token.category == ID || parser->token.signCode == INIT)) {
-      return NO_FUNCTION_ID;
+      return NO_DEF_ID;
     }
     // is prot
   } else {
     if (!(parser->token.category == ID)) {
-      return NO_FUNCTION_ID;
+      return NO_PROTO_ID;
     }
 
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
@@ -256,6 +256,12 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
 
     if (!(parser->token.signCode == CHAR || parser->token.signCode == INT || parser->token.signCode == REAL || parser->token.signCode == BOOL)) {
       return INVALID_PROTO_PARAM_TYPE; 
+    }
+
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+
+    if (!(parser->token.category == ID)) {
+      return NO_PROTO_PARAM_ID;
     }
   }
 
