@@ -3,6 +3,8 @@
 #include "../lexer/transition.h"
 #include "syntax_error.h"
 
+#define MAX_ARRAY_DIMENSIONS 2
+
 enum SYNTAX_ERROR op_rel(struct Parser *parser) {
   if (parser->token.category != SIGN ||
       !(parser->token.signCode == COMPARISON ||
@@ -154,11 +156,16 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   bool isArray = false;
+  int arrayDimensions = 0;
   // is array
   if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
     isArray = true;
     while (parser->token.category == SIGN &&
            parser->token.signCode == OPEN_BRACK) {
+      arrayDimensions++;
+      if (arrayDimensions > MAX_ARRAY_DIMENSIONS) {
+        return INVALID_ARRAY_DIMENSION_DECLARATION;
+      }
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
 
       if (!(parser->token.category == INTCON || parser->token.category == ID)) {
@@ -169,6 +176,8 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
       if (!(parser->token.category == SIGN &&
             parser->token.signCode == CLOSE_BRACK)) {
         return INVALID_ARRAY_BRACKET_DEC_CLOSE;
+      } else {
+        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
       }
     }
   }

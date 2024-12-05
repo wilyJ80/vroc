@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 79
+#define ERROR_QTY 80
 
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
@@ -27,6 +27,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_ARRAY_INIT_CURLY_CLOSE,
        "Invalid curly bracket closing in array initialization"},
       {INVALID_ARRAY_TYPE_INIT, "Invalid type in array initialization"},
+      {INVALID_ARRAY_DIMENSION_DECLARATION,
+       "Invalid dimension declaration in array"},
       {INVALID_ARRAY_MULTIPLE_ITEM_INIT,
        "Invalid multiple item initialization in array"},
       {INVALID_ARRAY_END,
