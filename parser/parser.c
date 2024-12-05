@@ -2,7 +2,6 @@
 #include "../lexer/lexer.h"
 #include "../lexer/transition.h"
 #include "syntax_error.h"
-#include <stdio.h>
 
 enum SYNTAX_ERROR op_rel(struct Parser *parser) {
   if (parser->token.category != SIGN ||
@@ -173,9 +172,17 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
     }
   }
 
-  // is single variable
+  // assignment
   if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
-  
+    if (isArray) {
+      // TODO:
+      return NO_ERROR;
+    } else {
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+      if (!(parser->token.category == INTCON || parser->token.category == REALCON || parser->token.category == CHARCON)) {
+        return INVALID_VAR_TYPE_INIT;
+      }
+    }
   }
 
   return NO_ERROR;
