@@ -36,6 +36,7 @@
 
 # problemas
 
+- [ ] Refactor indispensável: remover erros que não serão usados
 - [ ] Refatorar testes: setup e teardown
 - [ ] Remover enums erros desnecessarias do parser
 - [ ] Objeto parser com seu proprio estado (token, file, line)

@@ -35,6 +35,8 @@ int main(void) {
   declVarArrayBadInitCurly();
   declVarArrayMultiTooMany();
   declVarArrayInvalidTypeInit();
+  declVarArrayMultiInit();
+  declVarArrayBadClose();
 
   printf("--- Parser integration tests passed\n");
 
