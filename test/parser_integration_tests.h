@@ -9,7 +9,7 @@
 void progStartKeyword();
 void declListVarInvalidType();
 void declVarNoId();
-void declVarMulti();
+void declListVarMulti();
 void declVarArrayInvalidSubscript();
 void declVarArrayDidntClose();
 void declVarBadInit();

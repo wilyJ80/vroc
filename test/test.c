@@ -26,7 +26,7 @@ int main(void) {
   progStartKeyword();
   declListVarInvalidType();
   declVarNoId();
-  declVarMulti();
+  declListVarMulti();
   declVarArrayInvalidSubscript();
   declVarArrayDidntClose();
   declVarBadInit();
