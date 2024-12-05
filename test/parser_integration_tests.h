@@ -10,8 +10,10 @@ void progStartKeyword();
 void declListVarInvalidType();
 void declVarNoId();
 void declListVarMulti();
+void declListVarMultiFail();
 void declVarArrayInvalidSubscript();
 void declVarArrayDidntClose();
 void declVarBadInit();
+void declVarArrayBadInitCurly();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

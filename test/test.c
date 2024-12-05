@@ -19,7 +19,7 @@ int main(void) {
   fatorArrayOutroTest2();
   fatorArrayUniTest();
   fatorSingle();
-  //fatorArrayMultTest();
+  // fatorArrayMultTest();
 
   printf("--- Parser unit tests passed\n");
 
@@ -27,9 +27,11 @@ int main(void) {
   declListVarInvalidType();
   declVarNoId();
   declListVarMulti();
+  declListVarMultiFail();
   declVarArrayInvalidSubscript();
   declVarArrayDidntClose();
   declVarBadInit();
+  //  declVarArrayBadInitCurly();
 
   printf("--- Parser integration tests passed\n");
 

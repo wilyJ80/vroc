@@ -154,6 +154,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   bool isArray = false;
+  // is array
   if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
     isArray = true;
     while (parser->token.category == SIGN &&
@@ -175,11 +176,17 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
   // assignment
   if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
     if (isArray) {
-      // TODO:
-      return NO_ERROR;
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+      if (!(parser->token.category == SIGN &&
+            parser->token.category == OPEN_CURLY)) {
+        return INVALID_ARRAY_INIT_CURLY_OPEN;
+      }
+
     } else {
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      if (!(parser->token.category == INTCON || parser->token.category == REALCON || parser->token.category == CHARCON)) {
+      if (!(parser->token.category == INTCON ||
+            parser->token.category == REALCON ||
+            parser->token.category == CHARCON)) {
         return INVALID_VAR_TYPE_INIT;
       }
     }

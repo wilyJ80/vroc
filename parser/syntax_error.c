@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 78
+#define ERROR_QTY 79
 
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
@@ -29,6 +29,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_ARRAY_TYPE_INIT, "Invalid type in array initialization"},
       {INVALID_ARRAY_MULTIPLE_ITEM_INIT,
        "Invalid multiple item initialization in array"},
+      {INVALID_ARRAY_END,
+       "Invalid array declaration end: expected comma or bracket closing"},
       // decl_def_proc
       {INVALID_FUNCTION_KEYWORD, "Invalid function keyword"},
       {NO_PROTO_ID, "No ID found for function prototype"},
