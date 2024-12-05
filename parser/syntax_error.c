@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 80
+#define ERROR_QTY 81
 
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
@@ -35,6 +35,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "Invalid array declaration end: expected comma or bracket closing"},
       // decl_def_proc
       {INVALID_FUNCTION_KEYWORD, "Invalid function keyword"},
+      {NO_FUNCTION_ID, "No valid id for function"},
       {NO_PROTO_ID, "No ID found for function prototype"},
       {INVALID_PROTO_PAREN_OPEN, "No opening paren in function prototype"},
       {INVALID_PROTO_PAREN_CLOSE, "No closing paren in function prototype"},

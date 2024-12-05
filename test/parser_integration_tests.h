@@ -7,6 +7,7 @@
 #include "../lexer/types.h"
 
 void progStartKeyword();
+
 void declListVarInvalidType();
 void declVarNoId();
 void declListVarMulti();
@@ -19,5 +20,7 @@ void declVarArrayMultiTooMany();
 void declVarArrayInvalidTypeInit();
 void declVarArrayMultiInit();
 void declVarArrayBadClose();
+
+void declDefProcNoId();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

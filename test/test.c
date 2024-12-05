@@ -25,6 +25,7 @@ int main(void) {
   printf("--- Parser unit tests passed\n");
 
   progStartKeyword();
+
   declListVarInvalidType();
   declVarNoId();
   declListVarMulti();
@@ -37,6 +38,8 @@ int main(void) {
   declVarArrayInvalidTypeInit();
   declVarArrayMultiInit();
   declVarArrayBadClose();
+
+  declDefProcNoId();
 
   printf("--- Parser integration tests passed\n");
 

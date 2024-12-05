@@ -227,7 +227,10 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
-  // TODO:
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == ID)) {
+    return NO_FUNCTION_ID;
+  }
   return NO_ERROR;
 }
 
