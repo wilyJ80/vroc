@@ -16,5 +16,6 @@ void declVarArrayDidntClose();
 void declVarBadInit();
 void declVarArrayBadInitCurly();
 void declVarArrayMultiTooMany();
+void declVarArrayInvalidTypeInit();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

@@ -187,9 +187,15 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
     if (isArray) {
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
       if (!(parser->token.category == SIGN &&
-            parser->token.category == OPEN_CURLY)) {
+            parser->token.signCode == OPEN_CURLY)) {
         return INVALID_ARRAY_INIT_CURLY_OPEN;
       }
+
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+      if(!(parser->token.category == INTCON || parser->token.category == REALCON || parser->token.category == CHARCON)) {
+        return INVALID_ARRAY_TYPE_INIT;
+      }
+
 
     } else {
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
