@@ -240,31 +240,55 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
     }
     // is prot
   } else {
-    if (!(parser->token.category == ID)) {
-      return NO_PROTO_ID;
+    enum SYNTAX_ERROR error = declProt(parser);
+    if (error != NO_ERROR) {
+      return error;
     }
+  }
 
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declProt(struct Parser *parser) {
+  if (!(parser->token.category == ID)) {
+    return NO_PROTO_ID;
+  }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+    return INVALID_PROTO_PAREN_OPEN;
+  }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (parser->token.category == SIGN && parser->token.signCode == REF) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  }
+
+  if (!(parser->token.signCode == CHAR || parser->token.signCode == INT ||
+        parser->token.signCode == REAL || parser->token.signCode == BOOL)) {
+    return INVALID_PROTO_PARAM_TYPE;
+  }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN &&
+        (parser->token.signCode == OPEN_BRACK ||
+         parser->token.signCode == COMMA))) {
+    return NO_PROTO_VALID_TOKEN_AFTER_TYPE;
+  }
+
+  if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     if (!(parser->token.category == SIGN &&
-          parser->token.signCode == OPEN_PAR)) {
-      return INVALID_PROTO_PAREN_OPEN;
-    }
-
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (parser->token.category == SIGN && parser->token.signCode == REF) {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    }
-
-    if (!(parser->token.signCode == CHAR || parser->token.signCode == INT ||
-          parser->token.signCode == REAL || parser->token.signCode == BOOL)) {
-      return INVALID_PROTO_PARAM_TYPE;
+          parser->token.signCode == CLOSE_BRACK)) {
+      return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
     }
 
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     if (!(parser->token.category == SIGN &&
           (parser->token.signCode == OPEN_BRACK ||
-           parser->token.signCode == COMMA))) {
-      return NO_PROTO_VALID_TOKEN_AFTER_TYPE;
+           parser->token.signCode == COMMA ||
+           parser->token.signCode == CLOSE_PAR))) {
+      return NO_PROTO_VALID_TOKEN_AFTER_BRACKET_CLOSE;
     }
 
     if (parser->token.category == SIGN &&
@@ -276,28 +300,12 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
       }
 
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      if (!(parser->token.category == SIGN && (parser->token.signCode == OPEN_BRACK || parser->token.signCode == COMMA || parser->token.signCode == CLOSE_PAR))) {
-        return NO_PROTO_VALID_TOKEN_AFTER_BRACKET_CLOSE;
-      }
-
-      if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
-        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-        if (!(parser->token.category == SIGN && parser->token.signCode == CLOSE_BRACK)) {
-          return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
-        }
-
-        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-        if (!(parser->token.category == SIGN && (parser->token.signCode == COMMA || parser->token.signCode == CLOSE_PAR))) {
-          return INVALID_ARRAY_DIMENSION_DECLARATION;
-        }
+      if (!(parser->token.category == SIGN &&
+            (parser->token.signCode == COMMA ||
+             parser->token.signCode == CLOSE_PAR))) {
+        return INVALID_ARRAY_DIMENSION_DECLARATION;
       }
     }
   }
-
-  return NO_ERROR;
-}
-
-enum SYNTAX_ERROR declProcParam(struct Parser *parser) {
-  // TODO:
   return NO_ERROR;
 }
