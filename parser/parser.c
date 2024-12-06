@@ -296,3 +296,8 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
 
   return NO_ERROR;
 }
+
+enum SYNTAX_ERROR declProc(struct Parser *parser) {
+  // TODO:
+  return NO_ERROR;
+}
