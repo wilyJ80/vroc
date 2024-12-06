@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 82
+#define ERROR_QTY 83
 
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
@@ -48,6 +48,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "No closing bracket for function prototype array parameter"},
       {INVALID_PROTO_PARAM_LIST,
        "Invalid multiple parameters in function prototype"},
+    {NO_PROTO_VALID_TOKEN_AFTER_BRACKET_CLOSE, "Expected valid token after bracket closing: bracket opening, comma or paren close"},
       {NO_DEF_ID, "No valid ID for function definition"},
       {INVALID_DEF_PARAM_TYPE,
        "No valid parameter type for function definition"},

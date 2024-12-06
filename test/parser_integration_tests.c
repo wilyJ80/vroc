@@ -317,8 +317,7 @@ void declDefProcProtNoOpenParen() {
 
   struct Token token = lexerGetNextChar(mock_file, lineCount);
   struct Parser parser = {
-    .fd = mock_file, .lineCount = lineCount, .token = token
-  };
+      .fd = mock_file, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
   assert(error == INVALID_PROTO_PAREN_OPEN);
@@ -326,8 +325,8 @@ void declDefProcProtNoOpenParen() {
 
 void declDefProcProtoInvalidParamType() {
   const char *mock_data = "prot a(&null)\n";
-  FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
-  
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
   if (mock_file == NULL) {
     fprintf(stderr, "Error opening source file\n");
     exit(EXIT_FAILURE);
@@ -339,8 +338,7 @@ void declDefProcProtoInvalidParamType() {
 
   struct Token token = lexerGetNextChar(mock_file, lineCount);
   struct Parser parser = {
-    .fd = mock_file, .lineCount = lineCount, .token = token
-  };
+      .fd = mock_file, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
   assert(error == INVALID_PROTO_PARAM_TYPE);
@@ -351,7 +349,7 @@ void declDefProcProtoInvalidParamType() {
 // good for documentation for the grammar, i guess.
 void declDefProcProtoNoParamId() {
   const char *mock_data = "prot b(int 1)\n";
-  FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
     fprintf(stderr, "Error opening source file\n");
@@ -364,8 +362,7 @@ void declDefProcProtoNoParamId() {
 
   struct Token token = lexerGetNextChar(mock_file, lineCount);
   struct Parser parser = {
-    .fd = mock_file, .lineCount = lineCount, .token = token
-  };
+      .fd = mock_file, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
   assert(error == NO_PROTO_VALID_TOKEN_AFTER_TYPE);
@@ -373,7 +370,7 @@ void declDefProcProtoNoParamId() {
 
 void declDefProcProtoNoValidTokenAfterType() {
   const char *mock_data = "prot c(int{\n";
-  FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
     fprintf(stderr, "Error opening source file\n");
@@ -386,8 +383,7 @@ void declDefProcProtoNoValidTokenAfterType() {
 
   struct Token token = lexerGetNextChar(mock_file, lineCount);
   struct Parser parser = {
-    .fd = mock_file, .lineCount = lineCount, .token = token
-  };
+      .fd = mock_file, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
   assert(error == NO_PROTO_VALID_TOKEN_AFTER_TYPE);
@@ -395,7 +391,7 @@ void declDefProcProtoNoValidTokenAfterType() {
 
 void declDefProcProtoUnclosedArrayParam() {
   const char *mock_data = "prot d(int[[\n";
-  FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
 
   if (mock_file == NULL) {
     fprintf(stderr, "Error opening source file\n");
@@ -408,9 +404,29 @@ void declDefProcProtoUnclosedArrayParam() {
 
   struct Token token = lexerGetNextChar(mock_file, lineCount);
   struct Parser parser = {
-    .fd = mock_file, .lineCount = lineCount, .token = token
-  };
+      .fd = mock_file, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
   assert(error == INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE);
+}
+
+void declDefProcProtoInvalid2dArrayOpen() {
+  const char *mock_data = "prot e(int[]])\n";
+  FILE *mock_file = fmemopen((void *)mock_data, strlen(mock_data), "r");
+
+  if (mock_file == NULL) {
+    fprintf(stderr, "Error opening source file\n");
+    exit(EXIT_FAILURE);
+  }
+
+  int *lineCount;
+  int line = 1;
+  lineCount = &line;
+
+  struct Token token = lexerGetNextChar(mock_file, lineCount);
+  struct Parser parser = {
+      .fd = mock_file, .lineCount = lineCount, .token = token};
+
+  enum SYNTAX_ERROR error = prog(&parser);
+  assert(error == NO_PROTO_VALID_TOKEN_AFTER_BRACKET_CLOSE);
 }
