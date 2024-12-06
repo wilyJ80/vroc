@@ -26,5 +26,6 @@ void declDefProcNoId();
 void declDefProcProtNoOpenParen();
 void declDefProcProtoInvalidParamType();
 void declDefProcProtoNoParamId();
+void declDefProcProtoNoValidTokenAfterType();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

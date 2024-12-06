@@ -41,7 +41,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_PROTO_PAREN_CLOSE, "No closing paren in function prototype"},
       {INVALID_PROTO_PARAM_TYPE,
        "Invalid parameter type for function prototype"},
-      {NO_PROTO_PARAM_ID, "No valid ID found for function prototype"},
+      {NO_PROTO_VALID_TOKEN_AFTER_TYPE, "No valid token found after function prototype, expected bracket open or comma"},
       {INVALID_ARRAY_PROTO_PARAM_BRACKET_OPEN,
        "No opening bracket for function prototype array parameter"},
       {INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE,
