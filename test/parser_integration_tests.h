@@ -29,5 +29,6 @@ void declDefProcProtoNoParamId();
 void declDefProcProtoNoValidTokenAfterType();
 void declDefProcProtoUnclosedArrayParam();
 void declDefProcProtoInvalid2dArrayOpen();
+void declDefProcProtoInvalid2dArrayClose();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

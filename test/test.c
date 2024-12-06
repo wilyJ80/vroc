@@ -46,6 +46,7 @@ int main(void) {
   declDefProcProtoNoValidTokenAfterType();
   declDefProcProtoUnclosedArrayParam();
   declDefProcProtoInvalid2dArrayOpen();
+  declDefProcProtoInvalid2dArrayClose();
 
   printf("--- Parser integration tests passed\n");
 
