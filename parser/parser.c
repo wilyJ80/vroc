@@ -285,6 +285,11 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
         if (!(parser->token.category == SIGN && parser->token.signCode == CLOSE_BRACK)) {
           return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
         }
+
+        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        if (!(parser->token.category == SIGN && (parser->token.signCode == COMMA || parser->token.signCode == CLOSE_PAR))) {
+          return INVALID_ARRAY_DIMENSION_DECLARATION;
+        }
       }
     }
   }
