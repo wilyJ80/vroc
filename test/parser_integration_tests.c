@@ -346,6 +346,7 @@ void declDefProcProtoInvalidParamType() {
   assert(error == INVALID_PROTO_PARAM_TYPE);
 }
 
+//this error does not exist!
 void declDefProcProtoNoParamId() {
   const char *mock_data = "prot b(int 1)\n";
   FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
@@ -365,5 +366,5 @@ void declDefProcProtoNoParamId() {
   };
 
   enum SYNTAX_ERROR error = prog(&parser);
-  assert(error == NO_PROTO_PARAM_ID);
+  assert(error == NO_ERROR);
 }

@@ -258,11 +258,6 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
       return INVALID_PROTO_PARAM_TYPE; 
     }
 
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-
-    if (!(parser->token.category == ID)) {
-      return NO_PROTO_PARAM_ID;
-    }
   }
 
   return NO_ERROR;
