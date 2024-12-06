@@ -259,7 +259,17 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
     return INVALID_PROTO_PAREN_OPEN;
   }
 
+  // call prot param function here
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  enum SYNTAX_ERROR error = declProtParam(parser);
+  if (error != NO_ERROR) {
+    return error;
+  }
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
+
   if (parser->token.category == SIGN && parser->token.signCode == REF) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }

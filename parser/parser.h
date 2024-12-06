@@ -28,6 +28,8 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser);
 enum SYNTAX_ERROR declVar(struct Parser *parser);
 
 enum SYNTAX_ERROR declProt(struct Parser *parser);
+
+enum SYNTAX_ERROR declProtParam(struct Parser *parser);
 /**/
 /*void arrayDeclaration(FILE *fd, int *lineCount, struct Token token);*/
 /*void arrayInitialization(FILE *fd, int *lineCount, struct Token token);*/
