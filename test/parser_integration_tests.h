@@ -31,5 +31,6 @@ void declDefProcProtoUnclosedArrayParam();
 void declDefProcProtoInvalid2dArrayOpen();
 void declDefProcProtoInvalid2dArrayClose();
 void declDefProcProtoInvalid3dArray();
+void declDefProcProtoMultiParams();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

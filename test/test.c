@@ -9,7 +9,7 @@ int main(void) {
   lexerCharconTest();
   lexerCharconTest2();
 
-  printf("\033[32m--- Lexer tests passed\n\033[0m");
+  printf("--- Lexer tests passed\n");
 
   opRelTest();
   opRelTest2();
@@ -22,7 +22,7 @@ int main(void) {
   declVarArrayBadInitCurly();
   // fatorArrayMultTest();
 
-  printf("\033[32m--- Parser unit tests passed\n\033[0m");
+  printf("--- Parser unit tests passed\n");
 
   progStartKeyword();
 
@@ -48,8 +48,9 @@ int main(void) {
   declDefProcProtoInvalid2dArrayOpen();
   declDefProcProtoInvalid2dArrayClose();
   declDefProcProtoInvalid3dArray();
+  declDefProcProtoMultiParams();
 
-  printf("\033[32m--- Parser integration tests passed\n\033[0m");
+  printf("--- Parser integration tests passed\n");
 
   return EXIT_SUCCESS;
 }
