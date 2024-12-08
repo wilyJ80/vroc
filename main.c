@@ -1,6 +1,8 @@
 #include "./lexer/lexer.h"
 #include "./lexer/printer.h"
 #include "./lexer/types.h"
+#include "./parser/parser.h"
+#include "./parser/syntax_error.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,16 +27,31 @@ int main(int argc, char *argv[]) {
     struct Token token = lexerGetNextChar(fd, &lineCount);
     if (token.category == END_OF_FILE) {
       fclose(fd);
-      return EXIT_SUCCESS;
+      break;
     }
     // handle malformed manually to
     // keep the printing callback simple.
-    switch (token.category) {
-    case MALFORMED_TOKEN:
-      printf("ERROR: MALFORMED TOKEN %s ON LINE %d\n", token.lexeme, lineCount);
+    if (token.category == MALFORMED_TOKEN) {
+      fprintf(stderr, "ERROR: MALFORMED TOKEN %s ON LINE %d\n", token.lexeme,
+              lineCount);
       exit(EXIT_FAILURE);
     }
     printToken(token);
     printf("\n");
+  }
+
+  int *lc;
+  int line = 1;
+  lc = &line;
+
+  // for integration tests, prog itself needs a previously initialized parser
+  // with a token too
+  struct Token token = lexerGetNextChar(fd, lc);
+  struct Parser parser = {
+      .fd = fd, .lineCount = lc, .token = token};
+
+  enum SYNTAX_ERROR error = prog(&parser);
+  if (error != NO_ERROR) {
+    printSyntaxError(error, lc);
   }
 }
