@@ -2,17 +2,36 @@
 #define PARSER_H
 
 #include "../lexer/types.h"
+#include "./syntax_error.h"
 #include <stdio.h>
 
-void prog(FILE *fd, int *lineCount);
+struct Parser {
+  struct Token token;
+  FILE* fd;
+  int *lineCount;
+};
 
-void declListVar(FILE *fd, int *lineCount, struct Token token);
-void declDefProc(FILE *fd, int *lineCount, struct Token token);
+enum SYNTAX_ERROR op_rel(struct Parser *parser);
 
-void tipo(FILE *fd, int *lineCount, struct Token token);
-void declVar(FILE *fd, int *lineCount, struct Token token);
+enum SYNTAX_ERROR fator(struct Parser *parser);
 
-void arrayDeclaration(FILE *fd, int *lineCount, struct Token token);
-void arrayInitialization(FILE *fd, int *lineCount, struct Token token);
+enum SYNTAX_ERROR expr(struct Parser *parser);
+
+enum SYNTAX_ERROR arrayFator(struct Parser *parser);
+
+enum SYNTAX_ERROR prog(struct Parser *parser);
+
+enum SYNTAX_ERROR declListVar(struct Parser *parser);
+enum SYNTAX_ERROR declDefProc(struct Parser *parser);
+
+/*void tipo(FILE *fd, int *lineCount, struct Token token);*/
+enum SYNTAX_ERROR declVar(struct Parser *parser);
+
+enum SYNTAX_ERROR declProt(struct Parser *parser);
+
+enum SYNTAX_ERROR declProtParam(struct Parser *parser);
+/**/
+/*void arrayDeclaration(FILE *fd, int *lineCount, struct Token token);*/
+/*void arrayInitialization(FILE *fd, int *lineCount, struct Token token);*/
 
 #endif

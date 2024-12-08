@@ -13,15 +13,15 @@
 #define GREEN "\033[32m"
 
 int main(int argc, char *argv[]) {
-  if (argc != 2) {
-    fprintf(stderr, "Error. Usage: croc <code>\n");
-    return EXIT_FAILURE;
-  }
+  /*if (argc != 2) {*/
+  /*  fprintf(stderr, "Error. Usage: croc <code>\n");*/
+  /*  return EXIT_FAILURE;*/
+  /*}*/
 
   FILE *fd;
   int lineCount = 1;
 
-  fd = fopen(argv[1], "r");
+  fd = fopen("./doc/examples/code.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
@@ -51,7 +51,6 @@ int main(int argc, char *argv[]) {
   int line = 1;
   lc = &line;
 
-  // opening the file again... 
   fd = fopen("./doc/examples/code.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");

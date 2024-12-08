@@ -1,9 +1,12 @@
 #include "printer.h"
+#include "transition.h"
 #include "types.h"
 #include <stdio.h>
 
 #define TOKEN_CATEGORY_QTY 7
 #define SIGN_CATEGORY_QTY 22
+
+#define KEYWORD_QTY 31
 
 struct TokenCategoryHandler tokenCategoryHandleData[TOKEN_CATEGORY_QTY] = {
     {RSV, handleRsv},         {ID, handleId},
@@ -35,7 +38,27 @@ struct SignCategoryHandler signCategoryHandleData[SIGN_CATEGORY_QTY] = {
     {OPEN_CURLY, "OPEN_CURLY"},
     {CLOSE_CURLY, "CLOSE_CURLY"}};
 
-void handleRsv(struct Token token) { printf("<RSV, %s>", token.lexeme); }
+void handleRsv(struct Token token) {
+
+  struct ReservedWord reservedKeywords[KEYWORD_QTY] = {
+      {"const", CONST},   {"init", INIT},       {"endp", ENDP},
+      {"char", CHAR},     {"int", INT},         {"real", REAL},
+      {"bool", BOOL},     {"do", DO},           {"while", WHILE},
+      {"endw", ENDW},     {"var", VAR},         {"from", FROM},
+      {"to", TO},         {"dt", DT},           {"by", BY},
+      {"if", IF},         {"endv", ENDV},       {"elif", ELIF},
+      {"else", ELSE},     {"endi", ENDI},       {"getout", GETOUT},
+      {"getint", GETINT}, {"getchar", GETCHAR}, {"getreal", GETREAL},
+      {"putint", PUTINT}, {"putchar", PUTCHAR}, {"putreal", PUTREAL},
+      {"getstr", GETSTR}, {"putstr", PUTSTR},   {"def", DEF},
+      {"prot", PROT}};
+
+  for (int i = 0; i < KEYWORD_QTY; i++) {
+    if (token.signCode == reservedKeywords[i].reservedCode) {
+      printf("<RSV, %s>", reservedKeywords[i].lexeme);
+    }
+  }
+}
 
 void handleId(struct Token token) { printf("<ID, %s>", token.lexeme); }
 

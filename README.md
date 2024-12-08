@@ -36,6 +36,14 @@
 
 # problemas
 
+- [ ] Output colorido em testes
+- [ ] Todo ID deve ser checado pelo parser se é reservado?
+- [ ] Refactor indispensável no parser: remover erros que não serão usados
+- [ ] Refatorar testes: setup e teardown
+- [ ] Remover enums erros desnecessarias do parser
+- [X] Objeto parser com seu proprio estado (token, file, line)
+- [ ] Contador de linha esta funcionando no analisador sintatico?
+- [ ] Parser testes unitarios + integracao
 - [ ] Adicionar especificacao da linguagem `proc` e manter atualizada
 - [ ] Refactor: remover transition.h e transition.c
 - [ ] Refactor: organizar melhor as enums...
