@@ -4,6 +4,11 @@
 
 #define ERROR_QTY 83
 
+// ANSI escape codes
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
       {NO_ERROR, "No syntax errors"},
@@ -144,7 +149,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
 
   for (int i = 0; i < ERROR_QTY; i++) {
     if (error == messages[i].error) {
-      fprintf(stderr, "Syntax error: %s on line %d\n", messages[i].message,
+      fprintf(stderr, RED "Syntax error: %s on line %d\n" RESET, messages[i].message,
               *lineCount);
     }
   }
