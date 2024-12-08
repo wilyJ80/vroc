@@ -228,7 +228,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
-  bool isDef;
+  bool isDef = false;
   if (parser->token.signCode == DEF) {
     isDef = true;
   }
