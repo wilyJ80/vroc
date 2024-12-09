@@ -264,6 +264,13 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
   if (error != NO_ERROR) {
     return error;
   }
+
+  if (!(parser->token.category == SIGN &&
+        parser->token.signCode == CLOSE_PAR)) {
+    return NO_FUNCTION_END_PAREN_CLOSE;
+  }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   return NO_ERROR;
 }
 
@@ -281,7 +288,8 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   if (!(parser->token.category == SIGN &&
         (parser->token.signCode == OPEN_BRACK ||
-         parser->token.signCode == COMMA))) {
+         parser->token.signCode == COMMA ||
+         parser->token.signCode == CLOSE_PAR))) {
     return NO_PROTO_VALID_TOKEN_AFTER_TYPE;
   }
 

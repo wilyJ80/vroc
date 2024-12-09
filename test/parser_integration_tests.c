@@ -521,7 +521,7 @@ void declDefProcProtoNoParenClose() {
 }
 
 void declDefProcProtoTwoProts() {
-  const char *mock_data = "prot j(int) prot k(char)\n";
+  const char *mock_data = "prot j(int) prot k(char(\n";
 
   FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
 
