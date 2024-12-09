@@ -517,5 +517,5 @@ void declDefProcProtoNoParenClose() {
   };
 
   enum SYNTAX_ERROR error = prog(&parser);
-  assert(error == NO_FUNCTION_END_PAREN_CLOSE);
+  assert(error == NO_PROTO_VALID_TOKEN_AFTER_TYPE);
 }
