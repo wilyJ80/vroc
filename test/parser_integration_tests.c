@@ -521,7 +521,7 @@ void declDefProcProtoNoParenClose() {
 }
 
 void declDefProcProtoTwoProts() {
-  const char *mock_data = "prot j(int) prot k(char(\n";
+  const char *mock_data = "prot j(int) prot k(2(\n";
 
   FILE *mock_file = fmemopen((void*)mock_data, strlen(mock_data), "r");
 
@@ -540,6 +540,5 @@ void declDefProcProtoTwoProts() {
   };
 
   enum SYNTAX_ERROR error = prog(&parser);
-  printSyntaxError(error, parser.lineCount);
-  assert(error == NO_ERROR);
+  assert(error == INVALID_PROTO_PARAM_TYPE);
 }
