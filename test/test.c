@@ -49,6 +49,7 @@ int main(void) {
   declDefProcProtoInvalid2dArrayClose();
   declDefProcProtoInvalid3dArray();
   declDefProcProtoMultiParams();
+  declDefProcProtoNoParenClose();
 
   printf("--- Parser integration tests passed\n");
 

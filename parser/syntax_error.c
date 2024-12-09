@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 83
+#define ERROR_QTY 84
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -72,6 +72,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_DEF_PARAM_LIST,
        "Invalid parameter list for function definition"},
       {NO_DEF_END_KEYWORD, "End keyword for function definition not detected"},
+      {NO_FUNCTION_END_PAREN_CLOSE, "No paren close for function end"},
       // cmd
       {INVALID_CMD_CONTENT, "Invalid command keyword or content"},
       // cmd (do)
@@ -149,8 +150,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
 
   for (int i = 0; i < ERROR_QTY; i++) {
     if (error == messages[i].error) {
-      fprintf(stderr, RED "Syntax error: %s on line %d\n" RESET, messages[i].message,
-              *lineCount);
+      fprintf(stderr, RED "Syntax error: %s on line %d\n" RESET,
+              messages[i].message, *lineCount);
     }
   }
 }
