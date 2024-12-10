@@ -160,4 +160,7 @@ void declDefProcProtoTwoProts() {
 void declDefProcDefDefWorksToo() {
   enum SYNTAX_ERROR error = setupError("def init\n");
   assert(error == NO_ERROR);
+
+  enum SYNTAX_ERROR error2 = setupError("def 8\n");
+  assert(error2 == NO_DEF_ID);
 }
