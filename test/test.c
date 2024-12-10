@@ -14,7 +14,7 @@ int main(void) {
   lexerCharconTest();
   lexerCharconTest2();
 
-  printf(GREEN "--- Lexer tests passed\n" RESET);
+  printf("--- Lexer tests passed\n");
 
   opRelTest();
   opRelTest2();
@@ -27,7 +27,7 @@ int main(void) {
   declVarArrayBadInitCurly();
   // fatorArrayMultTest();
 
-  printf(GREEN "--- Parser unit tests passed\n" RESET);
+  printf("--- Parser unit tests passed\n");
 
   progStartKeyword();
 
@@ -57,7 +57,11 @@ int main(void) {
   declDefProcProtoNoParenClose();
   declDefProcProtoTwoProts();
 
-  printf(GREEN "--- Parser integration tests passed\n" RESET);
+  declDefProcDefDefWorksToo();
+
+  printf("--- Parser integration tests passed\n");
+
+  printf(GREEN "All tests OK\n" RESET);
 
   return EXIT_SUCCESS;
 }

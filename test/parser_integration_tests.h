@@ -37,4 +37,6 @@ void declDefProcProtoMultiParams();
 void declDefProcProtoNoParenClose();
 void declDefProcProtoTwoProts();
 
+void declDefProcDefDefWorksToo();
+
 #endif // !PARSER_INTEGRATION_TESTS_H

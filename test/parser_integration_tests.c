@@ -156,3 +156,8 @@ void declDefProcProtoTwoProts() {
   enum SYNTAX_ERROR error = setupError("prot j(int) prot k(2(\n");
   assert(error == INVALID_PROTO_PARAM_TYPE);
 }
+
+void declDefProcDefDefWorksToo() {
+  enum SYNTAX_ERROR error = setupError("def init\n");
+  assert(error == NO_ERROR);
+}
