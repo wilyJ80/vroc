@@ -35,5 +35,6 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser);
 /*void arrayInitialization(FILE *fd, int *lineCount, struct Token token);*/
 
 enum SYNTAX_ERROR declDef(struct Parser *parser);
+enum SYNTAX_ERROR declDefParam(struct Parser *parser);
 
 #endif

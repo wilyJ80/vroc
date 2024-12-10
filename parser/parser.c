@@ -261,6 +261,16 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
     return INVALID_DEF_PAREN_OPEN;
   }
 
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  enum SYNTAX_ERROR error = declDefParam(parser);
+  if (error != NO_ERROR) {
+    return error;
+  }
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
   return NO_ERROR;
 }
 
@@ -290,7 +300,6 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
-
   if (parser->token.category == SIGN && parser->token.signCode == REF) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
