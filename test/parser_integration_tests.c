@@ -173,3 +173,10 @@ void declDefProcDefNoParenOpen() {
   enum SYNTAX_ERROR error = setupError("def init[\n");
   assert(error == INVALID_DEF_PAREN_OPEN);
 }
+
+void declDefProcDefBadParamType() {
+  enum SYNTAX_ERROR error = setupError("def indio(&string\n");
+  assert(error == INVALID_DEF_PARAM_TYPE);
+}
+
+

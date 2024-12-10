@@ -59,6 +59,7 @@ int main(void) {
 
   declDefProcDefDefWorksToo();
   declDefProcDefNoParenOpen();
+  declDefProcDefBadParamType();
 
   printf("--- Parser integration tests passed\n");
 
