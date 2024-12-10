@@ -234,9 +234,11 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
   }
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
 
+  // is def
   if (isDef) {
-    if (!(parser->token.category == ID || parser->token.signCode == INIT)) {
-      return NO_DEF_ID;
+    enum SYNTAX_ERROR error = declDef(parser);
+    if (error != NO_ERROR) {
+      return error;
     }
     // is prot
   } else {
@@ -244,6 +246,19 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
     if (error != NO_ERROR) {
       return error;
     }
+  }
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declDef(struct Parser *parser) {
+  if (!(parser->token.category == ID || parser->token.signCode == INIT)) {
+    return NO_DEF_ID;
+  }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+    return INVALID_DEF_PAREN_OPEN;
   }
 
   return NO_ERROR;

@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 84
+#define ERROR_QTY 86
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -46,9 +46,9 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_PROTO_PAREN_CLOSE, "No closing paren in function prototype"},
       {INVALID_PROTO_PARAM_TYPE,
        "Invalid parameter type for function prototype"},
-      {NO_PROTO_VALID_TOKEN_AFTER_TYPE,
-       "No valid token found after function prototype type, expected bracket open "
-       "or comma"},
+      {NO_PROTO_VALID_TOKEN_AFTER_TYPE, "No valid token found after function "
+                                        "prototype type, expected bracket open "
+                                        "or comma"},
       {INVALID_ARRAY_PROTO_PARAM_BRACKET_OPEN,
        "No opening bracket for function prototype array parameter"},
       {INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE,
@@ -59,6 +59,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "Expected valid token after bracket closing: bracket opening, comma or "
        "paren close"},
       {NO_DEF_ID, "No valid ID for function definition"},
+      {INVALID_DEF_PAREN_OPEN, "No valid paren open for function definition"},
+      {INVALID_DEF_PAREN_CLOSE, "No valid paren close for function definition"},
       {INVALID_DEF_PARAM_TYPE,
        "No valid parameter type for function definition"},
       {NO_DEF_PARAM_ID, "No ID detected for function definition parameter"},

@@ -58,6 +58,7 @@ int main(void) {
   declDefProcProtoTwoProts();
 
   declDefProcDefDefWorksToo();
+  declDefProcDefNoParenOpen();
 
   printf("--- Parser integration tests passed\n");
 

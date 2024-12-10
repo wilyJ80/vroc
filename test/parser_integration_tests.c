@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// switch this on to output all syntax errors
+#define SHOW_ERRORS false
+
 enum SYNTAX_ERROR setupError(const char *mockData) {
   FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
 
@@ -23,8 +26,9 @@ enum SYNTAX_ERROR setupError(const char *mockData) {
       .fd = mockFile, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
-  // example debugging:
-  // printSyntaxError(error);
+  if (SHOW_ERRORS) {
+    printSyntaxError(error, parser.lineCount);
+  }
   return error;
 }
 
@@ -158,9 +162,14 @@ void declDefProcProtoTwoProts() {
 }
 
 void declDefProcDefDefWorksToo() {
-  enum SYNTAX_ERROR error = setupError("def init\n");
-  assert(error == NO_ERROR);
+  enum SYNTAX_ERROR error = setupError("def init)\n");
+  assert(error == INVALID_DEF_PAREN_OPEN);
 
   enum SYNTAX_ERROR error2 = setupError("def 8\n");
   assert(error2 == NO_DEF_ID);
+}
+
+void declDefProcDefNoParenOpen() {
+  enum SYNTAX_ERROR error = setupError("def init[\n");
+  assert(error == INVALID_DEF_PAREN_OPEN);
 }
