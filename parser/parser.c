@@ -282,6 +282,11 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
       return INVALID_DEF_PARAM_TYPE;
     }
 
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID)) {
+      return NO_DEF_PARAM_ID;
+    }
+
   } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
 
   return NO_ERROR;

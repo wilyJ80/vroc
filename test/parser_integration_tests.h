@@ -40,5 +40,6 @@ void declDefProcProtoTwoProts();
 void declDefProcDefDefWorksToo();
 void declDefProcDefNoParenOpen();
 void declDefProcDefBadParamType();
+void declDefProcDefNoParamId();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

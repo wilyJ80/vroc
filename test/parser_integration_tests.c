@@ -179,4 +179,7 @@ void declDefProcDefBadParamType() {
   assert(error == INVALID_DEF_PARAM_TYPE);
 }
 
-
+void declDefProcDefNoParamId() {
+  enum SYNTAX_ERROR error = setupError("def radio(int 8)");
+  assert(error == NO_DEF_PARAM_ID);
+}
