@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 87
+#define ERROR_QTY 88
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -76,6 +76,9 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_DEF_PARAM_LIST,
        "Invalid parameter list for function definition"},
       {NO_DEF_END_KEYWORD, "End keyword for function definition not detected"},
+      {NO_DEF_VALID_TOKEN_AFTER_PAREN,
+       "No valid token after def paren close, expected endp, variable "
+       "declaration, or cmd"},
       {NO_FUNCTION_END_PAREN_CLOSE, "No paren close for function end"},
       // cmd
       {INVALID_CMD_CONTENT, "Invalid command keyword or content"},

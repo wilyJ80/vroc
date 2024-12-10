@@ -62,6 +62,7 @@ int main(void) {
   declDefProcDefBadParamType();
   declDefProcDefNoParamId();
   declDefProcDefNoValidTokenAfterId();
+  declDefProcDefValidTokenAfterClosePar();
 
   printf("--- Parser integration tests passed\n");
 

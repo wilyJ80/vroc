@@ -2,6 +2,7 @@
 #include "../lexer/lexer.h"
 #include "../lexer/transition.h"
 #include "syntax_error.h"
+#include <stdio.h>
 
 #define MAX_ARRAY_DIMENSIONS 2
 
@@ -261,10 +262,31 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
     return INVALID_DEF_PAREN_OPEN;
   }
 
+  // valid param loop
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   enum SYNTAX_ERROR error = declDefParam(parser);
   if (error != NO_ERROR) {
     return error;
+  }
+
+  // can be endp, declListVar, or cmd
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == ID ||
+        (parser->token.category == RSV &&
+         (parser->token.signCode == CONST || parser->token.signCode == INT ||
+          parser->token.signCode == CHAR || parser->token.signCode == REAL ||
+          parser->token.signCode == BOOL || parser->token.signCode == WHILE ||
+          parser->token.signCode == VAR || parser->token.signCode == IF ||
+          parser->token.signCode == GETOUT ||
+          parser->token.signCode == GETINT ||
+          parser->token.signCode == GETREAL ||
+          parser->token.signCode == GETCHAR ||
+          parser->token.signCode == GETSTR ||
+          parser->token.signCode == PUTINT ||
+          parser->token.signCode == PUTREAL ||
+          parser->token.signCode == PUTCHAR ||
+          parser->token.signCode == PUTSTR)))) {
+    return NO_DEF_VALID_TOKEN_AFTER_PAREN;
   }
 
   return NO_ERROR;
@@ -279,7 +301,9 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
     }
 
     // type is valid
-    if (!(parser->token.category == RSV && (parser->token.signCode == INTCON || parser->token.signCode == CHARCON || parser->token.signCode == REALCON || parser->token.signCode == BOOL))) {
+    if (!(parser->token.category == RSV &&
+          (parser->token.signCode == INT || parser->token.signCode == CHAR ||
+           parser->token.signCode == REAL || parser->token.signCode == BOOL))) {
       return INVALID_DEF_PARAM_TYPE;
     }
 
@@ -291,9 +315,14 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
 
     // valid token after id
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == SIGN && (parser->token.signCode == OPEN_BRACK || parser->token.signCode == COMMA || parser->token.signCode == CLOSE_PAR))) {
+    if (!(parser->token.category == SIGN &&
+          (parser->token.signCode == OPEN_BRACK ||
+           parser->token.signCode == COMMA ||
+           parser->token.signCode == CLOSE_PAR))) {
       return NO_DEF_VALID_TOKEN_AFTER_ID;
     }
+
+    // CLOSE_PAR simply breaks the loop and leaves
 
   } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
 

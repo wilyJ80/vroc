@@ -5,7 +5,7 @@
 #include <string.h>
 
 // switch this on to output all syntax errors
-#define SHOW_ERRORS false
+#define SHOW_ERRORS true
 
 enum SYNTAX_ERROR setupError(const char *mockData) {
   FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
@@ -187,4 +187,9 @@ void declDefProcDefNoParamId() {
 void declDefProcDefNoValidTokenAfterId() {
   enum SYNTAX_ERROR error = setupError("def cesio(int a(");
   assert(error == NO_DEF_VALID_TOKEN_AFTER_ID);
+}
+
+void declDefProcDefValidTokenAfterClosePar() {
+enum SYNTAX_ERROR error = setupError("def carbono(char ch) 8");
+  assert(error == NO_DEF_VALID_TOKEN_AFTER_PAREN);
 }
