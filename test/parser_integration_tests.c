@@ -183,3 +183,8 @@ void declDefProcDefNoParamId() {
   enum SYNTAX_ERROR error = setupError("def radio(int 8)");
   assert(error == NO_DEF_PARAM_ID);
 }
+
+void declDefProcDefNoValidTokenAfterId() {
+  enum SYNTAX_ERROR error = setupError("def cesio(int a(");
+  assert(error == NO_DEF_VALID_TOKEN_AFTER_ID);
+}

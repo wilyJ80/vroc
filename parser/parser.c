@@ -278,13 +278,21 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     }
 
+    // type is valid
     if (!(parser->token.category == RSV && (parser->token.signCode == INTCON || parser->token.signCode == CHARCON || parser->token.signCode == REALCON || parser->token.signCode == BOOL))) {
       return INVALID_DEF_PARAM_TYPE;
     }
 
+    // param id
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     if (!(parser->token.category == ID)) {
       return NO_DEF_PARAM_ID;
+    }
+
+    // valid token after id
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == SIGN && (parser->token.signCode == OPEN_BRACK || parser->token.signCode == COMMA || parser->token.signCode == CLOSE_PAR))) {
+      return NO_DEF_VALID_TOKEN_AFTER_ID;
     }
 
   } while (parser->token.category == SIGN && parser->token.signCode == COMMA);

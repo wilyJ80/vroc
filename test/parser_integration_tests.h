@@ -41,5 +41,6 @@ void declDefProcDefDefWorksToo();
 void declDefProcDefNoParenOpen();
 void declDefProcDefBadParamType();
 void declDefProcDefNoParamId();
+void declDefProcDefNoValidTokenAfterId();
 
 #endif // !PARSER_INTEGRATION_TESTS_H
