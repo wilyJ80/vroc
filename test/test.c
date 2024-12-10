@@ -4,12 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// ANSI escape codes
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+
 int main(void) {
   lexerTest();
   lexerCharconTest();
   lexerCharconTest2();
 
-  printf("--- Lexer tests passed\n");
+  printf(GREEN "--- Lexer tests passed\n" RESET);
 
   opRelTest();
   opRelTest2();
@@ -22,7 +27,7 @@ int main(void) {
   declVarArrayBadInitCurly();
   // fatorArrayMultTest();
 
-  printf("--- Parser unit tests passed\n");
+  printf(GREEN "--- Parser unit tests passed\n" RESET);
 
   progStartKeyword();
 
@@ -52,7 +57,7 @@ int main(void) {
   declDefProcProtoNoParenClose();
   declDefProcProtoTwoProts();
 
-  printf("--- Parser integration tests passed\n");
+  printf(GREEN "--- Parser integration tests passed\n" RESET);
 
   return EXIT_SUCCESS;
 }

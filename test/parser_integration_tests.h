@@ -6,6 +6,8 @@
 #include "../lexer/lexer.h"
 #include "../lexer/types.h"
 
+enum SYNTAX_ERROR setupError(const char* mockData);
+
 void progStartKeyword();
 
 void declListVarInvalidType();
