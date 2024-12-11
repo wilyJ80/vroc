@@ -70,6 +70,7 @@ int main(void) {
 
   declDefProcDefFollowedByDeclListVarError();
   declDefProcDefFollowedByCmdError();
+  declDefProcDefFollowedByDeclListVarFollowedByCmdError();
 
   printf("--- Parser integration tests passed\n");
 

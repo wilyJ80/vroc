@@ -224,6 +224,8 @@ void declDefProcDefFollowedByCmdError() {
   assert(error == NO_GETINT_ID);
 }
 
+// TODO:
+
 // test for cmd error after valid def and decl_list_var
 void declDefProcDefFollowedByDeclListVarFollowedByCmdError() {
   enum SYNTAX_ERROR error = setupError("def plutonio(int i) const int n getint 1");
@@ -244,6 +246,10 @@ void declDefProcDefFollowedByMultipleCmdError() {
 // more exhaustive tests could be made, but I have work to do
 
 // test for no endp error
+void declDefProcDefFollowedByABunchOfStuffButNotFinishingWithEndp() {
+  enum SYNTAX_ERROR error = setupError("def galibdenio(int i) const int n getint n prot");
+  assert(error == NO_DEF_END_KEYWORD);
+}
 
 // a perfectly valid variable declaration-only program
 
