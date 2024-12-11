@@ -49,4 +49,7 @@ void declDefProcDefArrayUnclosedBracket();
 void declDefProcDefArrayMultidimension();
 void declDefProcDefArrayMultiParamMultiDimension();
 
+void declDefProcDefFollowedByDeclListVarError();
+void declDefProcDefFollowedByCmdError();
+
 #endif // !PARSER_INTEGRATION_TESTS_H

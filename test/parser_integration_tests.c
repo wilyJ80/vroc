@@ -213,3 +213,24 @@ void declDefProcDefArrayMultiParamMultiDimension() {
   enum SYNTAX_ERROR error = setupError("def galio(int j[8][8], char x[4][3[)");
   assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
 }
+
+void declDefProcDefFollowedByDeclListVarError() {
+  enum SYNTAX_ERROR error = setupError("def litio(int i) const string");
+  assert(error == INVALID_TYPE);
+}
+
+void declDefProcDefFollowedByCmdError() {
+  enum SYNTAX_ERROR error = setupError("def plutonio(int i) getint 1");
+  assert(error == NO_GETINT_ID);
+}
+
+
+// test for cmd error after valid def and decl_list_var
+
+// test for no endp error
+
+// a perfectly valid variable declaration-only program
+
+// a perfectly valid function prototype declaration-only program
+
+// a perfectly valid function definition-only program

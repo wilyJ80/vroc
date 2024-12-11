@@ -38,4 +38,7 @@ enum SYNTAX_ERROR declDef(struct Parser *parser);
 enum SYNTAX_ERROR declDefParam(struct Parser *parser);
 enum SYNTAX_ERROR declDefParamArray(struct Parser *parser);
 
+enum SYNTAX_ERROR cmd(struct Parser *parser);
+enum SYNTAX_ERROR getint(struct Parser *parser);
+
 #endif

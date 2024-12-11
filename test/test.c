@@ -68,6 +68,9 @@ int main(void) {
   declDefProcDefArrayMultidimension();
   declDefProcDefArrayMultiParamMultiDimension();
 
+  declDefProcDefFollowedByDeclListVarError();
+  declDefProcDefFollowedByCmdError();
+
   printf("--- Parser integration tests passed\n");
 
   printf(GREEN "All tests OK\n" RESET);
