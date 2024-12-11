@@ -224,8 +224,24 @@ void declDefProcDefFollowedByCmdError() {
   assert(error == NO_GETINT_ID);
 }
 
-
 // test for cmd error after valid def and decl_list_var
+void declDefProcDefFollowedByDeclListVarFollowedByCmdError() {
+  enum SYNTAX_ERROR error = setupError("def plutonio(int i) const int n getint 1");
+  assert(error == NO_GETINT_ID);
+}
+
+// test for cmd error after valid def and multiple decl_list_var
+void declDefProcDefFollowedByMultipleDeclListVarFollowedByCmdError() {
+  enum SYNTAX_ERROR error = setupError("def plutonio(int i) const int n const int g getint 1");
+  assert(error == NO_GETINT_ID);
+}
+
+// multiple cmds
+void declDefProcDefFollowedByMultipleCmdError() {
+  enum SYNTAX_ERROR error = setupError("def plutonio(int i, int j) getint i getint 44");
+  assert(error == NO_GETINT_ID);
+}
+// more exhaustive tests could be made, but I have work to do
 
 // test for no endp error
 

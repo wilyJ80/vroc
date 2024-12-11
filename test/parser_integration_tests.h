@@ -51,5 +51,8 @@ void declDefProcDefArrayMultiParamMultiDimension();
 
 void declDefProcDefFollowedByDeclListVarError();
 void declDefProcDefFollowedByCmdError();
+void declDefProcDefFollowedByDeclListVarFollowedByCmdError();
+void declDefProcDefFollowedByMultipleDeclListVarFollowedByCmdError();
+void declDefProcDefFollowedByMultipleCmdError();
 
 #endif // !PARSER_INTEGRATION_TESTS_H
