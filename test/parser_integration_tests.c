@@ -281,12 +281,37 @@ void perfectlyValidFunctionDefinitionOnlyProgram() {
 // then definition then variable list declaration then cmd then endp
 void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp() {
   enum SYNTAX_ERROR error =
-      setupError("int num prot soma(int, int) def soma(int a, int b) int teste = 5 getint teste endp\n");
+      setupError("int num prot soma(int, int) def soma(int a, int b) int teste "
+                 "= 5 getint teste endp\n");
   assert(error == NO_ERROR);
 }
 
 void butEndpWasNotThere() {
   enum SYNTAX_ERROR error =
-      setupError("int num prot soma(int, int) def soma(int a, int b) int teste = 5 getint teste\n");
+      setupError("int num prot soma(int, int) def soma(int a, int b) int teste "
+                 "= 5 getint teste\n");
   assert(error == NO_DEF_END_KEYWORD);
+}
+
+// from here onwards, integration tests will be a challenge.
+// many routines depend on each other.
+
+void getoutWorks() {
+  enum SYNTAX_ERROR error = setupError("def calcio(char c) getout\n");
+  assert(error == NO_DEF_END_KEYWORD);
+}
+
+void getrealError() {
+  enum SYNTAX_ERROR error = setupError("def magnesio(char c) getreal 5\n");
+  assert(error == NO_GETREAL_ID);
+}
+
+void getcharError() {
+  enum SYNTAX_ERROR error = setupError("def manganes(char c) getchar 5\n");
+  assert(error == NO_GETCHAR_ID);
+}
+
+void getstrError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) getstr 5\n");
+  assert(error == NO_GETSTR_ID);
 }

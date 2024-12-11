@@ -78,6 +78,11 @@ int main(void) {
   perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
   butEndpWasNotThere();
 
+  getoutWorks();
+  getrealError();
+  getcharError();
+  getstrError();
+
   printf("--- Parser integration tests passed\n");
 
   printf(GREEN "All tests OK\n" RESET);

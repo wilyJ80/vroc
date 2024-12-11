@@ -342,6 +342,29 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     }
   }
 
+  if (parser->token.signCode == GETREAL) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID)) {
+      return NO_GETREAL_ID;
+    }
+  }
+
+  if (parser->token.signCode == GETCHAR) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID)) {
+      return NO_GETCHAR_ID;
+    }
+  }
+
+  if (parser->token.signCode == GETSTR) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID)) {
+      return NO_GETSTR_ID;
+    }
+  }
+  
+  // getout: nothing needed?
+
   // advance
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   return NO_ERROR;

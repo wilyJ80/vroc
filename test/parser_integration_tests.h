@@ -62,4 +62,9 @@ void perfectlyValidFunctionDefinitionOnlyProgram();
 void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
 void butEndpWasNotThere();
 
+void getoutWorks();
+void getrealError();
+void getcharError();
+void getstrError();
+
 #endif // !PARSER_INTEGRATION_TESTS_H
