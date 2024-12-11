@@ -264,6 +264,11 @@ void perfectlyValidVariableDeclarationOnlyProgram() {
 }
 
 // a perfectly valid function prototype declaration-only program
+void perfectlyValidPrototypeOnlyProgram() {
+  enum SYNTAX_ERROR error =
+      setupError("prot soma(int, int) prot reduce(int[])\n");
+  assert(error == NO_ERROR);
+}
 
 // a perfectly valid function definition-only program
 

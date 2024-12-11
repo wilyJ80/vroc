@@ -483,13 +483,13 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
         return INVALID_ARRAY_DIMENSION_DECLARATION;
       }
     }
+  }
 
-    if (parser->token.category == SIGN && parser->token.signCode == COMMA) {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      enum SYNTAX_ERROR error = declProtParam(parser);
-      if (error != NO_ERROR) {
-        return error;
-      }
+  if (parser->token.category == SIGN && parser->token.signCode == COMMA) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = declProtParam(parser);
+    if (error != NO_ERROR) {
+      return error;
     }
   }
   return NO_ERROR;

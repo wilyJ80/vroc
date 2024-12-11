@@ -73,6 +73,7 @@ int main(void) {
   declDefProcDefFollowedByDeclListVarFollowedByCmdError();
 
   perfectlyValidVariableDeclarationOnlyProgram();
+  perfectlyValidPrototypeOnlyProgram();
 
   printf("--- Parser integration tests passed\n");
 
