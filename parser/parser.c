@@ -294,6 +294,11 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
 enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
   // while it's a param, delimited by comma
   do {
+    // skip the comma if it's a subsequent param
+    if (parser->token.category == SIGN && parser->token.signCode == COMMA) {
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    }
+
     // & is optional
     if (parser->token.category == SIGN && parser->token.signCode == REF) {
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
@@ -353,6 +358,7 @@ enum SYNTAX_ERROR declDefParamArray(struct Parser *parser) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   } while (parser->token.signCode == OPEN_BRACK);
 
+  // is COMMA
   return NO_ERROR;
 }
 

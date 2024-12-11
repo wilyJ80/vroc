@@ -66,6 +66,7 @@ int main(void) {
   declDefProcDefArrayBadSubscriptType();
   declDefProcDefArrayUnclosedBracket();
   declDefProcDefArrayMultidimension();
+  declDefProcDefArrayMultiParamMultiDimension();
 
   printf("--- Parser integration tests passed\n");
 

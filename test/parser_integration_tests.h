@@ -47,5 +47,6 @@ void declDefProcDefValidTokenAfterClosePar();
 void declDefProcDefArrayBadSubscriptType();
 void declDefProcDefArrayUnclosedBracket();
 void declDefProcDefArrayMultidimension();
+void declDefProcDefArrayMultiParamMultiDimension();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

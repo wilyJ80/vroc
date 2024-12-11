@@ -5,7 +5,7 @@
 #include <string.h>
 
 // switch this on to output all syntax errors
-#define SHOW_ERRORS false
+#define SHOW_ERRORS true
 
 enum SYNTAX_ERROR setupError(const char *mockData) {
   FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
@@ -206,5 +206,10 @@ void declDefProcDefArrayUnclosedBracket() {
 
 void declDefProcDefArrayMultidimension() {
   enum SYNTAX_ERROR error = setupError("def galio(int j[8][8[)");
+  assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
+}
+
+void declDefProcDefArrayMultiParamMultiDimension() {
+  enum SYNTAX_ERROR error = setupError("def galio(int j[8][8], char x[4][3[)");
   assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
 }
