@@ -291,7 +291,8 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
           parser->token.signCode == PUTINT ||
           parser->token.signCode == PUTREAL ||
           parser->token.signCode == PUTCHAR ||
-          parser->token.signCode == PUTSTR)))) {
+          parser->token.signCode == PUTSTR ||
+          parser->token.signCode == ENDP)))) {
     return NO_DEF_VALID_TOKEN_AFTER_PAREN;
   }
 

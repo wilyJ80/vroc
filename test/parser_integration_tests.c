@@ -271,6 +271,11 @@ void perfectlyValidPrototypeOnlyProgram() {
 }
 
 // a perfectly valid function definition-only program
+void perfectlyValidFunctionDefinitionOnlyProgram() {
+  enum SYNTAX_ERROR error =
+      setupError("def init (int self) endp def main (int arg) endp\n");
+  assert(error == NO_ERROR);
+}
 
 // a perfectly valid program with variable list declaration, then prototype,
 // then definition then variable list declaration then cmd then endp
