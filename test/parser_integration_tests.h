@@ -56,4 +56,6 @@ void declDefProcDefFollowedByMultipleDeclListVarFollowedByCmdError();
 void declDefProcDefFollowedByMultipleCmdError();
 void declDefProcDefFollowedByABunchOfStuffButNotFinishingWithEndp();
 
+void perfectlyValidVariableDeclarationOnlyProgram();
+
 #endif // !PARSER_INTEGRATION_TESTS_H

@@ -7,6 +7,9 @@
 // switch this on to output all syntax errors
 #define SHOW_ERRORS true
 
+// Mock a file with a `const char*` and return an error.
+// NOTE: A valid argument must have a newline in the end otherwise it doesn't
+// work.
 enum SYNTAX_ERROR setupError(const char *mockData) {
   FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
 
@@ -224,35 +227,45 @@ void declDefProcDefFollowedByCmdError() {
   assert(error == NO_GETINT_ID);
 }
 
-// TODO:
-
 // test for cmd error after valid def and decl_list_var
 void declDefProcDefFollowedByDeclListVarFollowedByCmdError() {
-  enum SYNTAX_ERROR error = setupError("def plutonio(int i) const int n getint 1");
+  enum SYNTAX_ERROR error =
+      setupError("def plutonio(int i) const int n getint 1");
   assert(error == NO_GETINT_ID);
 }
 
 // test for cmd error after valid def and multiple decl_list_var
 void declDefProcDefFollowedByMultipleDeclListVarFollowedByCmdError() {
-  enum SYNTAX_ERROR error = setupError("def plutonio(int i) const int n const int g getint 1");
+  enum SYNTAX_ERROR error =
+      setupError("def plutonio(int i) const int n const int g getint 1");
   assert(error == NO_GETINT_ID);
 }
 
 // multiple cmds
 void declDefProcDefFollowedByMultipleCmdError() {
-  enum SYNTAX_ERROR error = setupError("def plutonio(int i, int j) getint i getint 44");
+  enum SYNTAX_ERROR error =
+      setupError("def plutonio(int i, int j) getint i getint 44");
   assert(error == NO_GETINT_ID);
 }
 // more exhaustive tests could be made, but I have work to do
 
 // test for no endp error
 void declDefProcDefFollowedByABunchOfStuffButNotFinishingWithEndp() {
-  enum SYNTAX_ERROR error = setupError("def galibdenio(int i) const int n getint n prot");
+  enum SYNTAX_ERROR error =
+      setupError("def galibdenio(int i) const int n getint n prot");
   assert(error == NO_DEF_END_KEYWORD);
 }
 
 // a perfectly valid variable declaration-only program
+void perfectlyValidVariableDeclarationOnlyProgram() {
+  enum SYNTAX_ERROR error =
+      setupError("const int a const int b char ch, chz\n");
+  assert(error == NO_ERROR);
+}
 
 // a perfectly valid function prototype declaration-only program
 
 // a perfectly valid function definition-only program
+
+// a perfectly valid program with variable list declaration, then prototype,
+// then definition then variable list declaration then cmd then endp

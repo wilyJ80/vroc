@@ -72,6 +72,8 @@ int main(void) {
   declDefProcDefFollowedByCmdError();
   declDefProcDefFollowedByDeclListVarFollowedByCmdError();
 
+  perfectlyValidVariableDeclarationOnlyProgram();
+
   printf("--- Parser integration tests passed\n");
 
   printf(GREEN "All tests OK\n" RESET);
