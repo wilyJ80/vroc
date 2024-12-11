@@ -59,5 +59,6 @@ void declDefProcDefFollowedByABunchOfStuffButNotFinishingWithEndp();
 void perfectlyValidVariableDeclarationOnlyProgram();
 void perfectlyValidPrototypeOnlyProgram();
 void perfectlyValidFunctionDefinitionOnlyProgram();
+void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

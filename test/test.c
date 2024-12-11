@@ -75,6 +75,7 @@ int main(void) {
   perfectlyValidVariableDeclarationOnlyProgram();
   perfectlyValidPrototypeOnlyProgram();
   perfectlyValidFunctionDefinitionOnlyProgram();
+  perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
 
   printf("--- Parser integration tests passed\n");
 

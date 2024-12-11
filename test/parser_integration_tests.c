@@ -279,3 +279,8 @@ void perfectlyValidFunctionDefinitionOnlyProgram() {
 
 // a perfectly valid program with variable list declaration, then prototype,
 // then definition then variable list declaration then cmd then endp
+void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp() {
+  enum SYNTAX_ERROR error =
+      setupError("int num prot soma(int, int) def soma(int a, int b) int teste = 5 getint teste endp\n");
+  assert(error == NO_ERROR);
+}
