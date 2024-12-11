@@ -137,8 +137,8 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
   if (error != NO_ERROR) {
     return error;
   }
-  // TODO: handle multiple variable declarations here
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  // handle multiple variable declarations here
+  // parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   while (parser->token.category == SIGN && parser->token.signCode == COMMA) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     enum SYNTAX_ERROR error = declVar(parser);
@@ -149,6 +149,7 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
   return NO_ERROR;
 }
 
+// HACK: This looks BAD !!!
 enum SYNTAX_ERROR declVar(struct Parser *parser) {
   if (parser->token.category != ID) {
     return NO_VAR_ID;
@@ -156,6 +157,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   bool isArray = false;
+  bool isAssignment = false;
   int arrayDimensions = 0;
   // is array
   if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
@@ -184,6 +186,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   // assignment
   if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
+    isAssignment = true;
     if (isArray) {
       parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
       if (!(parser->token.category == SIGN &&
@@ -222,6 +225,10 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
         return INVALID_VAR_TYPE_INIT;
       }
     }
+  }
+
+  if (isArray || isAssignment) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   return NO_ERROR;
