@@ -5,7 +5,7 @@
 #include <string.h>
 
 // switch this on to output all syntax errors
-#define SHOW_ERRORS true
+#define SHOW_ERRORS false
 
 enum SYNTAX_ERROR setupError(const char *mockData) {
   FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
@@ -190,6 +190,21 @@ void declDefProcDefNoValidTokenAfterId() {
 }
 
 void declDefProcDefValidTokenAfterClosePar() {
-enum SYNTAX_ERROR error = setupError("def carbono(char ch) 8");
+  enum SYNTAX_ERROR error = setupError("def carbono(char ch) 8");
   assert(error == NO_DEF_VALID_TOKEN_AFTER_PAREN);
+}
+
+void declDefProcDefArrayBadSubscriptType() {
+  enum SYNTAX_ERROR error = setupError("def sodio(char ch['a'])");
+  assert(error == INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE);
+}
+
+void declDefProcDefArrayUnclosedBracket() {
+  enum SYNTAX_ERROR error = setupError("def uranio(int z[8[)");
+  assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
+}
+
+void declDefProcDefArrayMultidimension() {
+  enum SYNTAX_ERROR error = setupError("def galio(int j[8][8[)");
+  assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
 }

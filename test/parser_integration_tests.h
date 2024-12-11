@@ -44,4 +44,8 @@ void declDefProcDefNoParamId();
 void declDefProcDefNoValidTokenAfterId();
 void declDefProcDefValidTokenAfterClosePar();
 
+void declDefProcDefArrayBadSubscriptType();
+void declDefProcDefArrayUnclosedBracket();
+void declDefProcDefArrayMultidimension();
+
 #endif // !PARSER_INTEGRATION_TESTS_H

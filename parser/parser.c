@@ -2,7 +2,6 @@
 #include "../lexer/lexer.h"
 #include "../lexer/transition.h"
 #include "syntax_error.h"
-#include <stdio.h>
 
 #define MAX_ARRAY_DIMENSIONS 2
 
@@ -321,10 +320,38 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
            parser->token.signCode == CLOSE_PAR))) {
       return NO_DEF_VALID_TOKEN_AFTER_ID;
     }
+    // CLOSE_PAR has no extra steps: simply breaks the loop and leaves
 
-    // CLOSE_PAR simply breaks the loop and leaves
+    // OPEN_BRACK defines an array param
+    if (parser->token.signCode == OPEN_BRACK) {
+      enum SYNTAX_ERROR error = declDefParamArray(parser);
+      if (error != NO_ERROR) {
+        return error;
+      }
+    }
 
+    // COMMA loops the whole thing
   } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declDefParamArray(struct Parser *parser) {
+  do {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID || parser->token.category == INTCON)) {
+      return INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE;
+    }
+
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == SIGN &&
+          parser->token.signCode == CLOSE_BRACK)) {
+      return INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE;
+    }
+
+    // consume next (should be OPEN_BRACK or COMMA)
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  } while (parser->token.signCode == OPEN_BRACK);
 
   return NO_ERROR;
 }
