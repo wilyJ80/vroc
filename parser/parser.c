@@ -326,6 +326,11 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
     }
   }
 
+  // is endp
+  if (!(parser->token.category == RSV && parser->token.signCode == ENDP)) {
+    return NO_DEF_END_KEYWORD;
+  }
+
   return NO_ERROR;
 }
 
@@ -337,6 +342,8 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     }
   }
 
+  // advance
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   return NO_ERROR;
 }
 

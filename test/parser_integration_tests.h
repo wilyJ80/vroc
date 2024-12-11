@@ -60,5 +60,6 @@ void perfectlyValidVariableDeclarationOnlyProgram();
 void perfectlyValidPrototypeOnlyProgram();
 void perfectlyValidFunctionDefinitionOnlyProgram();
 void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
+void butEndpWasNotThere();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

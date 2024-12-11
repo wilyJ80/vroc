@@ -284,3 +284,9 @@ void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdTh
       setupError("int num prot soma(int, int) def soma(int a, int b) int teste = 5 getint teste endp\n");
   assert(error == NO_ERROR);
 }
+
+void butEndpWasNotThere() {
+  enum SYNTAX_ERROR error =
+      setupError("int num prot soma(int, int) def soma(int a, int b) int teste = 5 getint teste\n");
+  assert(error == NO_DEF_END_KEYWORD);
+}
