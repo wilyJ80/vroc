@@ -37,4 +37,49 @@ void declDefProcProtoMultiParams();
 void declDefProcProtoNoParenClose();
 void declDefProcProtoTwoProts();
 
+void declDefProcDefDefWorksToo();
+void declDefProcDefNoParenOpen();
+void declDefProcDefBadParamType();
+void declDefProcDefNoParamId();
+void declDefProcDefNoValidTokenAfterId();
+void declDefProcDefValidTokenAfterClosePar();
+
+void declDefProcDefArrayBadSubscriptType();
+void declDefProcDefArrayUnclosedBracket();
+void declDefProcDefArrayMultidimension();
+void declDefProcDefArrayMultiParamMultiDimension();
+
+void declDefProcDefFollowedByDeclListVarError();
+void declDefProcDefFollowedByCmdError();
+void declDefProcDefFollowedByDeclListVarFollowedByCmdError();
+void declDefProcDefFollowedByMultipleDeclListVarFollowedByCmdError();
+void declDefProcDefFollowedByMultipleCmdError();
+void declDefProcDefFollowedByABunchOfStuffButNotFinishingWithEndp();
+
+void perfectlyValidVariableDeclarationOnlyProgram();
+void perfectlyValidPrototypeOnlyProgram();
+void perfectlyValidFunctionDefinitionOnlyProgram();
+void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
+void butEndpWasNotThere();
+
+void getoutWorks();
+void getrealError();
+void getcharError();
+void getstrError();
+void putintError();
+void putrealError();
+void putcharError();
+void putstrError();
+
+void doButNotIdproc();
+void doButNoParenOpen();
+void doButNoClosingParen();
+// test expression list too
+
+void atribNoValidAfterId();
+void atribAssignedToABadExprAStringcon();
+void atribBadClosedParen();
+
+// void doIdprocExprExprSimpTermoFatorNoValidTokenAfterId();
+
 #endif // !PARSER_INTEGRATION_TESTS_H

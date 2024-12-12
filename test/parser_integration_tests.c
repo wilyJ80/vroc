@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+// switch this on to output all syntax errors
+#define SHOW_ERRORS true
+
+// Mock a file with a `const char*` and return an error.
+// NOTE: A valid argument must have a newline in the end otherwise it doesn't
+// work.
 enum SYNTAX_ERROR setupError(const char *mockData) {
   FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
 
@@ -23,8 +29,9 @@ enum SYNTAX_ERROR setupError(const char *mockData) {
       .fd = mockFile, .lineCount = lineCount, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
-  // example debugging:
-  // printSyntaxError(error);
+  if (SHOW_ERRORS) {
+    printSyntaxError(error, parser.lineCount);
+  }
   return error;
 }
 
@@ -156,3 +163,217 @@ void declDefProcProtoTwoProts() {
   enum SYNTAX_ERROR error = setupError("prot j(int) prot k(2(\n");
   assert(error == INVALID_PROTO_PARAM_TYPE);
 }
+
+void declDefProcDefDefWorksToo() {
+  enum SYNTAX_ERROR error = setupError("def init)\n");
+  assert(error == INVALID_DEF_PAREN_OPEN);
+
+  enum SYNTAX_ERROR error2 = setupError("def 8\n");
+  assert(error2 == NO_DEF_ID);
+}
+
+void declDefProcDefNoParenOpen() {
+  enum SYNTAX_ERROR error = setupError("def init[\n");
+  assert(error == INVALID_DEF_PAREN_OPEN);
+}
+
+void declDefProcDefBadParamType() {
+  enum SYNTAX_ERROR error = setupError("def indio(&string\n");
+  assert(error == INVALID_DEF_PARAM_TYPE);
+}
+
+void declDefProcDefNoParamId() {
+  enum SYNTAX_ERROR error = setupError("def radio(int 8)");
+  assert(error == NO_DEF_PARAM_ID);
+}
+
+void declDefProcDefNoValidTokenAfterId() {
+  enum SYNTAX_ERROR error = setupError("def cesio(int a(");
+  assert(error == NO_DEF_VALID_TOKEN_AFTER_ID);
+}
+
+void declDefProcDefValidTokenAfterClosePar() {
+  enum SYNTAX_ERROR error = setupError("def carbono(char ch) 8");
+  assert(error == NO_DEF_VALID_TOKEN_AFTER_PAREN);
+}
+
+void declDefProcDefArrayBadSubscriptType() {
+  enum SYNTAX_ERROR error = setupError("def sodio(char ch['a'])");
+  assert(error == INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE);
+}
+
+void declDefProcDefArrayUnclosedBracket() {
+  enum SYNTAX_ERROR error = setupError("def uranio(int z[8[)");
+  assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
+}
+
+void declDefProcDefArrayMultidimension() {
+  enum SYNTAX_ERROR error = setupError("def galio(int j[8][8[)");
+  assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
+}
+
+void declDefProcDefArrayMultiParamMultiDimension() {
+  enum SYNTAX_ERROR error = setupError("def galio(int j[8][8], char x[4][3[)");
+  assert(error == INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE);
+}
+
+void declDefProcDefFollowedByDeclListVarError() {
+  enum SYNTAX_ERROR error = setupError("def litio(int i) const string");
+  assert(error == INVALID_TYPE);
+}
+
+void declDefProcDefFollowedByCmdError() {
+  enum SYNTAX_ERROR error = setupError("def plutonio(int i) getint 1");
+  assert(error == NO_GETINT_ID);
+}
+
+// test for cmd error after valid def and decl_list_var
+void declDefProcDefFollowedByDeclListVarFollowedByCmdError() {
+  enum SYNTAX_ERROR error =
+      setupError("def plutonio(int i) const int n getint 1");
+  assert(error == NO_GETINT_ID);
+}
+
+// test for cmd error after valid def and multiple decl_list_var
+void declDefProcDefFollowedByMultipleDeclListVarFollowedByCmdError() {
+  enum SYNTAX_ERROR error =
+      setupError("def plutonio(int i) const int n const int g getint 1");
+  assert(error == NO_GETINT_ID);
+}
+
+// multiple cmds
+void declDefProcDefFollowedByMultipleCmdError() {
+  enum SYNTAX_ERROR error =
+      setupError("def plutonio(int i, int j) getint i getint 44");
+  assert(error == NO_GETINT_ID);
+}
+// more exhaustive tests could be made, but I have work to do
+
+// test for no endp error
+void declDefProcDefFollowedByABunchOfStuffButNotFinishingWithEndp() {
+  enum SYNTAX_ERROR error =
+      setupError("def galibdenio(int i) const int n getint n prot");
+  assert(error == NO_DEF_END_KEYWORD);
+}
+
+// a perfectly valid variable declaration-only program
+void perfectlyValidVariableDeclarationOnlyProgram() {
+  enum SYNTAX_ERROR error =
+      setupError("const int a const int b char ch, chz\n");
+  assert(error == NO_ERROR);
+}
+
+// a perfectly valid function prototype declaration-only program
+void perfectlyValidPrototypeOnlyProgram() {
+  enum SYNTAX_ERROR error =
+      setupError("prot soma(int, int) prot reduce(int[])\n");
+  assert(error == NO_ERROR);
+}
+
+// a perfectly valid function definition-only program
+void perfectlyValidFunctionDefinitionOnlyProgram() {
+  enum SYNTAX_ERROR error =
+      setupError("def init (int self) endp def main (int arg) endp\n");
+  assert(error == NO_ERROR);
+}
+
+// a perfectly valid program with variable list declaration, then prototype,
+// then definition then variable list declaration then cmd then endp
+void perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp() {
+  enum SYNTAX_ERROR error =
+      setupError("int num prot soma(int, int) def soma(int a, int b) int teste "
+                 "= 5 getint teste endp\n");
+  assert(error == NO_ERROR);
+}
+
+void butEndpWasNotThere() {
+  enum SYNTAX_ERROR error =
+      setupError("int num prot soma(int, int) def soma(int a, int b) int teste "
+                 "= 5 getint teste\n");
+  assert(error == NO_DEF_END_KEYWORD);
+}
+
+// from here onwards, integration tests will be a challenge.
+// many routines depend on each other.
+
+void getoutWorks() {
+  enum SYNTAX_ERROR error = setupError("def calcio(char c) getout\n");
+  assert(error == NO_DEF_END_KEYWORD);
+}
+
+void getrealError() {
+  enum SYNTAX_ERROR error = setupError("def magnesio(char c) getreal 5\n");
+  assert(error == NO_GETREAL_ID);
+}
+
+void getcharError() {
+  enum SYNTAX_ERROR error = setupError("def manganes(char c) getchar 5\n");
+  assert(error == NO_GETCHAR_ID);
+}
+
+void getstrError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) getstr 5\n");
+  assert(error == NO_GETSTR_ID);
+}
+
+void putintError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putint 2.2\n");
+  assert(error == INVALID_PUTINT_ELEMENT);
+}
+
+void putrealError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putreal 'a'\n");
+  assert(error == INVALID_PUTREAL_ELEMENT);
+}
+
+void putcharError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putchar 8\n");
+  assert(error == INVALID_PUTCHAR_ELEMENT);
+}
+
+void putstrError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putstr 8\n");
+  assert(error == INVALID_PUTSTR_ELEMENT);
+}
+
+// do no idproc error
+void doButNotIdproc() {
+  enum SYNTAX_ERROR error = setupError("def adamantio(int i) do 8\n");
+  assert(error == INVALID_FUNCTION_CALL_ID);
+}
+
+// do idproc paren error
+void doButNoParenOpen() {
+  enum SYNTAX_ERROR error = setupError("def tritio(int i) do tritio)\n");
+  assert(error == INVALID_FUNCTION_CALL_PAREN_OPEN);
+}
+
+// tests with atrib might help developing expr... i hope ;-;
+
+// atrib no valid after id
+
+void atribNoValidAfterId() {
+  enum SYNTAX_ERROR error = setupError("def potassio(int i) i 8");
+  assert(error == NO_ATRIB_VALID_TOKEN_AFTER_ID);
+}
+
+// atrib with assignment to a bad expr: a stringcon
+void atribAssignedToABadExprAStringcon() {
+  enum SYNTAX_ERROR error = setupError("def potassio(int i) i = $");
+  assert(error == NO_FACTOR_VALID_START_SYMBOL);
+}
+
+void doButNoClosingParen() {
+  enum SYNTAX_ERROR error = setupError("def nitrogenio(int i) do nitrogenio(8(");
+  assert(error == INVALID_FUNCTION_CALL_PAREN_CLOSE);
+}
+
+
+// TODO: 
+//
+// atrib with bad unclosed paren
+/*void atribBadClosedParen() {*/
+/*  enum SYNTAX_ERROR error = setupError("def oxigenio(int i) id[8[");*/
+/*  assert(error == NO_ATRIB_BRACKET_CLOSE);*/
+/*}*/
+

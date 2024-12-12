@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 84
+#define ERROR_QTY 91
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -46,9 +46,9 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_PROTO_PAREN_CLOSE, "No closing paren in function prototype"},
       {INVALID_PROTO_PARAM_TYPE,
        "Invalid parameter type for function prototype"},
-      {NO_PROTO_VALID_TOKEN_AFTER_TYPE,
-       "No valid token found after function prototype type, expected bracket open "
-       "or comma"},
+      {NO_PROTO_VALID_TOKEN_AFTER_TYPE, "No valid token found after function "
+                                        "prototype type, expected bracket open "
+                                        "or comma"},
       {INVALID_ARRAY_PROTO_PARAM_BRACKET_OPEN,
        "No opening bracket for function prototype array parameter"},
       {INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE,
@@ -59,8 +59,12 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "Expected valid token after bracket closing: bracket opening, comma or "
        "paren close"},
       {NO_DEF_ID, "No valid ID for function definition"},
+      {INVALID_DEF_PAREN_OPEN, "No valid paren open for function definition"},
+      {INVALID_DEF_PAREN_CLOSE, "No valid paren close for function definition"},
       {INVALID_DEF_PARAM_TYPE,
        "No valid parameter type for function definition"},
+      {NO_DEF_VALID_TOKEN_AFTER_ID, "No valid token after def id, expected "
+                                    "open bracket, comma or paren close"},
       {NO_DEF_PARAM_ID, "No ID detected for function definition parameter"},
       {INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE,
        "No valid type for subscript in array parameter of function "
@@ -72,6 +76,9 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {INVALID_DEF_PARAM_LIST,
        "Invalid parameter list for function definition"},
       {NO_DEF_END_KEYWORD, "End keyword for function definition not detected"},
+      {NO_DEF_VALID_TOKEN_AFTER_PAREN,
+       "No valid token after def paren close, expected endp, variable "
+       "declaration, or cmd"},
       {NO_FUNCTION_END_PAREN_CLOSE, "No paren close for function end"},
       // cmd
       {INVALID_CMD_CONTENT, "Invalid command keyword or content"},
@@ -122,6 +129,9 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_ATRIB_ID, "No ID detected for expression assign"},
       {NO_ATRIB_ASSIGN, "No assign symbol for expression assign"},
       {NO_ATRIB_EXPR, "No expression assigned to expression assign"},
+      {NO_ATRIB_VALID_TOKEN_AFTER_ID,
+       "No valid token after identifier for assignment"},
+      {NO_ATRIB_BRACKET_CLOSE, "Expected bracket closing at array assignment"},
       // expr
       {NO_EXPR_EXPR_SIMP, "No simple expression for expression"},
       {NO_EXPR_EXPR_SIMP_AFTER_OP_REL, "No simple expression after operation"},
@@ -140,6 +150,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "No factor detected after valid sign in term"},
       // fator
       {NO_FACTOR_VALID_START_SYMBOL, "No factor valid start symbol"},
+      {NO_FACTOR_VALID_SYMBOL_AFTER_ID, "No factor valid symbol after id"},
       {INVALID_FACTOR_ARRAY_BRACKET_OPEN, "No factor array bracket opening"},
       {INVALID_FACTOR_ARRAY_BRACKET_CLOSE, "No factor array bracket closing"},
       {INVALID_FACTOR_EXPR_PAREN_OPEN, "No factor expression paren opening"},

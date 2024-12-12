@@ -7,7 +7,7 @@
 
 struct Parser {
   struct Token token;
-  FILE* fd;
+  FILE *fd;
   int *lineCount;
 };
 
@@ -33,5 +33,15 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser);
 /**/
 /*void arrayDeclaration(FILE *fd, int *lineCount, struct Token token);*/
 /*void arrayInitialization(FILE *fd, int *lineCount, struct Token token);*/
+
+enum SYNTAX_ERROR declDef(struct Parser *parser);
+enum SYNTAX_ERROR declDefParam(struct Parser *parser);
+enum SYNTAX_ERROR declDefParamArray(struct Parser *parser);
+
+enum SYNTAX_ERROR cmd(struct Parser *parser);
+enum SYNTAX_ERROR getint(struct Parser *parser);
+
+enum SYNTAX_ERROR cmdDo(struct Parser *parser);
+enum SYNTAX_ERROR cmdAtrib(struct Parser *parser);
 
 #endif
