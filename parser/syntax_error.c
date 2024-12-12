@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 90
+#define ERROR_QTY 91
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -131,6 +131,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_ATRIB_EXPR, "No expression assigned to expression assign"},
       {NO_ATRIB_VALID_TOKEN_AFTER_ID,
        "No valid token after identifier for assignment"},
+      {NO_ATRIB_BRACKET_CLOSE, "Expected bracket closing at array assignment"},
       // expr
       {NO_EXPR_EXPR_SIMP, "No simple expression for expression"},
       {NO_EXPR_EXPR_SIMP_AFTER_OP_REL, "No simple expression after operation"},

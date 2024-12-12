@@ -422,12 +422,24 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
 
 enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN && (parser->token.signCode == OPEN_BRACK || parser->token.signCode == ASSIGN))) {
+  if (!(parser->token.category == SIGN &&
+        (parser->token.signCode == OPEN_BRACK ||
+         parser->token.signCode == ASSIGN))) {
     return NO_ATRIB_VALID_TOKEN_AFTER_ID;
   }
 
   if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
     enum SYNTAX_ERROR error = fator(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  // arrayAtrib
+  while (parser->token.category == SIGN &&
+         parser->token.signCode == OPEN_BRACK) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = expr(parser);
     if (error != NO_ERROR) {
       return error;
     }

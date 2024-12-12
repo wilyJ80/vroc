@@ -76,6 +76,7 @@ void doButNoParenOpen();
 
 void atribNoValidAfterId();
 void atribAssignedToABadExprAStringcon();
+void atribBadClosedParen();
 
 // void doIdprocExprExprSimpTermoFatorNoValidTokenAfterId();
 

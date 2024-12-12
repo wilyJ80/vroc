@@ -93,6 +93,7 @@ int main(void) {
 
   atribNoValidAfterId();
   atribAssignedToABadExprAStringcon();
+  // atribBadClosedParen();
 
   printf("--- Parser integration tests passed\n");
 

@@ -362,3 +362,11 @@ void atribAssignedToABadExprAStringcon() {
   enum SYNTAX_ERROR error = setupError("def potassio(int i) i = $");
   assert(error == NO_FACTOR_VALID_START_SYMBOL);
 }
+
+// TODO: 
+//
+// atrib with bad unclosed paren
+/*void atribBadClosedParen() {*/
+/*  enum SYNTAX_ERROR error = setupError("def oxigenio(int i) id[8[");*/
+/*  assert(error == NO_ATRIB_BRACKET_CLOSE);*/
+/*}*/
