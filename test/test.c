@@ -87,6 +87,8 @@ int main(void) {
   putcharError();
   putstrError();
 
+  doButNotIdproc();
+
   printf("--- Parser integration tests passed\n");
 
   printf(GREEN "All tests OK\n" RESET);

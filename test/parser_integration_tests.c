@@ -335,3 +335,13 @@ void putstrError() {
   enum SYNTAX_ERROR error = setupError("def titanio(char c) putstr 8\n");
   assert(error == INVALID_PUTSTR_ELEMENT);
 }
+
+// do no idproc error
+void doButNotIdproc() {
+  enum SYNTAX_ERROR error = setupError("def adamantio(int i) do 8\n");
+  assert(error == INVALID_FUNCTION_CALL_ID);
+}
+
+// do idproc paren error
+
+// do idproc expr (start tests for expr in context of idproc)

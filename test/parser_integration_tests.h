@@ -71,4 +71,6 @@ void putrealError();
 void putcharError();
 void putstrError();
 
+void doButNotIdproc();
+
 #endif // !PARSER_INTEGRATION_TESTS_H

@@ -291,8 +291,8 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
           parser->token.signCode == PUTINT ||
           parser->token.signCode == PUTREAL ||
           parser->token.signCode == PUTCHAR ||
-          parser->token.signCode == PUTSTR ||
-          parser->token.signCode == ENDP)))) {
+          parser->token.signCode == PUTSTR || parser->token.signCode == ENDP ||
+          parser->token.signCode == DO)))) {
     return NO_DEF_VALID_TOKEN_AFTER_PAREN;
   }
 
@@ -369,7 +369,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
       return INVALID_PUTINT_ELEMENT;
     }
   }
-  
+
   if (parser->token.signCode == PUTREAL) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     if (!(parser->token.category == ID || parser->token.category == REALCON)) {
@@ -386,8 +386,16 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
 
   if (parser->token.signCode == PUTSTR) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID || parser->token.category == STRINGCON)) {
+    if (!(parser->token.category == ID ||
+          parser->token.category == STRINGCON)) {
       return INVALID_PUTSTR_ELEMENT;
+    }
+  }
+
+  if (parser->token.signCode == DO) {
+    enum SYNTAX_ERROR error = cmdDo(parser);
+    if (error != NO_ERROR) {
+      return error;
     }
   }
 
@@ -395,6 +403,14 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
 
   // advance
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == ID)) {
+    return INVALID_FUNCTION_CALL_ID;
+  }
   return NO_ERROR;
 }
 
