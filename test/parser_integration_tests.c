@@ -315,3 +315,23 @@ void getstrError() {
   enum SYNTAX_ERROR error = setupError("def titanio(char c) getstr 5\n");
   assert(error == NO_GETSTR_ID);
 }
+
+void putintError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putint 2.2\n");
+  assert(error == INVALID_PUTINT_ELEMENT);
+}
+
+void putrealError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putreal 'a'\n");
+  assert(error == INVALID_PUTREAL_ELEMENT);
+}
+
+void putcharError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putchar 8\n");
+  assert(error == INVALID_PUTCHAR_ELEMENT);
+}
+
+void putstrError() {
+  enum SYNTAX_ERROR error = setupError("def titanio(char c) putstr 8\n");
+  assert(error == INVALID_PUTSTR_ELEMENT);
+}

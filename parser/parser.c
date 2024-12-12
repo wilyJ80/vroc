@@ -362,7 +362,35 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
       return NO_GETSTR_ID;
     }
   }
+
+  if (parser->token.signCode == PUTINT) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID || parser->token.category == INTCON)) {
+      return INVALID_PUTINT_ELEMENT;
+    }
+  }
   
+  if (parser->token.signCode == PUTREAL) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID || parser->token.category == REALCON)) {
+      return INVALID_PUTREAL_ELEMENT;
+    }
+  }
+
+  if (parser->token.signCode == PUTCHAR) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID || parser->token.category == CHARCON)) {
+      return INVALID_PUTCHAR_ELEMENT;
+    }
+  }
+
+  if (parser->token.signCode == PUTSTR) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (!(parser->token.category == ID || parser->token.category == STRINGCON)) {
+      return INVALID_PUTSTR_ELEMENT;
+    }
+  }
+
   // getout: nothing needed?
 
   // advance

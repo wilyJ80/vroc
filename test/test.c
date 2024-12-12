@@ -82,6 +82,10 @@ int main(void) {
   getrealError();
   getcharError();
   getstrError();
+  putintError();
+  putrealError();
+  putcharError();
+  putstrError();
 
   printf("--- Parser integration tests passed\n");
 

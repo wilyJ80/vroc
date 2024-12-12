@@ -66,5 +66,9 @@ void getoutWorks();
 void getrealError();
 void getcharError();
 void getstrError();
+void putintError();
+void putrealError();
+void putcharError();
+void putstrError();
 
 #endif // !PARSER_INTEGRATION_TESTS_H
