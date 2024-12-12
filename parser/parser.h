@@ -42,5 +42,6 @@ enum SYNTAX_ERROR cmd(struct Parser *parser);
 enum SYNTAX_ERROR getint(struct Parser *parser);
 
 enum SYNTAX_ERROR cmdDo(struct Parser *parser);
+enum SYNTAX_ERROR cmdAtrib(struct Parser *parser);
 
 #endif

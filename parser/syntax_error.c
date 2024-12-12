@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 88
+#define ERROR_QTY 90
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -129,6 +129,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_ATRIB_ID, "No ID detected for expression assign"},
       {NO_ATRIB_ASSIGN, "No assign symbol for expression assign"},
       {NO_ATRIB_EXPR, "No expression assigned to expression assign"},
+      {NO_ATRIB_VALID_TOKEN_AFTER_ID,
+       "No valid token after identifier for assignment"},
       // expr
       {NO_EXPR_EXPR_SIMP, "No simple expression for expression"},
       {NO_EXPR_EXPR_SIMP_AFTER_OP_REL, "No simple expression after operation"},
@@ -147,6 +149,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "No factor detected after valid sign in term"},
       // fator
       {NO_FACTOR_VALID_START_SYMBOL, "No factor valid start symbol"},
+      {NO_FACTOR_VALID_SYMBOL_AFTER_ID, "No factor valid symbol after id"},
       {INVALID_FACTOR_ARRAY_BRACKET_OPEN, "No factor array bracket opening"},
       {INVALID_FACTOR_ARRAY_BRACKET_CLOSE, "No factor array bracket closing"},
       {INVALID_FACTOR_EXPR_PAREN_OPEN, "No factor expression paren opening"},

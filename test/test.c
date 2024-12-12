@@ -89,6 +89,9 @@ int main(void) {
 
   doButNotIdproc();
   doButNoParenOpen();
+  //  doIdprocExprExprSimpTermoFatorNoValidTokenAfterId();
+
+  atribNoValidAfterId();
 
   printf("--- Parser integration tests passed\n");
 

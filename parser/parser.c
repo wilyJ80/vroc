@@ -20,6 +20,7 @@ enum SYNTAX_ERROR op_rel(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR fator(struct Parser *parser) {
+  // this makes no damn sense: keeping it for unit tests, I guess
   if (!(parser->token.category == ID || parser->token.category == INTCON ||
         parser->token.category == REALCON ||
         parser->token.category == CHARCON ||
@@ -340,6 +341,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID)) {
       return NO_GETINT_ID;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == GETREAL) {
@@ -347,6 +349,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID)) {
       return NO_GETREAL_ID;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == GETCHAR) {
@@ -354,6 +357,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID)) {
       return NO_GETCHAR_ID;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == GETSTR) {
@@ -361,6 +365,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID)) {
       return NO_GETSTR_ID;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == PUTINT) {
@@ -368,6 +373,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID || parser->token.category == INTCON)) {
       return INVALID_PUTINT_ELEMENT;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == PUTREAL) {
@@ -375,6 +381,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID || parser->token.category == REALCON)) {
       return INVALID_PUTREAL_ELEMENT;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == PUTCHAR) {
@@ -382,6 +389,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     if (!(parser->token.category == ID || parser->token.category == CHARCON)) {
       return INVALID_PUTCHAR_ELEMENT;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == PUTSTR) {
@@ -390,6 +398,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
           parser->token.category == STRINGCON)) {
       return INVALID_PUTSTR_ELEMENT;
     }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   if (parser->token.signCode == DO) {
@@ -399,10 +408,24 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     }
   }
 
+  if (parser->token.category == ID) {
+    enum SYNTAX_ERROR error = cmdAtrib(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
   // getout: nothing needed?
 
-  // advance
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN && (parser->token.signCode == OPEN_BRACK || parser->token.signCode == ASSIGN))) {
+    return NO_ATRIB_VALID_TOKEN_AFTER_ID;
+  }
+
   return NO_ERROR;
 }
 
@@ -416,6 +439,17 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
     return INVALID_FUNCTION_CALL_PAREN_OPEN;
+  }
+
+  // if is valid fator starter, go to fator
+  if (parser->token.category == ID || parser->token.category == INTCON ||
+      parser->token.category == REALCON || parser->token.category == CHARCON ||
+      (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) ||
+      (parser->token.category == SIGN && parser->token.signCode == NEGATION)) {
+    enum SYNTAX_ERROR error = fator(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
   }
 
   return NO_ERROR;

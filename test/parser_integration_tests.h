@@ -74,4 +74,8 @@ void putstrError();
 void doButNotIdproc();
 void doButNoParenOpen();
 
+void atribNoValidAfterId();
+
+// void doIdprocExprExprSimpTermoFatorNoValidTokenAfterId();
+
 #endif // !PARSER_INTEGRATION_TESTS_H
