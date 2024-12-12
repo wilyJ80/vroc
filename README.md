@@ -2,6 +2,7 @@
 
 - [X] Lexer
 - [ ] Parser
+- [ ] Tabela de simbolos
 - [ ] Analise Semantica
 
 ![swag](./doc/swag.webp)
@@ -16,7 +17,7 @@
 
 - ou:
 
-`gcc -g ./lexer/*.c ./main.c -o croc`
+`gcc -g ./main.c ./lexer/*.c ./parser/*.c  -o croc`
 
 - Executar com:
 
@@ -28,23 +29,23 @@
 
 - Em um so comando:
 
-`gcc -g ./lexer/*.c ./main.c -o croc && ./croc ./doc/examples/code.proc`
+`gcc -g ./main.c ./lexer/*.c ./parser/*.c  -o croc && ./croc ./doc/examples/code.proc`
 
-- Teste:
+- Testes automatizados:
 
-`gcc -g ./lexer/*.c ./test.c -o croc && ./croc`
+`gcc -g ./test/*.c ./lexer/*.c ./parser/*.c -o croc && ./croc`
 
 # problemas
 
 - [ ] Output colorido em testes
 - [ ] Todo ID deve ser checado pelo parser se é reservado?
 - [ ] Refactor indispensável no parser: remover erros que não serão usados
-- [ ] Refatorar testes: setup e teardown
+- [X] Refatorar testes: setup e teardown
 - [ ] Remover enums erros desnecessarias do parser
 - [X] Objeto parser com seu proprio estado (token, file, line)
 - [ ] Contador de linha esta funcionando no analisador sintatico?
 - [ ] Parser testes unitarios + integracao
-- [ ] Adicionar especificacao da linguagem `proc` e manter atualizada
+- [X] Adicionar especificacao da linguagem `proc` e manter atualizada
 - [ ] Refactor: remover transition.h e transition.c
 - [ ] Refactor: organizar melhor as enums...
 - [X] Setup GitHub Actions para testes
