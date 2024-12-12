@@ -40,6 +40,7 @@ enum SYNTAX_ERROR fator(struct Parser *parser) {
     if (error != NO_ERROR) {
       return NO_FACTOR_AFTER_BANG;
     }
+    return NO_ERROR;
   }
 
   // (expr)
@@ -48,6 +49,12 @@ enum SYNTAX_ERROR fator(struct Parser *parser) {
     if (error != NO_ERROR) {
       return error;
     }
+    if (!(parser->token.category == SIGN &&
+          parser->token.signCode == CLOSE_PAR)) {
+      return INVALID_FACTOR_EXPR_PAREN_CLOSE;
+    }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    return NO_ERROR;
   }
 
   // id {[expr]}
@@ -70,16 +77,19 @@ enum SYNTAX_ERROR fator(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  enum SYNTAX_ERROR error = expr(parser);
-  if (error != NO_ERROR) {
-    return error;
-  }
+  while (parser->token.category == SIGN &&
+         parser->token.signCode == OPEN_BRACK) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = expr(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN &&
-        parser->token.signCode == CLOSE_BRACK)) {
-    return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
+    if (!(parser->token.category == SIGN &&
+          parser->token.signCode == CLOSE_BRACK)) {
+      return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
+    }
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
   return NO_ERROR;
@@ -397,6 +407,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
   }
 
   if (parser->token.signCode == DO) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
     enum SYNTAX_ERROR error = cmdDo(parser);
     if (error != NO_ERROR) {
       return error;
@@ -444,7 +455,6 @@ enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   if (!(parser->token.category == ID)) {
     return INVALID_FUNCTION_CALL_ID;
   }
@@ -455,20 +465,19 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
     return INVALID_FUNCTION_CALL_PAREN_OPEN;
   }
 
-  // if is valid fator starter, go to fator
-  if (parser->token.category == ID || parser->token.category == INTCON ||
-      parser->token.category == REALCON || parser->token.category == CHARCON ||
-      (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) ||
-      (parser->token.category == SIGN && parser->token.signCode == NEGATION)) {
-    // goes from expr down to fator
+  // do...
+
+  do {
     enum SYNTAX_ERROR error = expr(parser);
     if (error != NO_ERROR) {
       return error;
     }
-  }
+  } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
 
+  // check paren close
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN && parser->token.signCode == CLOSE_PAR)) {
+  if (!(parser->token.category == SIGN &&
+        parser->token.signCode == CLOSE_PAR)) {
     return INVALID_FUNCTION_CALL_PAREN_CLOSE;
   }
 
@@ -476,7 +485,78 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR expr(struct Parser *parser) {
-  // TODO:
+  bool opRelFound = false;
+  enum SYNTAX_ERROR error = exprSimp(parser);
+  if (error != NO_ERROR) {
+    return error;
+  }
+
+  // functions following expr should always carry over the next token!
+  if (parser->token.category == SIGN &&
+      (parser->token.signCode == COMPARISON ||
+       parser->token.signCode == DIFFERENT ||
+       parser->token.signCode == SMALLER_EQUAL ||
+       parser->token.signCode == SMALLER_THAN ||
+       parser->token.signCode == LARGER_EQUAL ||
+       parser->token.signCode == LARGER_THAN)) {
+    opRelFound = true;
+  }
+
+  // opRel is optional here
+  if (opRelFound) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = exprSimp(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR exprSimp(struct Parser *parser) {
+  // ignore plus or minus
+  if (parser->token.category == SIGN &&
+      (parser->token.signCode == PLUS || parser->token.signCode == MINUS)) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  }
+
+  enum SYNTAX_ERROR error = termo(parser);
+  if (error != NO_ERROR) {
+    return error;
+  }
+
+  while (parser->token.category == SIGN &&
+         (parser->token.signCode == PLUS || parser->token.signCode == MINUS ||
+          parser->token.signCode == OR)) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+
+    enum SYNTAX_ERROR error = termo(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR termo(struct Parser *parser) {
+  enum SYNTAX_ERROR error = fator(parser);
+  if (error != NO_ERROR) {
+    return error;
+  }
+
+  while (parser->token.category == SIGN &&
+         (parser->token.signCode == STAR || parser->token.signCode == SLASH ||
+          parser->token.signCode == AND)) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+
+    enum SYNTAX_ERROR error = fator(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
   return NO_ERROR;
 }
 
