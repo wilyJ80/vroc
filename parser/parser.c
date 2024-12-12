@@ -426,6 +426,13 @@ enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
     return NO_ATRIB_VALID_TOKEN_AFTER_ID;
   }
 
+  if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
+    enum SYNTAX_ERROR error = fator(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
   return NO_ERROR;
 }
 

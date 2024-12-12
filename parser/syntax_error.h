@@ -124,7 +124,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount);
 
 struct ErrorMessage {
   enum SYNTAX_ERROR error;
-  const char* message;
+  const char *message;
 };
 
 #endif // !SYNTAX_ERROR_H

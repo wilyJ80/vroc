@@ -348,14 +348,7 @@ void doButNoParenOpen() {
   assert(error == INVALID_FUNCTION_CALL_PAREN_OPEN);
 }
 
-// do idproc expr (start tests for expr in context of idproc)
-
-// WRONG: IGNORE
-// do idproc expr expr_simp termo fator no valid after id (id, intcon, realcon, charcon, paren open, bang)
-/*void doIdprocExprExprSimpTermoFatorNoValidTokenAfterId() {*/
-/*  enum SYNTAX_ERROR error = setupError("def tungstenio(int i) do tritio(i 8)\n");*/
-/*  assert(error == NO_FACTOR_VALID_SYMBOL_AFTER_ID);*/
-/*}*/
+// tests with atrib might help developing expr... i hope ;-;
 
 // atrib no valid after id
 
@@ -364,5 +357,8 @@ void atribNoValidAfterId() {
   assert(error == NO_ATRIB_VALID_TOKEN_AFTER_ID);
 }
 
-// do idproc expr expr_simp termo fator paren expr expr_simp termo fator unclosed expr
-
+// atrib with assignment to a bad expr: a stringcon
+void atribAssignedToABadExprAStringcon() {
+  enum SYNTAX_ERROR error = setupError("def potassio(int i) i = $");
+  assert(error == NO_FACTOR_VALID_START_SYMBOL);
+}

@@ -92,6 +92,7 @@ int main(void) {
   //  doIdprocExprExprSimpTermoFatorNoValidTokenAfterId();
 
   atribNoValidAfterId();
+  atribAssignedToABadExprAStringcon();
 
   printf("--- Parser integration tests passed\n");
 
