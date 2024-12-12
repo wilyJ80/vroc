@@ -73,6 +73,8 @@ void putstrError();
 
 void doButNotIdproc();
 void doButNoParenOpen();
+void doButNoClosingParen();
+// test expression list too
 
 void atribNoValidAfterId();
 void atribAssignedToABadExprAStringcon();

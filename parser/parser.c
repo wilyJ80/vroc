@@ -85,11 +85,6 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
   return NO_ERROR;
 }
 
-enum SYNTAX_ERROR expr(struct Parser *parser) {
-  // TODO:
-  return NO_ERROR;
-}
-
 /**
  * prog accepts repetitions of declarations of variables (decl_list_var), or
  * procedures (decl_list_proc).
@@ -465,12 +460,23 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
       parser->token.category == REALCON || parser->token.category == CHARCON ||
       (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) ||
       (parser->token.category == SIGN && parser->token.signCode == NEGATION)) {
-    enum SYNTAX_ERROR error = fator(parser);
+    // goes from expr down to fator
+    enum SYNTAX_ERROR error = expr(parser);
     if (error != NO_ERROR) {
       return error;
     }
   }
 
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN && parser->token.signCode == CLOSE_PAR)) {
+    return INVALID_FUNCTION_CALL_PAREN_CLOSE;
+  }
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR expr(struct Parser *parser) {
+  // TODO:
   return NO_ERROR;
 }
 

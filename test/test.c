@@ -89,7 +89,7 @@ int main(void) {
 
   doButNotIdproc();
   doButNoParenOpen();
-  //  doIdprocExprExprSimpTermoFatorNoValidTokenAfterId();
+  doButNoClosingParen();
 
   atribNoValidAfterId();
   atribAssignedToABadExprAStringcon();

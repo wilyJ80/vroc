@@ -363,6 +363,12 @@ void atribAssignedToABadExprAStringcon() {
   assert(error == NO_FACTOR_VALID_START_SYMBOL);
 }
 
+void doButNoClosingParen() {
+  enum SYNTAX_ERROR error = setupError("def nitrogenio(int i) do nitrogenio(8(");
+  assert(error == INVALID_FUNCTION_CALL_PAREN_CLOSE);
+}
+
+
 // TODO: 
 //
 // atrib with bad unclosed paren
@@ -370,3 +376,4 @@ void atribAssignedToABadExprAStringcon() {
 /*  enum SYNTAX_ERROR error = setupError("def oxigenio(int i) id[8[");*/
 /*  assert(error == NO_ATRIB_BRACKET_CLOSE);*/
 /*}*/
+
