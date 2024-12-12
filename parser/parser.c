@@ -411,6 +411,13 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
   if (!(parser->token.category == ID)) {
     return INVALID_FUNCTION_CALL_ID;
   }
+
+  // is id, ok... then it should open a paren
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+    return INVALID_FUNCTION_CALL_PAREN_OPEN;
+  }
+
   return NO_ERROR;
 }
 

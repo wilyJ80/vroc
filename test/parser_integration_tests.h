@@ -72,5 +72,6 @@ void putcharError();
 void putstrError();
 
 void doButNotIdproc();
+void doButNoParenOpen();
 
 #endif // !PARSER_INTEGRATION_TESTS_H

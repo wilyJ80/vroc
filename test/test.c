@@ -88,6 +88,7 @@ int main(void) {
   putstrError();
 
   doButNotIdproc();
+  doButNoParenOpen();
 
   printf("--- Parser integration tests passed\n");
 

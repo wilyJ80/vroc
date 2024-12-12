@@ -343,5 +343,9 @@ void doButNotIdproc() {
 }
 
 // do idproc paren error
+void doButNoParenOpen() {
+  enum SYNTAX_ERROR error = setupError("def tritio(int i) do tritio)\n");
+  assert(error == INVALID_FUNCTION_CALL_PAREN_OPEN);
+}
 
 // do idproc expr (start tests for expr in context of idproc)
