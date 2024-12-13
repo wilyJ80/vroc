@@ -430,6 +430,14 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     }
   }
 
+  if (parser->token.signCode == IF) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = cmdIf(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
   if (parser->token.category == ID) {
     enum SYNTAX_ERROR error = cmdAtrib(parser);
     if (error != NO_ERROR) {
@@ -438,6 +446,66 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
   }
 
   // getout: nothing needed?
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
+  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+    return INVALID_IF_PAREN_OPEN;
+  }
+
+  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  enum SYNTAX_ERROR error = expr(parser);
+  if (error) {
+    return error;
+  }
+
+  if (!(parser->token.category == SIGN &&
+        parser->token.signCode == CLOSE_PAR)) {
+    return INVALID_IF_PAREN_CLOSE;
+  }
+
+  do {
+
+    enum SYNTAX_ERROR error = cmd(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+
+  } while (
+      !(parser->token.category == RSV &&
+        (parser->token.signCode == ELIF || parser->token.signCode == ELSE ||
+         parser->token.signCode == ENDI)));
+
+  do {
+    if (parser->token.category == RSV && parser->token.signCode == ELIF) {
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+      if (!(parser->token.category == SIGN &&
+            parser->token.signCode == OPEN_PAR)) {
+        return INVALID_ELIF_PAREN_OPEN;
+      }
+
+      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+      enum SYNTAX_ERROR error = expr(parser);
+      if (error != NO_ERROR) {
+        return error;
+      }
+
+      if (!(parser->token.category == SIGN &&
+            parser->token.signCode == CLOSE_PAR)) {
+        return INVALID_ELIF_PAREN_CLOSE;
+      }
+
+      do {
+        enum SYNTAX_ERROR error = cmd(parser);
+        if (error != NO_ERROR) {
+          return error;
+        }
+      } while (
+          !(parser->token.category == RSV && (parser->token.signCode == ELSE || parser->token.signCode == ELIF || parser->token.signCode == ENDI)));
+    }
+  } while (parser->token.category == RSV && parser->token.signCode == ELIF);
 
   return NO_ERROR;
 }
