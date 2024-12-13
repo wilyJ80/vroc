@@ -43,6 +43,9 @@ enum SYNTAX_ERROR getint(struct Parser *parser);
 
 enum SYNTAX_ERROR cmdDo(struct Parser *parser);
 enum SYNTAX_ERROR cmdAtrib(struct Parser *parser);
+enum SYNTAX_ERROR cmdWhile(struct Parser *parser);
+enum SYNTAX_ERROR cmdVar(struct Parser *parser);
+
 
 enum SYNTAX_ERROR exprSimp(struct Parser *parser);
 
