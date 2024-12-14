@@ -193,17 +193,17 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
     if (tokenCategoryMatchAll(parser, 1, RSV) &&
         tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL)) {
       consumeTokenFrom(parser);
-    }
 
-    while (tokenCategoryMatchAll(parser, 1, SIGN) &&
-           tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
-      consumeTokenFrom(parser);
+      while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+             tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
+        consumeTokenFrom(parser);
 
-      if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
-            tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
-        return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
+        if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+              tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
+          return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
+        }
+        consumeTokenFrom(parser);
       }
-      consumeTokenFrom(parser);
     }
 
   } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
