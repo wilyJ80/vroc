@@ -10,6 +10,8 @@ void consumeTokenFrom(struct Parser *parser);
 
 bool tokenCategoryMatchAll(struct Parser *parser , int matchCount, ...);
 
+bool tokenCategoryMatchAny(struct Parser *parser , int matchCount, ...);
+
 bool tokenSignCodeMatchAny(struct Parser *parser, int matchCount, ...);
 
 #endif

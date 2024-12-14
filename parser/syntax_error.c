@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 92
+#define ERROR_QTY 93
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -64,6 +64,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_DEF_ID, "No valid ID for function definition"},
       {INVALID_DEF_PAREN_OPEN, "No valid paren open for function definition"},
       {INVALID_DEF_PAREN_CLOSE, "No valid paren close for function definition"},
+      {NO_DEF_TYPE_AFTER_REF, "No valid type detected after & token"},
       {INVALID_DEF_PARAM_TYPE,
        "No valid parameter type for function definition"},
       {NO_DEF_VALID_TOKEN_AFTER_ID, "No valid token after def id, expected "

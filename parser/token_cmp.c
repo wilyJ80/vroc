@@ -23,6 +23,21 @@ bool tokenCategoryMatchAll(struct Parser *parser, int matchCount, ...) {
   return true;
 }
 
+bool tokenCategoryMatchAny(struct Parser *parser, int matchCount, ...) {
+  va_list va;
+  va_start(va, matchCount);
+  bool foundOne = false;
+
+  for (int i = 0; i < matchCount; i++) {
+    if (parser->token.category == va_arg(va, int)) {
+      foundOne = true;
+    }
+  }
+
+  va_end(va);
+  return true;
+}
+
 bool tokenSignCodeMatchAny(struct Parser *parser, int matchCount, ...) {
   va_list va;
   va_start(va, matchCount);

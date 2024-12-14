@@ -3,6 +3,7 @@
 #include "../lexer/transition.h"
 #include "syntax_error.h"
 #include "token_cmp.h"
+#include <stdio.h>
 
 #define MAX_ARRAY_DIMENSIONS 2
 
@@ -80,7 +81,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
       tokenSignCodeMatchAny(parser, 1, ASSIGN)) {
     consumeTokenFrom(parser);
 
-    if (!(tokenCategoryMatchAll(parser, 3, INTCON, REALCON, CHARCON))) {
+    if (!(tokenCategoryMatchAny(parser, 3, INTCON, REALCON, CHARCON))) {
       return INVALID_VAR_TYPE_INIT;
     }
 
@@ -186,7 +187,6 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
 
 enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   bool paramMandatory = false;
-  bool somethingInside = false;
 
   do {
     // consume comma from subsequent iterations
@@ -198,7 +198,6 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
         tokenSignCodeMatchAny(parser, 1, REF)) {
       paramMandatory = true;
       consumeTokenFrom(parser);
-      somethingInside = true;
     }
 
     if (paramMandatory &&
@@ -210,7 +209,6 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
     if (tokenCategoryMatchAll(parser, 1, RSV) &&
         tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL)) {
       consumeTokenFrom(parser);
-      somethingInside = true;
 
       while (tokenCategoryMatchAll(parser, 1, SIGN) &&
              tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
@@ -227,11 +225,9 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
            tokenSignCodeMatchAny(parser, 1, COMMA));
 
-  if (!somethingInside) {
-    consumeTokenFrom(parser);
-  }
-  if (!(tokenCategoryMatchAll(parser, 1, CLOSE_PAR))) {
-    return NO_FUNCTION_END_PAREN_CLOSE;
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
+    return INVALID_PROTO_PAREN_CLOSE;
   }
   consumeTokenFrom(parser);
 
@@ -257,17 +253,9 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
     return error;
   }
 
-  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
-        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
-    return INVALID_DEF_PAREN_CLOSE;
-  }
-
-  // can be endp, declListVar, or cmd
-  consumeTokenFrom(parser);
-
   // is declListVar
   while (tokenCategoryMatchAll(parser, 1, RSV) &&
-      tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL, BOOL)) {
+         tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL, BOOL)) {
     enum SYNTAX_ERROR error = declListVar(parser);
     if (error) {
       return error;
@@ -276,9 +264,9 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
 
   // is cmd
   while (tokenCategoryMatchAll(parser, 1, RSV) &&
-      tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
-                            GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL, PUTCHAR,
-                            PUTSTR, ID)) {
+         tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                               GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                               PUTCHAR, PUTSTR, ID)) {
     enum SYNTAX_ERROR error = cmd(parser);
     if (error) {
       return error;
@@ -296,74 +284,60 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
-
+  bool paramMandatory = false;
   // while it's a param, delimited by comma
   do {
-    // skip the comma if it's a subsequent param
-    if (parser->token.category == SIGN && parser->token.signCode == COMMA) {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    // consume comma from subsequent iterations
+    if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, COMMA)) {
+      consumeTokenFrom(parser);
     }
 
     // & is optional
-    if (parser->token.category == SIGN && parser->token.signCode == REF) {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, REF)) {
+      paramMandatory = true;
+      consumeTokenFrom(parser);
     }
 
-    // type is valid
-    if (!(parser->token.category == RSV &&
-          (parser->token.signCode == INT || parser->token.signCode == CHAR ||
-           parser->token.signCode == REAL || parser->token.signCode == BOOL))) {
-      return INVALID_DEF_PARAM_TYPE;
+    if (paramMandatory &&
+        !(tokenCategoryMatchAll(parser, 1, RSV) &&
+          tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL))) {
+      return NO_DEF_TYPE_AFTER_REF;
     }
 
-    // param id
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID)) {
-      return NO_DEF_PARAM_ID;
-    }
+    if (tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL)) {
+      consumeTokenFrom(parser);
 
-    // valid token after id
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == SIGN &&
-          (parser->token.signCode == OPEN_BRACK ||
-           parser->token.signCode == COMMA ||
-           parser->token.signCode == CLOSE_PAR))) {
-      return NO_DEF_VALID_TOKEN_AFTER_ID;
-    }
-    // CLOSE_PAR has no extra steps: simply breaks the loop and leaves
+      while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+             tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
+        consumeTokenFrom(parser);
 
-    // OPEN_BRACK defines an array param
-    if (parser->token.signCode == OPEN_BRACK) {
-      enum SYNTAX_ERROR error = declDefParamArray(parser);
-      if (error != NO_ERROR) {
-        return error;
+        if (!(tokenCategoryMatchAll(parser, 2, ID, INTCON))) {
+          return INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE;
+        }
+        consumeTokenFrom(parser);
+
+        if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+              tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
+          return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
+        }
+        consumeTokenFrom(parser);
       }
     }
 
-    // COMMA loops the whole thing
-  } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
+  } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+           tokenSignCodeMatchAny(parser, 1, COMMA));
 
-  return NO_ERROR;
-}
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
+    return INVALID_DEF_PAREN_CLOSE;
+  }
 
-enum SYNTAX_ERROR declDefParamArray(struct Parser *parser) {
-  do {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID || parser->token.category == INTCON)) {
-      return INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE;
-    }
+  // can be endp, declListVar, or cmd
+  consumeTokenFrom(parser);
 
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == SIGN &&
-          parser->token.signCode == CLOSE_BRACK)) {
-      return INVALID_ARRAY_DEF_PARAM_BRACKET_CLOSE;
-    }
-
-    // consume next (should be OPEN_BRACK or COMMA)
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  } while (parser->token.signCode == OPEN_BRACK);
-
-  // is COMMA
   return NO_ERROR;
 }
 
