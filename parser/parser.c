@@ -345,84 +345,84 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmd(struct Parser *parser) {
-  enum SIGN sign = parser->token.signCode;
+  enum RESERVED sign = parser->token.signCode;
   consumeTokenFrom(parser);
 
   enum SYNTAX_ERROR error;
   switch (sign) {
-  GETINT:
+  case GETINT:
     if (!(tokenCategoryMatchAny(parser, 1, ID))) {
       return NO_GETINT_ID;
     }
     consumeTokenFrom(parser);
     break;
-  GETREAL:
+  case GETREAL:
     if (!(tokenCategoryMatchAny(parser, 1, ID))) {
       return NO_GETREAL_ID;
     }
     consumeTokenFrom(parser);
     break;
-  GETCHAR:
+  case GETCHAR:
     if (!(tokenCategoryMatchAny(parser, 1, ID))) {
       return NO_GETCHAR_ID;
     }
     consumeTokenFrom(parser);
     break;
-  GETSTR:
+  case GETSTR:
     if (!(tokenCategoryMatchAny(parser, 1, ID))) {
       return NO_GETSTR_ID;
     }
     consumeTokenFrom(parser);
     break;
-  PUTINT:
+  case PUTINT:
     if (!(tokenCategoryMatchAny(parser, 2, ID, INTCON))) {
       return INVALID_PUTINT_ELEMENT;
     }
     consumeTokenFrom(parser);
     break;
-  PUTREAL:
+  case PUTREAL:
     if (!(tokenCategoryMatchAny(parser, 2, ID, REALCON))) {
       return INVALID_PUTREAL_ELEMENT;
     }
     consumeTokenFrom(parser);
     break;
-  PUTCHAR:
+  case PUTCHAR:
     if (!(tokenCategoryMatchAny(parser, 2, ID, CHARCON))) {
       return INVALID_PUTCHAR_ELEMENT;
     }
     consumeTokenFrom(parser);
     break;
-  PUTSTR:
+  case PUTSTR:
     if (!(tokenCategoryMatchAny(parser, 2, ID, STRINGCON))) {
       return INVALID_PUTSTR_ELEMENT;
     }
     consumeTokenFrom(parser);
     break;
-  DO:
+  case DO:
     error = cmdDo(parser);
     if (error != NO_ERROR) {
       return error;
     }
     break;
-  WHILE:
+  case WHILE:
     error = cmdWhile(parser);
     if (error != NO_ERROR) {
       return error;
     }
     break;
-  VAR:
+  case VAR:
     error = cmdVar(parser);
     if (error != NO_ERROR) {
       return error;
     }
     break;
-  IF:
+  case IF:
     error = cmdIf(parser);
     if (error != NO_ERROR) {
       return error;
     }
     break;
-  ID:
+  case ID:
     error = cmdAtrib(parser);
     if (error != NO_ERROR) {
       return error;
