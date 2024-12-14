@@ -2,8 +2,62 @@
 #include "../lexer/lexer.h"
 #include "../lexer/transition.h"
 #include "syntax_error.h"
+#include "token_cmp.h"
 
 #define MAX_ARRAY_DIMENSIONS 2
+
+/**
+ * prog accepts repetitions of declarations of variables (decl_list_var), or
+ * procedures (decl_list_proc).
+ */
+enum SYNTAX_ERROR prog(struct Parser *parser) {
+  // Both declaration of variables and procedures start with reserved words.
+  // Valid variable declaration start tokens
+  while (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
+         (tokenSignCodeMatchAny(&parser->token, 5, CONST, CHAR, INT, REAL,
+                                BOOL))) {
+    enum SYNTAX_ERROR error = declListVar(parser);
+    if (error) {
+      return error;
+    }
+  }
+  // Valid procedure declaration/definition tokens
+  while (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
+         tokenSignCodeMatchAny(&parser->token, 2, DEF, PROT)) {
+    enum SYNTAX_ERROR error = declDefProc(parser);
+    if (error) {
+      return error;
+    }
+  }
+
+  if (!(tokenCategoryMatchAll(&parser->token, 1, END_OF_FILE))) {
+    return INVALID_PROG_START_KEYWORD;
+  }
+
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
+  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
+      tokenSignCodeMatchAny(&parser->token, 1, DEF)) {
+    consumeTokenFrom(parser);
+    enum SYNTAX_ERROR error = declDef(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
+      tokenSignCodeMatchAny(&parser->token, 1, PROT)) {
+    consumeTokenFrom(parser);
+    enum SYNTAX_ERROR error = declProt(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  return NO_ERROR;
+}
 
 enum SYNTAX_ERROR op_rel(struct Parser *parser) {
   if (parser->token.category != SIGN ||
@@ -92,35 +146,6 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
-  return NO_ERROR;
-}
-
-/**
- * prog accepts repetitions of declarations of variables (decl_list_var), or
- * procedures (decl_list_proc).
- */
-enum SYNTAX_ERROR prog(struct Parser *parser) {
-  // Both declaration of variables and procedures start with reserved words.
-  if (parser->token.category == RSV) {
-    // Valid variable declaration start tokens
-    while (parser->token.signCode == CONST || parser->token.signCode == CHAR ||
-           parser->token.signCode == INT || parser->token.signCode == REAL ||
-           parser->token.signCode == BOOL) {
-      enum SYNTAX_ERROR error = declListVar(parser);
-      if (error != NO_ERROR) {
-        return error;
-      }
-    }
-    // Valid procedure declaration/definition tokens
-    while (parser->token.signCode == DEF || parser->token.signCode == PROT) {
-      enum SYNTAX_ERROR error = declDefProc(parser);
-      if (error != NO_ERROR) {
-        return error;
-      }
-    }
-  } else {
-    return INVALID_PROG_START_KEYWORD;
-  }
   return NO_ERROR;
 }
 
@@ -235,30 +260,6 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   if (isArray || isAssignment) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  return NO_ERROR;
-}
-
-enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
-  bool isDef = false;
-  if (parser->token.signCode == DEF) {
-    isDef = true;
-  }
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-
-  // is def
-  if (isDef) {
-    enum SYNTAX_ERROR error = declDef(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-    // is prot
-  } else {
-    enum SYNTAX_ERROR error = declProt(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
   }
 
   return NO_ERROR;
@@ -503,7 +504,9 @@ enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
           return error;
         }
       } while (
-          !(parser->token.category == RSV && (parser->token.signCode == ELSE || parser->token.signCode == ELIF || parser->token.signCode == ENDI)));
+          !(parser->token.category == RSV &&
+            (parser->token.signCode == ELSE || parser->token.signCode == ELIF ||
+             parser->token.signCode == ENDI)));
     }
   } while (parser->token.category == RSV && parser->token.signCode == ELIF);
 
@@ -792,14 +795,12 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
   }
 
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
-    return INVALID_PROTO_PAREN_OPEN;
-  }
-
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  enum SYNTAX_ERROR error = declProtParam(parser);
-  if (error != NO_ERROR) {
-    return error;
+  if (parser->token.category == SIGN && parser->token.signCode == OPEN_PAR) {
+    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+    enum SYNTAX_ERROR error = declProtParam(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
   }
 
   if (!(parser->token.category == SIGN &&
