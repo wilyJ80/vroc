@@ -344,6 +344,98 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
   return NO_ERROR;
 }
 
+enum SYNTAX_ERROR cmd(struct Parser *parser) {
+  enum SIGN sign = parser->token.signCode;
+  consumeTokenFrom(parser);
+
+  enum SYNTAX_ERROR error;
+  switch (sign) {
+  GETINT:
+    if (!(tokenCategoryMatchAny(parser, 1, ID))) {
+      return NO_GETINT_ID;
+    }
+    consumeTokenFrom(parser);
+    break;
+  GETREAL:
+    if (!(tokenCategoryMatchAny(parser, 1, ID))) {
+      return NO_GETREAL_ID;
+    }
+    consumeTokenFrom(parser);
+    break;
+  GETCHAR:
+    if (!(tokenCategoryMatchAny(parser, 1, ID))) {
+      return NO_GETCHAR_ID;
+    }
+    consumeTokenFrom(parser);
+    break;
+  GETSTR:
+    if (!(tokenCategoryMatchAny(parser, 1, ID))) {
+      return NO_GETSTR_ID;
+    }
+    consumeTokenFrom(parser);
+    break;
+  PUTINT:
+    if (!(tokenCategoryMatchAny(parser, 2, ID, INTCON))) {
+      return INVALID_PUTINT_ELEMENT;
+    }
+    consumeTokenFrom(parser);
+    break;
+  PUTREAL:
+    if (!(tokenCategoryMatchAny(parser, 2, ID, REALCON))) {
+      return INVALID_PUTREAL_ELEMENT;
+    }
+    consumeTokenFrom(parser);
+    break;
+  PUTCHAR:
+    if (!(tokenCategoryMatchAny(parser, 2, ID, CHARCON))) {
+      return INVALID_PUTCHAR_ELEMENT;
+    }
+    consumeTokenFrom(parser);
+    break;
+  PUTSTR:
+    if (!(tokenCategoryMatchAny(parser, 2, ID, STRINGCON))) {
+      return INVALID_PUTSTR_ELEMENT;
+    }
+    consumeTokenFrom(parser);
+    break;
+  DO:
+    error = cmdDo(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+    break;
+  WHILE:
+    error = cmdWhile(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+    break;
+  VAR:
+    error = cmdVar(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+    break;
+  IF:
+    error = cmdIf(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+    break;
+  ID:
+    error = cmdAtrib(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+    break;
+  default:
+    break;
+  }
+
+  // getout: nothing needed?
+  return NO_ERROR;
+}
+
 enum SYNTAX_ERROR op_rel(struct Parser *parser) {
   if (parser->token.category != SIGN ||
       !(parser->token.signCode == COMPARISON ||
@@ -430,116 +522,6 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
     }
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
-
-  return NO_ERROR;
-}
-
-enum SYNTAX_ERROR cmd(struct Parser *parser) {
-  if (parser->token.signCode == GETINT) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID)) {
-      return NO_GETINT_ID;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == GETREAL) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID)) {
-      return NO_GETREAL_ID;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == GETCHAR) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID)) {
-      return NO_GETCHAR_ID;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == GETSTR) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID)) {
-      return NO_GETSTR_ID;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == PUTINT) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID || parser->token.category == INTCON)) {
-      return INVALID_PUTINT_ELEMENT;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == PUTREAL) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID || parser->token.category == REALCON)) {
-      return INVALID_PUTREAL_ELEMENT;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == PUTCHAR) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID || parser->token.category == CHARCON)) {
-      return INVALID_PUTCHAR_ELEMENT;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == PUTSTR) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == ID ||
-          parser->token.category == STRINGCON)) {
-      return INVALID_PUTSTR_ELEMENT;
-    }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (parser->token.signCode == DO) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    enum SYNTAX_ERROR error = cmdDo(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  if (parser->token.signCode == WHILE) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    enum SYNTAX_ERROR error = cmdWhile(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  if (parser->token.signCode == VAR) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    enum SYNTAX_ERROR error = cmdVar(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  if (parser->token.signCode == IF) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    enum SYNTAX_ERROR error = cmdIf(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  if (parser->token.category == ID) {
-    enum SYNTAX_ERROR error = cmdAtrib(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  // getout: nothing needed?
 
   return NO_ERROR;
 }
