@@ -54,6 +54,11 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
   consumeTokenFrom(parser);
 
   do {
+    // consume comma from subsequent iterations
+    if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, COMMA)) {
+      consumeTokenFrom(parser);
+    }
     enum SYNTAX_ERROR error = declVar(parser);
     if (error) {
       return error;
@@ -109,6 +114,11 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
   }
 
   do {
+    // consume comma from subsequent iterations
+    if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, COMMA)) {
+      consumeTokenFrom(parser);
+    }
     enum SYNTAX_ERROR error = declVarArrayInit(parser);
     if (error) {
       return error;
@@ -179,6 +189,11 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   bool somethingInside = false;
 
   do {
+    // consume comma from subsequent iterations
+    if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, COMMA)) {
+      consumeTokenFrom(parser);
+    }
     if (tokenCategoryMatchAll(parser, 1, SIGN) &&
         tokenSignCodeMatchAny(parser, 1, REF)) {
       paramMandatory = true;
