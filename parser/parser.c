@@ -266,7 +266,7 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
   consumeTokenFrom(parser);
 
   // is declListVar
-  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
       tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL, BOOL)) {
     enum SYNTAX_ERROR error = declListVar(parser);
     if (error) {
@@ -275,7 +275,7 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
   }
 
   // is cmd
-  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
       tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
                             GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL, PUTCHAR,
                             PUTSTR, ID)) {
