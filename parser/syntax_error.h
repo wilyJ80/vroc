@@ -4,6 +4,7 @@
 #include "../lexer/types.h"
 #include <stdbool.h>
 
+// WARNING: not all are being used
 enum SYNTAX_ERROR {
   NO_ERROR,
   // prog

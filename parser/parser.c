@@ -70,6 +70,80 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
   return NO_ERROR;
 }
 
+enum SYNTAX_ERROR declVar(struct Parser *parser) {
+  if (!(tokenCategoryMatchAll(&parser->token, 1, ID))) {
+    return NO_VAR_ID;
+  }
+  consumeTokenFrom(parser);
+
+  // simple variable assignment
+  if (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+      tokenSignCodeMatchAny(&parser->token, 1, ASSIGN)) {
+    consumeTokenFrom(parser);
+
+    if (!(tokenCategoryMatchAll(&parser->token, 3, INTCON, REALCON, CHARCON))) {
+      return INVALID_VAR_TYPE_INIT;
+    }
+
+    return NO_ERROR;
+  }
+
+  // the following is related to array variable: single variable returned early
+  // above
+  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+         tokenSignCodeMatchAny(&parser->token, 1, OPEN_BRACK)) {
+    consumeTokenFrom(parser);
+    if (!(tokenCategoryMatchAll(&parser->token, 2, INTCON, ID))) {
+      return INVALID_ARRAY_SUBSCRIPT_DEC;
+    }
+    consumeTokenFrom(parser);
+    if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+          tokenSignCodeMatchAny(&parser->token, 1, CLOSE_BRACK))) {
+      return INVALID_ARRAY_BRACKET_DEC_CLOSE;
+    }
+    consumeTokenFrom(parser);
+  }
+
+  if (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+      tokenSignCodeMatchAny(&parser->token, 1, ASSIGN)) {
+    consumeTokenFrom(parser);
+    if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+          tokenSignCodeMatchAny(&parser->token, 1, OPEN_CURLY))) {
+      return INVALID_ARRAY_INIT_CURLY_OPEN;
+    }
+    consumeTokenFrom(parser);
+  }
+
+  enum SYNTAX_ERROR error = declVarArrayInit(parser);
+  if (error) {
+    return error;
+  }
+
+  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+         tokenSignCodeMatchAny(&parser->token, 1, COMMA)) {
+    enum SYNTAX_ERROR error = declVarArrayInit(parser);
+    if (error) {
+      return error;
+    }
+  }
+
+  if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) && tokenSignCodeMatchAny(&parser->token, 1, CLOSE_CURLY))) {
+    return INVALID_ARRAY_INIT_CURLY_CLOSE;
+  }
+
+  consumeTokenFrom(parser);
+  return NO_ERROR;
+}
+
+enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser) {
+  if (!(tokenCategoryMatchAll(&parser->token, 3, INTCON, REALCON, CHARCON))) {
+    return INVALID_ARRAY_TYPE_INIT;
+  }
+
+  consumeTokenFrom(parser);
+  return NO_ERROR;
+}
+
 enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
   if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
       tokenSignCodeMatchAny(&parser->token, 1, DEF)) {
@@ -241,91 +315,6 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
           parser->token.signCode == CLOSE_BRACK)) {
       return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
     }
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  return NO_ERROR;
-}
-
-// HACK: This looks BAD !!!
-enum SYNTAX_ERROR declVar(struct Parser *parser) {
-  if (parser->token.category != ID) {
-    return NO_VAR_ID;
-  }
-
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  bool isArray = false;
-  bool isAssignment = false;
-  int arrayDimensions = 0;
-  // is array
-  if (parser->token.category == SIGN && parser->token.signCode == OPEN_BRACK) {
-    isArray = true;
-    while (parser->token.category == SIGN &&
-           parser->token.signCode == OPEN_BRACK) {
-      arrayDimensions++;
-      if (arrayDimensions > MAX_ARRAY_DIMENSIONS) {
-        return INVALID_ARRAY_DIMENSION_DECLARATION;
-      }
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-
-      if (!(parser->token.category == INTCON || parser->token.category == ID)) {
-        return INVALID_ARRAY_SUBSCRIPT_DEC;
-      }
-
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      if (!(parser->token.category == SIGN &&
-            parser->token.signCode == CLOSE_BRACK)) {
-        return INVALID_ARRAY_BRACKET_DEC_CLOSE;
-      } else {
-        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      }
-    }
-  }
-
-  // assignment
-  if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
-    isAssignment = true;
-    if (isArray) {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      if (!(parser->token.category == SIGN &&
-            parser->token.signCode == OPEN_CURLY)) {
-        return INVALID_ARRAY_INIT_CURLY_OPEN;
-      }
-
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-
-      while (true) {
-        if (!(parser->token.category == INTCON ||
-              parser->token.category == REALCON ||
-              parser->token.category == CHARCON)) {
-          return INVALID_ARRAY_TYPE_INIT;
-        }
-
-        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-        if (parser->token.category == SIGN && parser->token.signCode == COMMA) {
-          parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-          continue;
-
-        } else if (parser->token.category == SIGN &&
-                   parser->token.signCode == CLOSE_CURLY) {
-          break;
-
-        } else {
-          return INVALID_ARRAY_INIT_CURLY_CLOSE;
-        }
-      }
-
-    } else {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      if (!(parser->token.category == INTCON ||
-            parser->token.category == REALCON ||
-            parser->token.category == CHARCON)) {
-        return INVALID_VAR_TYPE_INIT;
-      }
-    }
-  }
-
-  if (isArray || isAssignment) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 

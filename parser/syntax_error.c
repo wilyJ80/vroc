@@ -9,6 +9,7 @@
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 
+// WARNING: not all are being used
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
       {NO_ERROR, "No syntax errors"},
