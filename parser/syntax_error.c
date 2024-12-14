@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 91
+#define ERROR_QTY 92
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -44,6 +44,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_PROTO_ID, "No ID found for function prototype"},
       {INVALID_PROTO_PAREN_OPEN, "No opening paren in function prototype"},
       {INVALID_PROTO_PAREN_CLOSE, "No closing paren in function prototype"},
+      {NO_PROTO_TYPE_AFTER_REF,
+       "No prototype paramater type found after & token"},
       {INVALID_PROTO_PARAM_TYPE,
        "Invalid parameter type for function prototype"},
       {NO_PROTO_VALID_TOKEN_AFTER_TYPE, "No valid token found after function "
