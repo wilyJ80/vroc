@@ -14,8 +14,7 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
   // Both declaration of variables and procedures start with reserved words.
   // Valid variable declaration start tokens
   while (tokenCategoryMatchAll(parser, 1, RSV) &&
-         (tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL,
-                                BOOL))) {
+         (tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL, BOOL))) {
     enum SYNTAX_ERROR error = declListVar(parser);
     if (error) {
       return error;
@@ -127,7 +126,8 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
     }
   }
 
-  if (!(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, CLOSE_CURLY))) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_CURLY))) {
     return INVALID_ARRAY_INIT_CURLY_CLOSE;
   }
 
@@ -231,6 +231,62 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   return NO_ERROR;
 }
 
+enum SYNTAX_ERROR declDef(struct Parser *parser) {
+  if (!(tokenCategoryMatchAll(parser, 1, ID) ||
+        (tokenCategoryMatchAll(parser, 1, RSV) &&
+         tokenSignCodeMatchAny(parser, 1, INIT)))) {
+    return NO_DEF_ID;
+  }
+
+  consumeTokenFrom(parser);
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
+    return INVALID_DEF_PAREN_OPEN;
+  }
+
+  consumeTokenFrom(parser);
+  enum SYNTAX_ERROR error = declDefParam(parser);
+  if (error) {
+    return error;
+  }
+
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
+    return INVALID_DEF_PAREN_CLOSE;
+  }
+
+  // can be endp, declListVar, or cmd
+  consumeTokenFrom(parser);
+
+  // is declListVar
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL, BOOL)) {
+    enum SYNTAX_ERROR error = declListVar(parser);
+    if (error) {
+      return error;
+    }
+  }
+
+  // is cmd
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                            GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL, PUTCHAR,
+                            PUTSTR, ID)) {
+    enum SYNTAX_ERROR error = cmd(parser);
+    if (error) {
+      return error;
+    }
+  }
+
+  // is endp
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 1, ENDP))) {
+    return NO_DEF_END_KEYWORD;
+  }
+
+  return NO_ERROR;
+}
+
 enum SYNTAX_ERROR op_rel(struct Parser *parser) {
   if (parser->token.category != SIGN ||
       !(parser->token.signCode == COMPARISON ||
@@ -316,82 +372,6 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
       return INVALID_FACTOR_ARRAY_BRACKET_CLOSE;
     }
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  return NO_ERROR;
-}
-
-enum SYNTAX_ERROR declDef(struct Parser *parser) {
-  if (!(parser->token.category == ID || parser->token.signCode == INIT)) {
-    return NO_DEF_ID;
-  }
-
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
-    return INVALID_DEF_PAREN_OPEN;
-  }
-
-  // valid param loop
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  enum SYNTAX_ERROR error = declDefParam(parser);
-  if (error != NO_ERROR) {
-    return error;
-  }
-
-  // can be endp, declListVar, or cmd
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == ID ||
-        (parser->token.category == RSV &&
-         (parser->token.signCode == CONST || parser->token.signCode == INT ||
-          parser->token.signCode == CHAR || parser->token.signCode == REAL ||
-          parser->token.signCode == BOOL || parser->token.signCode == WHILE ||
-          parser->token.signCode == VAR || parser->token.signCode == IF ||
-          parser->token.signCode == GETOUT ||
-          parser->token.signCode == GETINT ||
-          parser->token.signCode == GETREAL ||
-          parser->token.signCode == GETCHAR ||
-          parser->token.signCode == GETSTR ||
-          parser->token.signCode == PUTINT ||
-          parser->token.signCode == PUTREAL ||
-          parser->token.signCode == PUTCHAR ||
-          parser->token.signCode == PUTSTR || parser->token.signCode == ENDP ||
-          parser->token.signCode == DO)))) {
-    return NO_DEF_VALID_TOKEN_AFTER_PAREN;
-  }
-
-  // is decl_list_var
-  if (parser->token.signCode == CONST || parser->token.signCode == CHAR ||
-      parser->token.signCode == INT || parser->token.signCode == REAL ||
-      parser->token.signCode == BOOL) {
-    enum SYNTAX_ERROR error = declListVar(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  // is cmd
-  if (parser->token.category == RSV &&
-          (parser->token.signCode == DO || parser->token.signCode == WHILE ||
-           parser->token.signCode == VAR || parser->token.signCode == IF ||
-           parser->token.signCode == GETOUT ||
-           parser->token.signCode == GETINT ||
-           parser->token.signCode == GETREAL ||
-           parser->token.signCode == GETCHAR ||
-           parser->token.signCode == GETSTR ||
-           parser->token.signCode == PUTINT ||
-           parser->token.signCode == PUTREAL ||
-           parser->token.signCode == PUTCHAR ||
-           parser->token.signCode == PUTSTR) ||
-      parser->token.category == ID) {
-    enum SYNTAX_ERROR error = cmd(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  // is endp
-  if (!(parser->token.category == RSV && parser->token.signCode == ENDP)) {
-    return NO_DEF_END_KEYWORD;
   }
 
   return NO_ERROR;
