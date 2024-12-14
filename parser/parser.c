@@ -38,6 +38,38 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
   return NO_ERROR;
 }
 
+/** decl_list_var accepts optionally a `const`, followed by variable type,
+ * and
+declaration of one or more variables.*/
+enum SYNTAX_ERROR declListVar(struct Parser *parser) {
+  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
+      tokenSignCodeMatchAny(&parser->token, 1, CONST)) {
+    consumeTokenFrom(parser);
+  }
+
+  if (!(tokenCategoryMatchAll(&parser->token, 1, RSV) &&
+        tokenSignCodeMatchAny(&parser->token, 4, INT, REAL, CHAR, BOOL))) {
+    return INVALID_TYPE;
+  }
+
+  consumeTokenFrom(parser);
+  enum SYNTAX_ERROR error = declVar(parser);
+  if (error) {
+    return error;
+  }
+
+  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
+         tokenSignCodeMatchAny(&parser->token, 1, COMMA)) {
+    consumeTokenFrom(parser);
+    enum SYNTAX_ERROR error = declVar(parser);
+    if (error != NO_ERROR) {
+      return error;
+    }
+  }
+
+  return NO_ERROR;
+}
+
 enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
   if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
       tokenSignCodeMatchAny(&parser->token, 1, DEF)) {
@@ -212,37 +244,6 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
     parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
   }
 
-  return NO_ERROR;
-}
-
-/** decl_list_var accepts optionally a `const`, followed by variable type,
- * and
-declaration of one or more variables.*/
-enum SYNTAX_ERROR declListVar(struct Parser *parser) {
-  if (parser->token.signCode == CONST) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  }
-
-  if (!(parser->token.category == RSV &&
-        (parser->token.signCode == INT || parser->token.signCode == REAL ||
-         parser->token.signCode == CHAR || parser->token.signCode == BOOL))) {
-    return INVALID_TYPE;
-  }
-
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  enum SYNTAX_ERROR error = declVar(parser);
-  if (error != NO_ERROR) {
-    return error;
-  }
-  // handle multiple variable declarations here
-  // parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  while (parser->token.category == SIGN && parser->token.signCode == COMMA) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    enum SYNTAX_ERROR error = declVar(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
   return NO_ERROR;
 }
 
