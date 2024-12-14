@@ -108,18 +108,13 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
     consumeTokenFrom(parser);
   }
 
-  enum SYNTAX_ERROR error = declVarArrayInit(parser);
-  if (error) {
-    return error;
-  }
-
-  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
-         tokenSignCodeMatchAny(parser, 1, COMMA)) {
+  do {
     enum SYNTAX_ERROR error = declVarArrayInit(parser);
     if (error) {
       return error;
     }
-  }
+  } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+           tokenSignCodeMatchAny(parser, 1, COMMA));
 
   if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
         tokenSignCodeMatchAny(parser, 1, CLOSE_CURLY))) {
