@@ -85,6 +85,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
       return INVALID_VAR_TYPE_INIT;
     }
 
+    consumeTokenFrom(parser);
     return NO_ERROR;
   }
 
@@ -102,37 +103,39 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
       return INVALID_ARRAY_BRACKET_DEC_CLOSE;
     }
     consumeTokenFrom(parser);
-  }
 
-  if (tokenCategoryMatchAll(parser, 1, SIGN) &&
-      tokenSignCodeMatchAny(parser, 1, ASSIGN)) {
-    consumeTokenFrom(parser);
-    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
-          tokenSignCodeMatchAny(parser, 1, OPEN_CURLY))) {
-      return INVALID_ARRAY_INIT_CURLY_OPEN;
-    }
-    consumeTokenFrom(parser);
-  }
-
-  do {
-    // consume comma from subsequent iterations
     if (tokenCategoryMatchAll(parser, 1, SIGN) &&
-        tokenSignCodeMatchAny(parser, 1, COMMA)) {
+        tokenSignCodeMatchAny(parser, 1, ASSIGN)) {
+      consumeTokenFrom(parser);
+      if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+            tokenSignCodeMatchAny(parser, 1, OPEN_CURLY))) {
+        return INVALID_ARRAY_INIT_CURLY_OPEN;
+      }
       consumeTokenFrom(parser);
     }
-    enum SYNTAX_ERROR error = declVarArrayInit(parser);
-    if (error) {
-      return error;
-    }
-  } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
-           tokenSignCodeMatchAny(parser, 1, COMMA));
 
-  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
-        tokenSignCodeMatchAny(parser, 1, CLOSE_CURLY))) {
-    return INVALID_ARRAY_INIT_CURLY_CLOSE;
+    do {
+      // consume comma from subsequent iterations
+      if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, COMMA)) {
+        consumeTokenFrom(parser);
+      }
+      enum SYNTAX_ERROR error = declVarArrayInit(parser);
+      if (error) {
+        return error;
+      }
+    } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+             tokenSignCodeMatchAny(parser, 1, COMMA));
+
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, CLOSE_CURLY))) {
+      return INVALID_ARRAY_INIT_CURLY_CLOSE;
+    }
+
+    consumeTokenFrom(parser);
+    return NO_ERROR;
   }
 
-  consumeTokenFrom(parser);
   return NO_ERROR;
 }
 
