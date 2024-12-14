@@ -175,13 +175,15 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
-  do {
-    bool paramMandatory = false;
+  bool paramMandatory = false;
+  bool somethingInside = false;
 
+  do {
     if (tokenCategoryMatchAll(parser, 1, SIGN) &&
         tokenSignCodeMatchAny(parser, 1, REF)) {
       paramMandatory = true;
       consumeTokenFrom(parser);
+      somethingInside = true;
     }
 
     if (paramMandatory &&
@@ -193,6 +195,7 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
     if (tokenCategoryMatchAll(parser, 1, RSV) &&
         tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL)) {
       consumeTokenFrom(parser);
+      somethingInside = true;
 
       while (tokenCategoryMatchAll(parser, 1, SIGN) &&
              tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
@@ -209,6 +212,9 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
            tokenSignCodeMatchAny(parser, 1, COMMA));
 
+  if (!somethingInside) {
+    consumeTokenFrom(parser);
+  }
   if (!(tokenCategoryMatchAll(parser, 1, CLOSE_PAR))) {
     return NO_FUNCTION_END_PAREN_CLOSE;
   }
