@@ -13,8 +13,8 @@
 enum SYNTAX_ERROR prog(struct Parser *parser) {
   // Both declaration of variables and procedures start with reserved words.
   // Valid variable declaration start tokens
-  while (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-         (tokenSignCodeMatchAny(&parser->token, 5, CONST, CHAR, INT, REAL,
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+         (tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL,
                                 BOOL))) {
     enum SYNTAX_ERROR error = declListVar(parser);
     if (error) {
@@ -22,8 +22,8 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
     }
   }
   // Valid procedure declaration/definition tokens
-  while (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-         tokenSignCodeMatchAny(&parser->token, 2, DEF, PROT)) {
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+         tokenSignCodeMatchAny(parser, 2, DEF, PROT)) {
     enum SYNTAX_ERROR error = declDefProc(parser);
     if (error) {
       return error;
@@ -31,7 +31,7 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
   }
 
   // anything other than eof
-  if (!(tokenCategoryMatchAll(&parser->token, 1, END_OF_FILE))) {
+  if (!(tokenCategoryMatchAll(parser, 1, END_OF_FILE))) {
     return INVALID_PROG_START_KEYWORD;
   }
 
@@ -42,13 +42,13 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
  * and
 declaration of one or more variables.*/
 enum SYNTAX_ERROR declListVar(struct Parser *parser) {
-  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-      tokenSignCodeMatchAny(&parser->token, 1, CONST)) {
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 1, CONST)) {
     consumeTokenFrom(parser);
   }
 
-  if (!(tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-        tokenSignCodeMatchAny(&parser->token, 4, INT, REAL, CHAR, BOOL))) {
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 4, INT, REAL, CHAR, BOOL))) {
     return INVALID_TYPE;
   }
 
@@ -58,8 +58,8 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
     return error;
   }
 
-  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-         tokenSignCodeMatchAny(&parser->token, 1, COMMA)) {
+  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+         tokenSignCodeMatchAny(parser, 1, COMMA)) {
     consumeTokenFrom(parser);
     enum SYNTAX_ERROR error = declVar(parser);
     if (error != NO_ERROR) {
@@ -71,17 +71,17 @@ enum SYNTAX_ERROR declListVar(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declVar(struct Parser *parser) {
-  if (!(tokenCategoryMatchAll(&parser->token, 1, ID))) {
+  if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_VAR_ID;
   }
   consumeTokenFrom(parser);
 
   // simple variable assignment
-  if (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-      tokenSignCodeMatchAny(&parser->token, 1, ASSIGN)) {
+  if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+      tokenSignCodeMatchAny(parser, 1, ASSIGN)) {
     consumeTokenFrom(parser);
 
-    if (!(tokenCategoryMatchAll(&parser->token, 3, INTCON, REALCON, CHARCON))) {
+    if (!(tokenCategoryMatchAll(parser, 3, INTCON, REALCON, CHARCON))) {
       return INVALID_VAR_TYPE_INIT;
     }
 
@@ -90,25 +90,25 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   // the following is related to array variable: single variable returned early
   // above
-  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-         tokenSignCodeMatchAny(&parser->token, 1, OPEN_BRACK)) {
+  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+         tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
     consumeTokenFrom(parser);
-    if (!(tokenCategoryMatchAll(&parser->token, 2, INTCON, ID))) {
+    if (!(tokenCategoryMatchAll(parser, 2, INTCON, ID))) {
       return INVALID_ARRAY_SUBSCRIPT_DEC;
     }
     consumeTokenFrom(parser);
-    if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-          tokenSignCodeMatchAny(&parser->token, 1, CLOSE_BRACK))) {
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
       return INVALID_ARRAY_BRACKET_DEC_CLOSE;
     }
     consumeTokenFrom(parser);
   }
 
-  if (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-      tokenSignCodeMatchAny(&parser->token, 1, ASSIGN)) {
+  if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+      tokenSignCodeMatchAny(parser, 1, ASSIGN)) {
     consumeTokenFrom(parser);
-    if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-          tokenSignCodeMatchAny(&parser->token, 1, OPEN_CURLY))) {
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, OPEN_CURLY))) {
       return INVALID_ARRAY_INIT_CURLY_OPEN;
     }
     consumeTokenFrom(parser);
@@ -119,15 +119,15 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
     return error;
   }
 
-  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-         tokenSignCodeMatchAny(&parser->token, 1, COMMA)) {
+  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+         tokenSignCodeMatchAny(parser, 1, COMMA)) {
     enum SYNTAX_ERROR error = declVarArrayInit(parser);
     if (error) {
       return error;
     }
   }
 
-  if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) && tokenSignCodeMatchAny(&parser->token, 1, CLOSE_CURLY))) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, CLOSE_CURLY))) {
     return INVALID_ARRAY_INIT_CURLY_CLOSE;
   }
 
@@ -136,7 +136,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser) {
-  if (!(tokenCategoryMatchAll(&parser->token, 3, INTCON, REALCON, CHARCON))) {
+  if (!(tokenCategoryMatchAll(parser, 3, INTCON, REALCON, CHARCON))) {
     return INVALID_ARRAY_TYPE_INIT;
   }
 
@@ -145,8 +145,8 @@ enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
-  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-      tokenSignCodeMatchAny(&parser->token, 1, DEF)) {
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 1, DEF)) {
     consumeTokenFrom(parser);
     enum SYNTAX_ERROR error = declDef(parser);
     if (error) {
@@ -154,8 +154,8 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
     }
   }
 
-  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-      tokenSignCodeMatchAny(&parser->token, 1, PROT)) {
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 1, PROT)) {
     consumeTokenFrom(parser);
     enum SYNTAX_ERROR error = declProt(parser);
     if (error) {
@@ -167,13 +167,13 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declProt(struct Parser *parser) {
-  if (!(tokenCategoryMatchAll(&parser->token, 1, ID))) {
+  if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_PROTO_ID;
   }
 
   consumeTokenFrom(parser);
-  if (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-      tokenSignCodeMatchAny(&parser->token, 1, OPEN_PAR)) {
+  if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+      tokenSignCodeMatchAny(parser, 1, OPEN_PAR)) {
     consumeTokenFrom(parser);
     enum SYNTAX_ERROR error = declProtParam(parser);
     if (error) {
@@ -187,43 +187,43 @@ enum SYNTAX_ERROR declProt(struct Parser *parser) {
 enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
   bool paramMandatory = false;
 
-  if (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-      tokenSignCodeMatchAny(&parser->token, 1, REF)) {
+  if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+      tokenSignCodeMatchAny(parser, 1, REF)) {
     paramMandatory = true;
     consumeTokenFrom(parser);
   }
 
   if (paramMandatory &&
-      !(tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-        tokenSignCodeMatchAny(&parser->token, 4, CHAR, INT, REAL, BOOL))) {
+      !(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL))) {
     return NO_PROTO_TYPE_AFTER_REF;
   }
 
-  if (tokenCategoryMatchAll(&parser->token, 1, RSV) &&
-      tokenSignCodeMatchAny(&parser->token, 4, CHAR, INT, REAL, BOOL)) {
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL)) {
     consumeTokenFrom(parser);
   }
 
-  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-         tokenSignCodeMatchAny(&parser->token, 1, OPEN_BRACK)) {
+  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+         tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
     consumeTokenFrom(parser);
 
-    if (!(tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-          tokenSignCodeMatchAny(&parser->token, 1, CLOSE_BRACK))) {
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
       return INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE;
     }
     consumeTokenFrom(parser);
   }
 
-  while (tokenCategoryMatchAll(&parser->token, 1, SIGN) &&
-         tokenSignCodeMatchAny(&parser->token, 1, COMMA)) {
+  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+         tokenSignCodeMatchAny(parser, 1, COMMA)) {
     enum SYNTAX_ERROR error = declProtParam(parser);
     if (error) {
       return error;
     }
   }
 
-  if (!(tokenCategoryMatchAll(&parser->token, 1, CLOSE_PAR))) {
+  if (!(tokenCategoryMatchAll(parser, 1, CLOSE_PAR))) {
     return NO_FUNCTION_END_PAREN_CLOSE;
   }
   consumeTokenFrom(parser);

@@ -8,12 +8,12 @@ void consumeTokenFrom(struct Parser *parser) {
   parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
 }
 
-bool tokenCategoryMatchAll(struct Token *token, int matchCount, ...) {
+bool tokenCategoryMatchAll(struct Parser *parser, int matchCount, ...) {
   va_list va;
   va_start(va, matchCount);
 
   for (int i = 0; i < matchCount; i++) {
-    if (token->category != va_arg(va, int)) {
+    if (parser->token.category != va_arg(va, int)) {
       va_end(va);
       return false;
     }
@@ -23,13 +23,13 @@ bool tokenCategoryMatchAll(struct Token *token, int matchCount, ...) {
   return true;
 }
 
-bool tokenSignCodeMatchAny(struct Token *token, int matchCount, ...) {
+bool tokenSignCodeMatchAny(struct Parser *parser, int matchCount, ...) {
   va_list va;
   va_start(va, matchCount);
   bool foundOne = false;
 
   for (int i = 0; i < matchCount; i++) {
-    if (token->signCode == va_arg(va, int)) {
+    if (parser->token.signCode == va_arg(va, int)) {
       foundOne = true;
     }
   }
