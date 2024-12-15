@@ -705,28 +705,30 @@ enum SYNTAX_ERROR cmdWhile(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN &&
-        (parser->token.signCode == OPEN_BRACK ||
-         parser->token.signCode == ASSIGN))) {
-    return NO_ATRIB_VALID_TOKEN_AFTER_ID;
-  }
-
-  if (parser->token.category == SIGN && parser->token.signCode == ASSIGN) {
-    enum SYNTAX_ERROR error = fator(parser);
-    if (error != NO_ERROR) {
-      return error;
-    }
-  }
-
-  // arrayAtrib
-  while (parser->token.category == SIGN &&
-         parser->token.signCode == OPEN_BRACK) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  consumeTokenFrom(parser);
+  while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+         tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
+    consumeTokenFrom(parser);
     enum SYNTAX_ERROR error = expr(parser);
-    if (error != NO_ERROR) {
+    if (error) {
       return error;
     }
+
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
+      return NO_ATRIB_BRACKET_CLOSE;
+    }
+    consumeTokenFrom(parser);
+  }
+
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, ASSIGN))) {
+    return NO_ATRIB_ASSIGN;
+  }
+
+  enum SYNTAX_ERROR error = expr(parser);
+  if (error) {
+    return error;
   }
 
   return NO_ERROR;
