@@ -429,6 +429,7 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     }
     break;
   case GETOUT:
+    consumeTokenFrom(parser);
     break;
   default:
     break;
