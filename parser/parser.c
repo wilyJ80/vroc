@@ -631,32 +631,38 @@ enum SYNTAX_ERROR cmdVar(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdWhile(struct Parser *parser) {
-  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
     return INVALID_WHILE_PAREN_OPEN;
   }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  consumeTokenFrom(parser);
   enum SYNTAX_ERROR error = expr(parser);
-  if (error != NO_ERROR) {
+  if (error) {
     return error;
   }
 
-  if (!(parser->token.category == SIGN &&
-        parser->token.signCode == CLOSE_PAR)) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
     return INVALID_WHILE_PAREN_CLOSE;
   }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  enum SYNTAX_ERROR error2 = cmd(parser);
-  if (error2 != NO_ERROR) {
-    return error;
+  consumeTokenFrom(parser);
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+         tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                               GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                               PUTCHAR, PUTSTR, ID)) {
+    enum SYNTAX_ERROR error2 = cmd(parser);
+    if (error2) {
+      return error2;
+    }
   }
 
-  if (!(parser->token.category == RSV && parser->token.signCode == ENDW)) {
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) && tokenSignCodeMatchAny(parser, 1, ENDW))) {
     return NO_WHILE_END_KEYWORD;
   }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  consumeTokenFrom(parser);
   return NO_ERROR;
 }
 
@@ -695,27 +701,30 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
 
   // is id, ok... then it should open a paren
   consumeTokenFrom(parser);
-  if (!(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
     return INVALID_FUNCTION_CALL_PAREN_OPEN;
   }
 
   consumeTokenFrom(parser);
   do {
     // consume if comma from previous iteration
-    if (tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, COMMA)) {
+    if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, COMMA)) {
       consumeTokenFrom(parser);
     }
     enum SYNTAX_ERROR error = expr(parser);
-    if (error != NO_ERROR) {
+    if (error) {
       return error;
     }
   } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
 
   // check paren close
-  if(!(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
     return INVALID_FUNCTION_CALL_PAREN_CLOSE;
   }
-  
+
   consumeTokenFrom(parser);
   return NO_ERROR;
 }
