@@ -758,7 +758,8 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
     if (error) {
       return error;
     }
-  } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
+  } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
+           tokenSignCodeMatchAny(parser, 1, COMMA));
 
   // check paren close
   if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
@@ -771,28 +772,17 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR expr(struct Parser *parser) {
-  bool opRelFound = false;
   enum SYNTAX_ERROR error = exprSimp(parser);
-  if (error != NO_ERROR) {
+  if (error) {
     return error;
   }
 
-  // functions following expr should always carry over the next token!
-  if (parser->token.category == SIGN &&
-      (parser->token.signCode == COMPARISON ||
-       parser->token.signCode == DIFFERENT ||
-       parser->token.signCode == SMALLER_EQUAL ||
-       parser->token.signCode == SMALLER_THAN ||
-       parser->token.signCode == LARGER_EQUAL ||
-       parser->token.signCode == LARGER_THAN)) {
-    opRelFound = true;
-  }
-
-  // opRel is optional here
-  if (opRelFound) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (tokenCategoryMatchAll(parser, 1, SIGN) &&
+      tokenSignCodeMatchAny(parser, 6, COMPARISON, DIFFERENT, SMALLER_EQUAL,
+                            SMALLER_THAN, LARGER_EQUAL, LARGER_THAN)) {
+    consumeTokenFrom(parser);
     enum SYNTAX_ERROR error = exprSimp(parser);
-    if (error != NO_ERROR) {
+    if (error) {
       return error;
     }
   }
