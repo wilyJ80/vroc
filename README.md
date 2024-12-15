@@ -1,7 +1,7 @@
 [![C CI](https://github.com/wilyJ80/croc/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/wilyJ80/croc/actions/workflows/c-cpp.yml)
 
 - [X] Lexer
-- [ ] Parser
+- [X] Parser 😶
 - [ ] Tabela de simbolos
 - [ ] Analise Semantica
 
