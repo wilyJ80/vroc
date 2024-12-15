@@ -681,10 +681,10 @@ enum SYNTAX_ERROR cmdWhile(struct Parser *parser) {
   }
 
   consumeTokenFrom(parser);
-  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+  while (tokenCategoryMatchAll(parser, 1, ID) || (tokenCategoryMatchAll(parser, 1, RSV) &&
          tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
                                GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
-                               PUTCHAR, PUTSTR, ID)) {
+                               PUTCHAR, PUTSTR, ID))) {
     enum SYNTAX_ERROR error2 = cmd(parser);
     if (error2) {
       return error2;
