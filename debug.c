@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
   FILE *fd;
   int lineCount = 1;
 
-  fd = fopen("./doc/examples/code.proc", "r");
+  fd = fopen("./doc/examples/fatrec.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   int line = 1;
   lc = &line;
 
-  fd = fopen("./doc/examples/code.proc", "r");
+  fd = fopen("./doc/examples/fatrec.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
