@@ -1,9 +1,7 @@
 #include "parser.h"
-#include "../lexer/lexer.h"
 #include "../lexer/transition.h"
 #include "syntax_error.h"
 #include "token_cmp.h"
-#include <stdio.h>
 
 #define MAX_ARRAY_DIMENSIONS 2
 
