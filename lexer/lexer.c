@@ -116,7 +116,7 @@ struct Token lexerGetNextChar(FILE *fd, int *lineCount) {
       // State 30: accepting
       {},
       // State 31
-      {{32, isRef, SIGN, NOT_OTHER, REF}, {33, isNotRef, SIGN, IS_OTHER, AND}},
+      {{32, isRef, SIGN, NOT_OTHER, AND}, {33, isNotRef, SIGN, IS_OTHER, REF}},
       // State 32: accepting
       {},
       // State 33: accepting

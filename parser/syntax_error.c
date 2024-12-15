@@ -2,13 +2,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 91
+#define ERROR_QTY 93
 
 // ANSI escape codes
 #define RESET "\033[0m"
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 
+// WARNING: not all are being used
 void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
   struct ErrorMessage messages[ERROR_QTY] = {
       {NO_ERROR, "No syntax errors"},
@@ -44,6 +45,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_PROTO_ID, "No ID found for function prototype"},
       {INVALID_PROTO_PAREN_OPEN, "No opening paren in function prototype"},
       {INVALID_PROTO_PAREN_CLOSE, "No closing paren in function prototype"},
+      {NO_PROTO_TYPE_AFTER_REF,
+       "No prototype paramater type found after & token"},
       {INVALID_PROTO_PARAM_TYPE,
        "Invalid parameter type for function prototype"},
       {NO_PROTO_VALID_TOKEN_AFTER_TYPE, "No valid token found after function "
@@ -61,6 +64,7 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
       {NO_DEF_ID, "No valid ID for function definition"},
       {INVALID_DEF_PAREN_OPEN, "No valid paren open for function definition"},
       {INVALID_DEF_PAREN_CLOSE, "No valid paren close for function definition"},
+      {NO_DEF_TYPE_AFTER_REF, "No valid type detected after & token"},
       {INVALID_DEF_PARAM_TYPE,
        "No valid parameter type for function definition"},
       {NO_DEF_VALID_TOKEN_AFTER_ID, "No valid token after def id, expected "

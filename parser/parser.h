@@ -27,6 +27,8 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser);
 /*void tipo(FILE *fd, int *lineCount, struct Token token);*/
 enum SYNTAX_ERROR declVar(struct Parser *parser);
 
+enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser);
+
 enum SYNTAX_ERROR declProt(struct Parser *parser);
 
 enum SYNTAX_ERROR declProtParam(struct Parser *parser);
@@ -43,5 +45,15 @@ enum SYNTAX_ERROR getint(struct Parser *parser);
 
 enum SYNTAX_ERROR cmdDo(struct Parser *parser);
 enum SYNTAX_ERROR cmdAtrib(struct Parser *parser);
+enum SYNTAX_ERROR cmdWhile(struct Parser *parser);
+enum SYNTAX_ERROR cmdVar(struct Parser *parser);
+enum SYNTAX_ERROR cmdIf(struct Parser *parser);
+
+
+enum SYNTAX_ERROR exprSimp(struct Parser *parser);
+
+enum SYNTAX_ERROR termo(struct Parser *parser);
+
+enum SYNTAX_ERROR fator(struct Parser *parser);
 
 #endif
