@@ -585,10 +585,11 @@ enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
   if (tokenCategoryMatchAll(parser, 1, RSV) &&
       tokenSignCodeMatchAny(parser, 1, ELSE)) {
     consumeTokenFrom(parser);
-    while (tokenCategoryMatchAll(parser, 1, ID) || (tokenCategoryMatchAll(parser, 1, RSV) &&
-           tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
-                                 GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
-                                 PUTCHAR, PUTSTR, ID))) {
+    while (tokenCategoryMatchAll(parser, 1, ID) ||
+           (tokenCategoryMatchAll(parser, 1, RSV) &&
+            tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT,
+                                  GETINT, GETREAL, GETCHAR, GETSTR, PUTINT,
+                                  PUTREAL, PUTCHAR, PUTSTR, ID))) {
       enum SYNTAX_ERROR error = cmd(parser);
       if (error) {
         return error;
@@ -681,10 +682,11 @@ enum SYNTAX_ERROR cmdWhile(struct Parser *parser) {
   }
 
   consumeTokenFrom(parser);
-  while (tokenCategoryMatchAll(parser, 1, ID) || (tokenCategoryMatchAll(parser, 1, RSV) &&
-         tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
-                               GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
-                               PUTCHAR, PUTSTR, ID))) {
+  while (tokenCategoryMatchAll(parser, 1, ID) ||
+         (tokenCategoryMatchAll(parser, 1, RSV) &&
+          tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                                GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                                PUTCHAR, PUTSTR, ID))) {
     enum SYNTAX_ERROR error2 = cmd(parser);
     if (error2) {
       return error2;
