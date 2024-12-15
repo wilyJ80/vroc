@@ -528,64 +528,84 @@ enum SYNTAX_ERROR arrayFator(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
-  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
     return INVALID_IF_PAREN_OPEN;
   }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  consumeTokenFrom(parser);
   enum SYNTAX_ERROR error = expr(parser);
   if (error) {
     return error;
   }
 
-  if (!(parser->token.category == SIGN &&
-        parser->token.signCode == CLOSE_PAR)) {
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+        tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
     return INVALID_IF_PAREN_CLOSE;
   }
+  consumeTokenFrom(parser);
 
-  do {
-
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+         tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                               GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                               PUTCHAR, PUTSTR, ID)) {
     enum SYNTAX_ERROR error = cmd(parser);
-    if (error != NO_ERROR) {
+    if (error) {
       return error;
     }
+  }
 
-  } while (
-      !(parser->token.category == RSV &&
-        (parser->token.signCode == ELIF || parser->token.signCode == ELSE ||
-         parser->token.signCode == ENDI)));
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+         tokenSignCodeMatchAny(parser, 1, ELIF)) {
+    consumeTokenFrom(parser);
 
-  do {
-    if (parser->token.category == RSV && parser->token.signCode == ELIF) {
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      if (!(parser->token.category == SIGN &&
-            parser->token.signCode == OPEN_PAR)) {
-        return INVALID_ELIF_PAREN_OPEN;
-      }
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
+      return INVALID_ELIF_PAREN_OPEN;
+    }
 
-      parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-      enum SYNTAX_ERROR error = expr(parser);
-      if (error != NO_ERROR) {
+    consumeTokenFrom(parser);
+    enum SYNTAX_ERROR error = expr(parser);
+    if (error) {
+      return error;
+    }
+    if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
+          tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
+      return INVALID_ELIF_PAREN_CLOSE;
+    }
+    while (tokenCategoryMatchAll(parser, 1, RSV) &&
+           tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                                 GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                                 PUTCHAR, PUTSTR, ID)) {
+      enum SYNTAX_ERROR error = cmd(parser);
+      if (error) {
         return error;
       }
-
-      if (!(parser->token.category == SIGN &&
-            parser->token.signCode == CLOSE_PAR)) {
-        return INVALID_ELIF_PAREN_CLOSE;
-      }
-
-      do {
-        enum SYNTAX_ERROR error = cmd(parser);
-        if (error != NO_ERROR) {
-          return error;
-        }
-      } while (
-          !(parser->token.category == RSV &&
-            (parser->token.signCode == ELSE || parser->token.signCode == ELIF ||
-             parser->token.signCode == ENDI)));
     }
-  } while (parser->token.category == RSV && parser->token.signCode == ELIF);
+  }
 
+  // else is optional
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 1, ELSE)) {
+    consumeTokenFrom(parser);
+    while (tokenCategoryMatchAll(parser, 1, RSV) &&
+           tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                                 GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                                 PUTCHAR, PUTSTR, ID)) {
+      enum SYNTAX_ERROR error = cmd(parser);
+      if (error) {
+        return error;
+      }
+    }
+  }
+
+  consumeTokenFrom(parser);
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 1, ENDI))) {
+    return NO_IF_END_KEYWORD;
+  }
+
+  consumeTokenFrom(parser);
   return NO_ERROR;
 }
 
