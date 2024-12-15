@@ -1,7 +1,5 @@
 // Calcular fatorial iterativo
 
-prot a()
-
 def init()
 	int fat = 1, n = 1, z
 	getint n

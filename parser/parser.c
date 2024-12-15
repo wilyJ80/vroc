@@ -474,12 +474,15 @@ enum SYNTAX_ERROR fator(struct Parser *parser) {
     return NO_ERROR;
 
   } else if (tokenCategoryMatchAll(parser, 1, INTCON)) {
+    consumeTokenFrom(parser);
     return NO_ERROR;
 
   } else if (tokenCategoryMatchAll(parser, 1, REALCON)) {
+    consumeTokenFrom(parser);
     return NO_ERROR;
 
   } else if (tokenCategoryMatchAll(parser, 1, CHARCON)) {
+    consumeTokenFrom(parser);
     return NO_ERROR;
 
   } else if (tokenCategoryMatchAll(parser, 1, OPEN_PAR)) {
