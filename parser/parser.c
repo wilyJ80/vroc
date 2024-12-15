@@ -468,7 +468,6 @@ enum SYNTAX_ERROR fator(struct Parser *parser) {
       }
     }
 
-    consumeTokenFrom(parser);
     return NO_ERROR;
 
   } else if (tokenCategoryMatchAll(parser, 1, INTCON)) {
