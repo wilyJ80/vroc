@@ -1,5 +1,9 @@
-def f(int i)
-	if (i <= 1)
-		i = 1
-	endi
-endp
+// calcular fatorial recursivo 
+
+def fatorial(&int f, int n) 
+    if (n <= 1) f = 1 
+    else 
+        do fatorial(f, n-1) 
+        f = f*n 
+    endi 
+endp 

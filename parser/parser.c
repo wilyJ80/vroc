@@ -332,12 +332,12 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
       }
     }
 
+    if (!isArray && !isEmpty) {
+      consumeTokenFrom(parser);
+    }
+
   } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
            tokenSignCodeMatchAny(parser, 1, COMMA));
-
-  if (!isArray && !isEmpty) {
-    consumeTokenFrom(parser);
-  }
 
   if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
         tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {

@@ -1,7 +1,7 @@
 // calcular fatorial recursivo 
 
 prot fatorial (&int, int) 
-def init 
+def init()
     int n, fat 
     getint n 
     do fatorial(fat, n) 
