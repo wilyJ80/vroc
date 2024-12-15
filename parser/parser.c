@@ -434,7 +434,6 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
     break;
   }
 
-  // getout: nothing needed?
   return NO_ERROR;
 }
 
@@ -690,19 +689,22 @@ enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
-  if (!(parser->token.category == ID)) {
+  if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return INVALID_FUNCTION_CALL_ID;
   }
 
   // is id, ok... then it should open a paren
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN && parser->token.signCode == OPEN_PAR)) {
+  consumeTokenFrom(parser);
+  if (!(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, OPEN_PAR))) {
     return INVALID_FUNCTION_CALL_PAREN_OPEN;
   }
 
-  // do...
-
+  consumeTokenFrom(parser);
   do {
+    // consume if comma from previous iteration
+    if (tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, COMMA)) {
+      consumeTokenFrom(parser);
+    }
     enum SYNTAX_ERROR error = expr(parser);
     if (error != NO_ERROR) {
       return error;
@@ -710,12 +712,11 @@ enum SYNTAX_ERROR cmdDo(struct Parser *parser) {
   } while (parser->token.category == SIGN && parser->token.signCode == COMMA);
 
   // check paren close
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == SIGN &&
-        parser->token.signCode == CLOSE_PAR)) {
+  if(!(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {
     return INVALID_FUNCTION_CALL_PAREN_CLOSE;
   }
-
+  
+  consumeTokenFrom(parser);
   return NO_ERROR;
 }
 
