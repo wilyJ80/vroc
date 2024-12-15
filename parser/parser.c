@@ -428,6 +428,8 @@ enum SYNTAX_ERROR cmd(struct Parser *parser) {
       return error;
     }
     break;
+  case GETOUT:
+    break;
   default:
     break;
   }
