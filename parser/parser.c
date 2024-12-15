@@ -590,43 +590,60 @@ enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdVar(struct Parser *parser) {
-  if (!(parser->token.category == ID)) {
+  if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_FOR_ID;
   }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == RSV && parser->token.signCode == FROM)) {
+  consumeTokenFrom(parser);
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 1, FROM))) {
     return NO_FOR_FROM;
   }
 
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-  if (!(parser->token.category == RSV &&
-        (parser->token.signCode == TO || parser->token.signCode == DT))) {
-    return NO_FOR_TO_OR_DT;
-  }
-
-  parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  consumeTokenFrom(parser);
   enum SYNTAX_ERROR error = expr(parser);
-  if (error != NO_ERROR) {
+  if (error) {
     return error;
   }
 
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 2, TO, DT))) {
+    return NO_FOR_TO_OR_DT;
+  }
+
+  consumeTokenFrom(parser);
+  enum SYNTAX_ERROR error2 = expr(parser);
+  if (error2 != NO_ERROR) {
+    return error2;
+  }
+
   // optional by
-  if (parser->token.category == RSV && parser->token.signCode == BY) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    if (!(parser->token.category == INTCON || parser->token.category == ID)) {
+  if (tokenCategoryMatchAll(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 1, BY)) {
+    consumeTokenFrom(parser);
+    if (!(tokenCategoryMatchAny(parser, 2, INTCON, ID))) {
       return INVALID_FOR_BY_INC_OR_DEC_TYPE;
     }
+    consumeTokenFrom(parser);
   }
 
   // suggested change: do while token is valid cmd starter
-  do {
+  while (tokenCategoryMatchAll(parser, 1, RSV) &&
+         tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                               GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                               PUTCHAR, PUTSTR, ID)) {
+    enum SYNTAX_ERROR error = cmd(parser);
+    if (error) {
+      return error;
+    }
+  }
 
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-    enum SYNTAX_ERROR error2 = cmd(parser);
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 1, ENDV))) {
+    return NO_FOR_END_KEYWORD;
+  }
 
-  } while (!(parser->token.category == RSV && parser->token.signCode == ENDV));
-
+  consumeTokenFrom(parser);
   return NO_ERROR;
 }
 
@@ -658,7 +675,8 @@ enum SYNTAX_ERROR cmdWhile(struct Parser *parser) {
     }
   }
 
-  if (!(tokenCategoryMatchAll(parser, 1, RSV) && tokenSignCodeMatchAny(parser, 1, ENDW))) {
+  if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 1, ENDW))) {
     return NO_WHILE_END_KEYWORD;
   }
 
