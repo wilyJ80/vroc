@@ -349,6 +349,9 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmd(struct Parser *parser) {
+  if (tokenCategoryMatchAll(parser, 1, ID)) {
+    parser->token.signCode = ID;
+  }
   enum RESERVED sign = parser->token.signCode;
   consumeTokenFrom(parser);
 
@@ -536,10 +539,11 @@ enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
   }
   consumeTokenFrom(parser);
 
-  while (tokenCategoryMatchAll(parser, 1, RSV) &&
-         tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
-                               GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
-                               PUTCHAR, PUTSTR, ID)) {
+  while (tokenCategoryMatchAll(parser, 1, ID) ||
+         (tokenCategoryMatchAll(parser, 1, RSV) &&
+          tokenSignCodeMatchAny(parser, 14, DO, WHILE, VAR, IF, GETOUT, GETINT,
+                                GETREAL, GETCHAR, GETSTR, PUTINT, PUTREAL,
+                                PUTCHAR, PUTSTR))) {
     enum SYNTAX_ERROR error = cmd(parser);
     if (error) {
       return error;
@@ -590,7 +594,6 @@ enum SYNTAX_ERROR cmdIf(struct Parser *parser) {
     }
   }
 
-  consumeTokenFrom(parser);
   if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
         tokenSignCodeMatchAny(parser, 1, ENDI))) {
     return NO_IF_END_KEYWORD;
@@ -696,7 +699,6 @@ enum SYNTAX_ERROR cmdWhile(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
-  consumeTokenFrom(parser);
   while (tokenCategoryMatchAll(parser, 1, SIGN) &&
          tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
     consumeTokenFrom(parser);
@@ -716,6 +718,7 @@ enum SYNTAX_ERROR cmdAtrib(struct Parser *parser) {
         tokenSignCodeMatchAny(parser, 1, ASSIGN))) {
     return NO_ATRIB_ASSIGN;
   }
+  consumeTokenFrom(parser);
 
   enum SYNTAX_ERROR error = expr(parser);
   if (error) {
