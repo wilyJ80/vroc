@@ -791,24 +791,20 @@ enum SYNTAX_ERROR expr(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR exprSimp(struct Parser *parser) {
-  // ignore plus or minus
-  if (parser->token.category == SIGN &&
-      (parser->token.signCode == PLUS || parser->token.signCode == MINUS)) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  if (tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 2, PLUS, MINUS)) {
+    consumeTokenFrom(parser);
   }
 
   enum SYNTAX_ERROR error = termo(parser);
-  if (error != NO_ERROR) {
+  if (error) {
     return error;
   }
 
-  while (parser->token.category == SIGN &&
-         (parser->token.signCode == PLUS || parser->token.signCode == MINUS ||
-          parser->token.signCode == OR)) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  while(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 3, PLUS, MINUS, OR)) {
+    consumeTokenFrom(parser);
 
     enum SYNTAX_ERROR error = termo(parser);
-    if (error != NO_ERROR) {
+    if (error) {
       return error;
     }
   }
@@ -822,13 +818,11 @@ enum SYNTAX_ERROR termo(struct Parser *parser) {
     return error;
   }
 
-  while (parser->token.category == SIGN &&
-         (parser->token.signCode == STAR || parser->token.signCode == SLASH ||
-          parser->token.signCode == AND)) {
-    parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+  while(tokenCategoryMatchAll(parser, 1, SIGN) && tokenSignCodeMatchAny(parser, 3, STAR, SLASH, AND)) {
+    consumeTokenFrom(parser);
 
     enum SYNTAX_ERROR error = fator(parser);
-    if (error != NO_ERROR) {
+    if (error) {
       return error;
     }
   }
