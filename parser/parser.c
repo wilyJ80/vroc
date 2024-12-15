@@ -286,6 +286,7 @@ enum SYNTAX_ERROR declDef(struct Parser *parser) {
 
 enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
   bool paramMandatory = false;
+  bool isArray = false;
   // while it's a param, delimited by comma
   do {
     // consume comma from subsequent iterations
@@ -313,6 +314,7 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
 
       while (tokenCategoryMatchAll(parser, 1, SIGN) &&
              tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
+        isArray = true;
         consumeTokenFrom(parser);
 
         if (!(tokenCategoryMatchAll(parser, 2, ID, INTCON))) {
@@ -330,6 +332,10 @@ enum SYNTAX_ERROR declDefParam(struct Parser *parser) {
 
   } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
            tokenSignCodeMatchAny(parser, 1, COMMA));
+
+  if (!(isArray)) {
+    consumeTokenFrom(parser);
+  }
 
   if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
         tokenSignCodeMatchAny(parser, 1, CLOSE_PAR))) {

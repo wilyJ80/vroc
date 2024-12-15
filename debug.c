@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   int line = 1;
   lc = &line;
 
-  fd = fopen("./doc/examples/fat.proc", "r");
+  fd = fopen("./doc/examples/code.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
