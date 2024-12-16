@@ -3,12 +3,14 @@
 
 #include "../lexer/types.h"
 #include "./syntax_error.h"
+#include "./symbol_table.h"
 #include <stdio.h>
 
 struct Parser {
   struct Token token;
   FILE *fd;
   int *lineCount;
+  struct SymbolTable symbolTable;
 };
 
 enum SYNTAX_ERROR op_rel(struct Parser *parser);

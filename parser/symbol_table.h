@@ -3,13 +3,15 @@
 
 #define MAX_SYMBOL_TABLE_ROWS 255
 
+#include <stdbool.h>
+
 enum SCOPE { GBL, LCL };
 
-enum TYPE { INT, REAL, CHAR, BOOL, TYPE_NA };
+enum TYPE { TYPE_INT, TYPE_REAL, TYPE_CHAR, TYPE_BOOL, TYPE_NA };
 
 enum CAT { VG, VL, PRC, PAR, PRT };
 
-enum PASS { VAL, REF, PASS_NA };
+enum PASS { VAL, PASS_REF, PASS_NA };
 
 enum ZOMBIE { VIV, ZMB, ZOMBIE_NA };
 
@@ -33,7 +35,7 @@ struct Row {
   int dim1;
   int dim2;
   bool isConst;
-  union ConstValue constValue; 
+  union ConstValue constValue;
   int refAddress;
   int procLabel;
 };
@@ -42,5 +44,7 @@ struct SymbolTable {
   struct Row row[MAX_SYMBOL_TABLE_ROWS];
   int top;
 };
+
+struct SymbolTable initTable();
 
 #endif
