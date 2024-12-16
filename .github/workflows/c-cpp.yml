@@ -24,5 +24,6 @@ jobs:
       run: |
         chmod +x build.sh
         ./build.sh test
+        ./croc
       # Ensure the tests fail if assertions fail
       continue-on-error: false
