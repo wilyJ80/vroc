@@ -1,6 +1,9 @@
 #ifndef PARSER_TABLE_UTIL_H
 #define PARSER_TABLE_UTIL_H
 
-void addTableRow(struct Parser *parser, struct SymbolTable table);
+#include "./parser.h"
+#include "./symbol_table.h"
+
+void addTableRow(struct Parser *parser, struct Row row);
 
 #endif
