@@ -12,6 +12,8 @@
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 
+#define HYPHENROW "------"
+
 int main(int argc, char *argv[]) {
   if (argc != 2) {
     fprintf(stderr, "Error. Usage: croc <code>\n");
@@ -37,8 +39,8 @@ int main(int argc, char *argv[]) {
     // handle malformed manually to
     // keep the printing callback simple.
     if (token.category == MALFORMED_TOKEN) {
-      fprintf(stderr, RED "ERROR: MALFORMED TOKEN %s ON LINE %d\n" RESET, token.lexeme,
-              lineCount);
+      fprintf(stderr, RED "ERROR: MALFORMED TOKEN %s ON LINE %d\n" RESET,
+              token.lexeme, lineCount);
       exit(EXIT_FAILURE);
     }
     printToken(token);
@@ -51,7 +53,7 @@ int main(int argc, char *argv[]) {
   int line = 1;
   lc = &line;
 
-  // opening the file again... 
+  // opening the file again...
   fd = fopen("./doc/examples/code.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
@@ -61,8 +63,7 @@ int main(int argc, char *argv[]) {
   // for integration tests, prog itself needs a previously initialized parser
   // with a token too
   struct Token token = lexerGetNextChar(fd, lc);
-  struct Parser parser = {
-      .fd = fd, .lineCount = lc, .token = token};
+  struct Parser parser = {.fd = fd, .lineCount = lc, .token = token};
 
   enum SYNTAX_ERROR error = prog(&parser);
   if (error != NO_ERROR) {
@@ -71,4 +72,29 @@ int main(int argc, char *argv[]) {
   }
 
   printf(GREEN "Parsing successful!" RESET "\n");
+  printf(GREEN "Displaying symbol table..." RESET "\n");
+
+  for (int i = 0; i < 13; i++) {
+    printf("+" HYPHENROW);
+  }
+  printf("+"
+         "\n");
+
+  const char *header[13] = {"LEXEMA", "ESCOPO", " TIPO ", " CAT  ", "PASSGM",
+                            "ZUMBI ", "ARRAY ", " DIM1 ", " DIM2 ", "ECONST",
+                            "VCONST", "ENDRC ", "ROTULO"};
+
+  for (int i = 0; i < 13; i++) {
+    printf("|"
+           "%s",
+           header[i]);
+  }
+  printf("|"
+         "\n");
+
+  for (int i = 0; i < 13; i++) {
+    printf("+" HYPHENROW);
+  }
+  printf("+"
+         "\n");
 }
