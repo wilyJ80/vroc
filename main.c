@@ -97,4 +97,12 @@ int main(int argc, char *argv[]) {
   }
   printf("+"
          "\n");
+
+  // display rows here
+
+  for (int i = 0; i < 13; i++) {
+    printf("+" HYPHENROW);
+  }
+  printf("+"
+         "\n");
 }
