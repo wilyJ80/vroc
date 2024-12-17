@@ -250,6 +250,14 @@ enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
+  row.array = ARRAY_NA;
+  row.scope = GBL;
+  row.isConst = false;
+  row.zombie = ZOMBIE_NA;
+  row.passage = PASS_NA;
+  row.type = TYPE_NA;
+  row.category = PRT;
+
   if (tokenCategoryMatchAll(parser, 1, RSV) &&
       tokenSignCodeMatchAny(parser, 1, DEF)) {
     consumeTokenFrom(parser);
@@ -272,6 +280,7 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declProt(struct Parser *parser) {
+  addTableRow(parser, row);
   if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_PROTO_ID;
   }
