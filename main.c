@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   lc = &line;
 
   // opening the file again... 
-  fd = fopen("./doc/examples/code.proc", "r");
+  fd = fopen(argv[1], "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
