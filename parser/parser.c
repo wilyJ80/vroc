@@ -3,13 +3,14 @@
 #include "syntax_error.h"
 #include "token_match.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAX_STATES 13
 #define MAX_TRANSITIONS 3
-#define MAX_NONCONSUMING 2
+#define MAX_NONCONSUMING 3
 
-enum STATE_ALIAS nonConsumingStates[MAX_NONCONSUMING] = {STATE_CONST,
-                                                         STATE_DLV};
+enum STATE_ALIAS nonConsumingStates[MAX_NONCONSUMING] = {
+    STATE_INITIAL, STATE_VALID, STATE_CONST, STATE_DLV};
 
 bool isNonconsuming(enum STATE_ALIAS alias) {
   bool foundState = false;
@@ -108,13 +109,12 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
           &possibleTransitions[currentState][possibleTransition];
 
       if (possibility->matchFn(parser->token)) {
-        // advance fsm
+        if (!isNonconsuming(currentState)) {
+          parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        }
         currentState = possibility->targetState;
         currentIsAccepting = possibility->isAccepting;
         transitionFound = true;
-        if (!isNonconsuming(possibility->targetState)) {
-          parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
-        }
         break;
       }
     }
@@ -122,6 +122,7 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
     if (!transitionFound) {
       if (currentIsAccepting) {
         currentState = STATE_INITIAL;
+        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
         continue;
       } else {
         return possibleTransitions[currentState][0].error;
