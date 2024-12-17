@@ -9,85 +9,75 @@
 #define MAX_TRANSITIONS 3
 #define MAX_NONCONSUMING 3
 
-enum STATE_ALIAS nonConsumingStates[MAX_NONCONSUMING] = {
-    STATE_INITIAL, STATE_VALID, STATE_CONST, STATE_DLV};
-
-bool isNonconsuming(enum STATE_ALIAS alias) {
-  bool foundState = false;
-  for (int i = 0; i < MAX_NONCONSUMING; i++) {
-    if (alias == nonConsumingStates[i]) {
-      foundState = !foundState;
-    }
-  }
-  return foundState;
-}
-
 // No error means transition is optional.
 // Optional transition: keep traversing to find next errors.
 struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
     // 0: initial
     {
         {STATE_VALID_START, tkIsConstOrType, NONACCEPTING,
-         INVALID_PROG_START_KEYWORD},
+         INVALID_PROG_START_KEYWORD, NON_CONSUMING},
     },
     // 1: valid start
     {
-        {STATE_CONST, tkIsConst, NONACCEPTING, NO_ERROR},
-        {STATE_DLV, tkIsType, NONACCEPTING, NO_ERROR},
+        {STATE_CONST, tkIsConst, NONACCEPTING, NO_ERROR, CONSUMING},
+        {STATE_DLV, tkIsType, NONACCEPTING, NO_ERROR, CONSUMING},
     },
-    // 1: const
+    // 2: const
     {
-        {STATE_DLV, tkIsType, NONACCEPTING, INVALID_TYPE},
+        {STATE_DLV, tkIsType, NONACCEPTING, INVALID_TYPE, CONSUMING},
     },
-    // 2: decl list var
+    // 3: decl list var
     {
-        {STATE_DV, tkIsId, ACCEPTING, NO_VAR_ID},
+        {STATE_DV, tkIsId, ACCEPTING, NO_VAR_ID, CONSUMING},
     },
-    // 3: decl var: accepting
+    // 4: decl var: accepting
     {
-        {STATE_ASS, tkIsAssign, NONACCEPTING, NO_ERROR},
-        {STATE_ARROPEN, tkIsBracketOpen, NONACCEPTING, NO_ERROR},
-        {STATE_DLV, tkIsComma, NONACCEPTING, NO_ERROR},
+        {STATE_ASS, tkIsAssign, NONACCEPTING, NO_ERROR, CONSUMING},
+        {STATE_ARROPEN, tkIsBracketOpen, NONACCEPTING, NO_ERROR, CONSUMING},
+        {STATE_DLV, tkIsComma, NONACCEPTING, NO_ERROR, CONSUMING},
     },
-    // 4: assign single
+    // 5: assign single
     {
         {STATE_ASSEND, tkIsIntconRealconOrCharcon, ACCEPTING,
-         INVALID_VAR_TYPE_INIT},
+         INVALID_VAR_TYPE_INIT, CONSUMING},
     },
-    // 5: assigned variable, can have a list too
-    {STATE_DLV, tkIsComma, NONACCEPTING, NO_ERROR},
-    // 6: start array declaration
+    // 6: assigned variable, can have a list too
     {
-        {STATE_SUBS, tkIsIntconOrId, NONACCEPTING, INVALID_ARRAY_SUBSCRIPT_DEC},
+        {STATE_DLV, tkIsComma, NONACCEPTING, NO_ERROR, CONSUMING},
     },
-    // 7: please close the bracket
+    // 7: start array declaration
+    {
+        {STATE_SUBS, tkIsIntconOrId, NONACCEPTING, INVALID_ARRAY_SUBSCRIPT_DEC,
+         CONSUMING},
+    },
+    // 8: please close the bracket
     {
         {STATE_ARRCLOSE, tkIsBracketClose, ACCEPTING,
-         INVALID_ARRAY_BRACKET_DEC_CLOSE},
+         INVALID_ARRAY_BRACKET_DEC_CLOSE, CONSUMING},
     },
-    // 8: multidimensional arrays
+    // 9: multidimensional arrays
     {
-        {STATE_ARROPEN, tkIsBracketOpen, NONACCEPTING, NO_ERROR},
-        {STATE_ARRASS, tkIsAssign, NONACCEPTING, NO_ERROR},
+        {STATE_ARROPEN, tkIsBracketOpen, NONACCEPTING, NO_ERROR, CONSUMING},
+        {STATE_ARRASS, tkIsAssign, NONACCEPTING, NO_ERROR, CONSUMING},
     },
-    // 9: we start assigning something to the array
+    // 10: we start assigning something to the array
     {
         {STATE_ARRCURLYO, tkIsCurlyOpen, NONACCEPTING,
-         INVALID_ARRAY_INIT_CURLY_OPEN},
+         INVALID_ARRAY_INIT_CURLY_OPEN, CONSUMING},
     },
-    // 10: please give me the valid type!
+    // 11: please give me the valid type!
     {
         {STATE_ARRINITTYPE, tkIsIntconRealconOrCharcon, NONACCEPTING,
-         INVALID_ARRAY_TYPE_INIT},
+         INVALID_ARRAY_TYPE_INIT, CONSUMING},
     },
-    // 11: we can end the array or continue...
+    // 12: we can end the array or continue...
     {
         {STATE_ARRCURLYO, tkIsComma, NONACCEPTING,
-         INVALID_ARRAY_TOKEN_AFTER_ITEM},
+         INVALID_ARRAY_TOKEN_AFTER_ITEM, CONSUMING},
         {STATE_ARRCURLCLOSE, tkIsCurlyClose, ACCEPTING,
-         INVALID_ARRAY_TOKEN_AFTER_ITEM},
+         INVALID_ARRAY_TOKEN_AFTER_ITEM, CONSUMING},
     },
-    // 12: terminal - finished array initialization
+    // 13: terminal - finished array initialization
     {},
 };
 
@@ -109,7 +99,7 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
           &possibleTransitions[currentState][possibleTransition];
 
       if (possibility->matchFn(parser->token)) {
-        if (!isNonconsuming(currentState)) {
+        if (possibility->isConsuming) {
           parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
         }
         currentState = possibility->targetState;
@@ -122,13 +112,18 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
     if (!transitionFound) {
       if (currentIsAccepting) {
         currentState = STATE_INITIAL;
-        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        // parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        currentIsAccepting = false;
         continue;
       } else {
         return possibleTransitions[currentState][0].error;
       }
     }
   }
+
+    if (parser->token.category == END_OF_FILE && !currentIsAccepting) {
+        return possibleTransitions[currentState][0].error;
+    }
 
   return NO_ERROR;
 }

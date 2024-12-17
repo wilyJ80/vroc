@@ -13,7 +13,9 @@ struct Parser {
 
 enum IS_ACCEPTING { NONACCEPTING, ACCEPTING };
 
-enum IS_OPTIONAL { OPTIONAL, NOT_OPTIONAL };
+enum IS_OPTIONAL { NOT_OPTIONAL, OPTIONAL };
+
+enum IS_CONSUMING { NON_CONSUMING, CONSUMING };
 
 enum STATE_ALIAS {
   // 0
@@ -51,11 +53,9 @@ struct ParserTransition {
   bool (*matchFn)(struct Token);
   enum IS_ACCEPTING isAccepting;
   enum SYNTAX_ERROR error;
-  enum IS_OPTIONAL isOptional;
+  enum IS_CONSUMING isConsuming;
 };
 
 enum SYNTAX_ERROR parse(struct Parser *parser);
-
-bool isNonconsuming(enum STATE_ALIAS alias);
 
 #endif
