@@ -1,9 +1,13 @@
 #include "parser.h"
 #include "../lexer/transition.h"
+#include "symbol_table.h"
 #include "syntax_error.h"
 #include "token_cmp.h"
+#include <string.h>
 
 #define MAX_ARRAY_DIMENSIONS 2
+
+struct Row row;
 
 /**
  * prog accepts repetitions of declarations of variables (decl_list_var), or
@@ -14,6 +18,8 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
   // Valid variable declaration start tokens
   while (tokenCategoryMatchAll(parser, 1, RSV) &&
          (tokenSignCodeMatchAny(parser, 5, CONST, CHAR, INT, REAL, BOOL))) {
+    row.scope = GBL;
+    row.category = VG;
     enum SYNTAX_ERROR error = declListVar(parser);
     if (error) {
       return error;
@@ -40,14 +46,36 @@ enum SYNTAX_ERROR prog(struct Parser *parser) {
  * and
 declaration of one or more variables.*/
 enum SYNTAX_ERROR declListVar(struct Parser *parser) {
+  row.passage = PASS_NA;
+  row.zombie = ZOMBIE_NA;
+  row.array = VS;
+  row.dim1 = 0;
+  row.dim2 = 0;
+  row.isConst = false;
   if (tokenCategoryMatchAll(parser, 1, RSV) &&
       tokenSignCodeMatchAny(parser, 1, CONST)) {
+    row.isConst = true;
     consumeTokenFrom(parser);
   }
 
   if (!(tokenCategoryMatchAll(parser, 1, RSV) &&
         tokenSignCodeMatchAny(parser, 4, INT, REAL, CHAR, BOOL))) {
     return INVALID_TYPE;
+  }
+
+  switch (parser->token.signCode) {
+  case INT:
+    row.type = TYPE_INT;
+    break;
+  case REAL:
+    row.type = TYPE_REAL;
+    break;
+  case CHAR:
+    row.type = TYPE_CHAR;
+    break;
+  case BOOL:
+    row.type = TYPE_BOOL;
+    break;
   }
 
   consumeTokenFrom(parser);
@@ -72,6 +100,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
   if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_VAR_ID;
   }
+  strcpy(parser->token.lexeme, row.lexeme);
   consumeTokenFrom(parser);
 
   // simple variable assignment
@@ -81,6 +110,22 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
     if (!(tokenCategoryMatchAny(parser, 3, INTCON, REALCON, CHARCON))) {
       return INVALID_VAR_TYPE_INIT;
+    }
+
+    if (tokenCategoryMatchAny(parser, 1, RSV) &&
+        tokenSignCodeMatchAny(parser, 1, CONST)) {
+      switch (parser->token.signCode) {
+      case INTCON:
+        row.constValue.intValue = parser->token.intValue;
+        break;
+      case REALCON:
+        row.constValue.doubleValue = parser->token.intValue;
+        break;
+      case CHARCON:
+        // does it work?
+        row.constValue.charValue = parser->token.lexeme[0];
+        break;
+      }
     }
 
     consumeTokenFrom(parser);
