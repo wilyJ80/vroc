@@ -1,30 +1,47 @@
-#include "token_match.h"
 #include "../lexer/transition.h"
 #include "../lexer/types.h"
 
-bool isConst(struct Token token) { return token.signCode == CONST; }
+#include <stdbool.h>
 
-bool isType(struct Token token) {
+bool tkIsConst(struct Token token) { return token.signCode == CONST; }
+
+bool tkIsType(struct Token token) {
   return (token.category == RSV &&
           (token.signCode == INT || token.signCode == CHAR ||
            token.signCode == REAL || token.signCode == BOOL));
 }
 
-bool isId(struct Token token) { return token.category == ID; }
+bool tkIsId(struct Token token) { return token.category == ID; }
 
-bool isAssign(struct Token token) {
+bool tkIsAssign(struct Token token) {
   return (token.category == SIGN && token.signCode == ASSIGN);
 }
 
-bool isBracketOpen(struct Token token) {
+bool tkIsBracketOpen(struct Token token) {
   return (token.category == SIGN && token.signCode == OPEN_BRACK);
 }
 
-bool isIntconRealconOrCharcon(struct Token token) {
+bool tkIsIntconRealconOrCharcon(struct Token token) {
   return (token.category == INTCON || token.category == REALCON ||
           token.category == CHARCON);
 }
 
-bool isIntconOrId(struct Token token) {
+bool tkIsIntconOrId(struct Token token) {
   return (token.category == ID || token.category == INTCON);
+}
+
+bool tkIsBracketClose(struct Token token) {
+  return (token.category == SIGN && token.signCode == CLOSE_BRACK);
+}
+
+bool tkIsCurlyOpen(struct Token token) {
+  return (token.category == SIGN && token.signCode == OPEN_CURLY);
+}
+
+bool tkIsComma(struct Token token) {
+  return (token.category == SIGN && token.signCode == COMMA);
+}
+
+bool tkIsCurlyClose(struct Token token) {
+  return (token.category == SIGN && token.signCode == CLOSE_CURLY);
 }

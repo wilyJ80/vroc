@@ -11,21 +11,9 @@ struct Parser {
   int *lineCount;
 };
 
-enum IS_ACCEPTING {
-  ACCEPTING, NONACCEPTING
-};
+enum IS_ACCEPTING { NONACCEPTING, ACCEPTING };
 
-enum IS_OPTIONAL {
-  OPTIONAL, NOT_OPTIONAL
-};
-
-struct ParserTransition {
-  int targetState;
-  bool (*matchFn)(struct Token);
-  enum IS_ACCEPTING isAccepting;
-  enum SYNTAX_ERROR error;
-  enum IS_OPTIONAL isOptional;
-};
+enum IS_OPTIONAL { OPTIONAL, NOT_OPTIONAL };
 
 enum STATE_ALIAS {
   // 0
@@ -55,5 +43,15 @@ enum STATE_ALIAS {
   // 12
   STATE_ARRCURLCLOSE
 };
+
+struct ParserTransition {
+  enum STATE_ALIAS targetState;
+  bool (*matchFn)(struct Token);
+  enum IS_ACCEPTING isAccepting;
+  enum SYNTAX_ERROR error;
+  enum IS_OPTIONAL isOptional;
+};
+
+enum SYNTAX_ERROR parse(struct Parser *parser);
 
 #endif

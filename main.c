@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   int line = 1;
   lc = &line;
 
-  // opening the file again... 
+  // opening the file again... should use rewind() instead
   fd = fopen(argv[1], "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
@@ -64,11 +64,12 @@ int main(int argc, char *argv[]) {
   struct Parser parser = {
       .fd = fd, .lineCount = lc, .token = token};
 
-  /*enum SYNTAX_ERROR error = prog(&parser);*/
-  /*if (error != NO_ERROR) {*/
-  /*  printSyntaxError(error, lc);*/
-  /*  exit(EXIT_FAILURE);*/
-  /*}*/
-  /**/
-  /*printf(GREEN "Parsing successful!" RESET "\n");*/
+  enum SYNTAX_ERROR error = parse(&parser);
+  if (error) {
+    printSyntaxError(error, parser.lineCount);
+    return EXIT_FAILURE;
+  }
+
+  printf(GREEN "Parsing successful!" RESET "\n");
+  return EXIT_SUCCESS;
 }

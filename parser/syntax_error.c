@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define ERROR_QTY 93
+#define ERROR_QTY 94
 
 // ANSI escape codes
 #define RESET "\033[0m"
@@ -39,6 +39,8 @@ void printSyntaxError(enum SYNTAX_ERROR error, int *lineCount) {
        "Invalid multiple item initialization in array"},
       {INVALID_ARRAY_END,
        "Invalid array declaration end: expected comma or bracket closing"},
+      {INVALID_ARRAY_TOKEN_AFTER_ITEM,
+       "Invalid array initialization: expected comma or curly bracket closing"},
       // decl_def_proc
       {INVALID_FUNCTION_KEYWORD, "Invalid function keyword"},
       {NO_FUNCTION_ID, "No valid id for function"},

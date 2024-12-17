@@ -37,6 +37,8 @@
 
 # problemas
 
+- [ ] Objeto lexer
+- [ ] `rewind()` ao inves de abrir o arquivo novamente
 - [ ] Descartar metodo descendente recursivo? Utilizar metodo de tabela descrevendo as regras de sintaxe? PDA/EFSM?
 - [X] Output colorido em testes
 - [ ] Todo ID deve ser checado pelo parser se é reservado?
