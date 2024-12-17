@@ -64,11 +64,11 @@ int main(int argc, char *argv[]) {
   struct Parser parser = {
       .fd = fd, .lineCount = lc, .token = token};
 
-  enum SYNTAX_ERROR error = prog(&parser);
-  if (error != NO_ERROR) {
-    printSyntaxError(error, lc);
-    exit(EXIT_FAILURE);
-  }
-
-  printf(GREEN "Parsing successful!" RESET "\n");
+  /*enum SYNTAX_ERROR error = prog(&parser);*/
+  /*if (error != NO_ERROR) {*/
+  /*  printSyntaxError(error, lc);*/
+  /*  exit(EXIT_FAILURE);*/
+  /*}*/
+  /**/
+  /*printf(GREEN "Parsing successful!" RESET "\n");*/
 }

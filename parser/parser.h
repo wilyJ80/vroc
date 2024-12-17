@@ -11,49 +11,49 @@ struct Parser {
   int *lineCount;
 };
 
-enum SYNTAX_ERROR op_rel(struct Parser *parser);
+enum IS_ACCEPTING {
+  ACCEPTING, NONACCEPTING
+};
 
-enum SYNTAX_ERROR fator(struct Parser *parser);
+enum IS_OPTIONAL {
+  OPTIONAL, NOT_OPTIONAL
+};
 
-enum SYNTAX_ERROR expr(struct Parser *parser);
+struct ParserTransition {
+  int targetState;
+  bool (*matchFn)(struct Token);
+  enum IS_ACCEPTING isAccepting;
+  enum SYNTAX_ERROR error;
+  enum IS_OPTIONAL isOptional;
+};
 
-enum SYNTAX_ERROR arrayFator(struct Parser *parser);
-
-enum SYNTAX_ERROR prog(struct Parser *parser);
-
-enum SYNTAX_ERROR declListVar(struct Parser *parser);
-enum SYNTAX_ERROR declDefProc(struct Parser *parser);
-
-/*void tipo(FILE *fd, int *lineCount, struct Token token);*/
-enum SYNTAX_ERROR declVar(struct Parser *parser);
-
-enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser);
-
-enum SYNTAX_ERROR declProt(struct Parser *parser);
-
-enum SYNTAX_ERROR declProtParam(struct Parser *parser);
-/**/
-/*void arrayDeclaration(FILE *fd, int *lineCount, struct Token token);*/
-/*void arrayInitialization(FILE *fd, int *lineCount, struct Token token);*/
-
-enum SYNTAX_ERROR declDef(struct Parser *parser);
-enum SYNTAX_ERROR declDefParam(struct Parser *parser);
-enum SYNTAX_ERROR declDefParamArray(struct Parser *parser);
-
-enum SYNTAX_ERROR cmd(struct Parser *parser);
-enum SYNTAX_ERROR getint(struct Parser *parser);
-
-enum SYNTAX_ERROR cmdDo(struct Parser *parser);
-enum SYNTAX_ERROR cmdAtrib(struct Parser *parser);
-enum SYNTAX_ERROR cmdWhile(struct Parser *parser);
-enum SYNTAX_ERROR cmdVar(struct Parser *parser);
-enum SYNTAX_ERROR cmdIf(struct Parser *parser);
-
-
-enum SYNTAX_ERROR exprSimp(struct Parser *parser);
-
-enum SYNTAX_ERROR termo(struct Parser *parser);
-
-enum SYNTAX_ERROR fator(struct Parser *parser);
+enum STATE_ALIAS {
+  // 0
+  STATE_INITIAL,
+  // 1
+  STATE_CONST,
+  // 2
+  STATE_DLV,
+  // 3
+  STATE_DV,
+  // 4
+  STATE_ASS,
+  // 5
+  STATE_ASSEND,
+  // 6
+  STATE_ARROPEN,
+  // 7
+  STATE_SUBS,
+  // 8
+  STATE_ARRCLOSE,
+  // 9
+  STATE_ARRASS,
+  // 10
+  STATE_ARRCURLYO,
+  // 11
+  STATE_ARRINITTYPE,
+  // 12
+  STATE_ARRCURLCLOSE
+};
 
 #endif
