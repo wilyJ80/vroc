@@ -14,7 +14,7 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
     // 0: initial: accepting
     {
         {STATE_CONST, tkIsConst, NONACCEPTING, NO_ERROR},
-        {STATE_DLV, tkIsType, NONACCEPTING, INVALID_TYPE},
+        {STATE_DLV, tkIsType, NONACCEPTING, NO_ERROR},
     },
     // 1: const
     {
