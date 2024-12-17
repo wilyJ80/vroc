@@ -1,8 +1,6 @@
 #include "parser.h"
 #include "../lexer/lexer.h"
-#include "../lexer/transition.h"
 #include "syntax_error.h"
-#include "token_cmp.h"
 #include "token_match.h"
 
 #define MAX_STATES 12
@@ -72,12 +70,13 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
 };
 
 enum SYNTAX_ERROR parse(struct Parser *parser) {
-  while (parser->token.category != END_OF_FILE) {
 
-    // the parser starts with an initial consumed token, file and line count
-    enum STATE_ALIAS currentState = STATE_INITIAL;
-    bool currentIsAccepting = true;
-    enum SYNTAX_ERROR currentError;
+  // the parser starts with an initial consumed token, file and line count
+  enum STATE_ALIAS currentState = STATE_INITIAL;
+  bool currentIsAccepting = true;
+
+  while (parser->token.category != END_OF_FILE) {
+    bool transitionFound = false;
 
     for (int possibleTransition = 0;
          possibleTransition < MAX_TRANSITIONS + 1 &&
@@ -91,14 +90,17 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
         // advance fsm
         currentState = possibility->targetState;
         currentIsAccepting = possibility->isAccepting;
+        transitionFound = true;
+        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        break;
+      }
+    }
 
+    if (!transitionFound) {
+      if (currentIsAccepting) {
+        continue;
       } else {
-        // check accepting: errors are optional
-        if (currentIsAccepting) {
-          return NO_ERROR;
-        } else {
-          return possibility->error;
-        }
+        return possibleTransitions[currentState][0].error;
       }
     }
   }
