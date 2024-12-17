@@ -1,8 +1,10 @@
 #include "parser.h"
 #include "../lexer/transition.h"
+#include "parser_table_util.h"
 #include "symbol_table.h"
 #include "syntax_error.h"
 #include "token_cmp.h"
+#include <stdio.h>
 #include <string.h>
 
 #define MAX_ARRAY_DIMENSIONS 2
@@ -100,7 +102,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
   if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_VAR_ID;
   }
-  strcpy(parser->token.lexeme, row.lexeme);
+  strcpy(row.lexeme, parser->token.lexeme);
   consumeTokenFrom(parser);
 
   // simple variable assignment
@@ -134,12 +136,34 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 
   // the following is related to array variable: single variable returned early
   // above
+  int dimensions = 0;
+  int arr[2];
   while (tokenCategoryMatchAll(parser, 1, SIGN) &&
          tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
+    dimensions++;
     consumeTokenFrom(parser);
+
     if (!(tokenCategoryMatchAll(parser, 2, INTCON, ID))) {
       return INVALID_ARRAY_SUBSCRIPT_DEC;
     }
+
+    if (tokenCategoryMatchAll(parser, 1, INTCON)) {
+      if (dimensions == 1) {
+        row.dim1 = parser->token.intValue;
+      } else if (dimensions == 2) {
+        row.dim2 = parser->token.intValue;
+      } else {
+        // TODO:
+      }
+    } else if (tokenCategoryMatchAll(parser, 1, ID)) {
+      if (dimensions == 1) {
+        // TODO:
+        row.dim1 = 1;
+      } else if (dimensions == 2) {
+        row.dim2 = 1;
+      }
+    }
+
     consumeTokenFrom(parser);
     if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
           tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
@@ -175,6 +199,19 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
       return INVALID_ARRAY_INIT_CURLY_CLOSE;
     }
 
+    switch (dimensions) {
+    case 0:
+      row.array = VS;
+      break;
+    case 1:
+      row.array = VET;
+      break;
+    case 2:
+      row.array = MAT;
+      break;
+    }
+
+    addTableRow(parser, row);
     consumeTokenFrom(parser);
     return NO_ERROR;
   }
@@ -185,6 +222,27 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
 enum SYNTAX_ERROR declVarArrayInit(struct Parser *parser) {
   if (!(tokenCategoryMatchAll(parser, 3, INTCON, REALCON, CHARCON))) {
     return INVALID_ARRAY_TYPE_INIT;
+  }
+
+  if (tokenCategoryMatchAny(parser, 1, RSV) &&
+      tokenSignCodeMatchAny(parser, 1, CONST)) {
+    switch (parser->token.signCode) {
+    case INTCON:
+      row.constValue.intValue = parser->token.intValue;
+      row.constValue.type = TYPE_INT;
+      break;
+    case REALCON:
+      row.constValue.doubleValue = parser->token.intValue;
+      row.constValue.type = TYPE_REAL;
+      break;
+    case CHARCON:
+      // does it work?
+      row.constValue.charValue = parser->token.lexeme[0];
+      row.constValue.type = TYPE_CHAR;
+      break;
+    }
+  } else {
+    row.constValue.type = TYPE_NA;
   }
 
   consumeTokenFrom(parser);

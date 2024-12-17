@@ -2,6 +2,7 @@
 #define SYMBOL_TABLE_H
 
 #define MAX_SYMBOL_TABLE_ROWS 255
+#define MAX_SIZE_LEXEME 31
 
 #include <stdbool.h>
 
@@ -18,6 +19,7 @@ enum ZOMBIE { VIV, ZMB, ZOMBIE_NA };
 enum ARRAY { VS, VET, MAT, ARRAY_NA };
 
 union ConstValue {
+  enum TYPE type;
   int intValue;
   double doubleValue;
   bool boolValue;
@@ -25,7 +27,7 @@ union ConstValue {
 };
 
 struct Row {
-  const char *lexeme;
+  char lexeme[MAX_SIZE_LEXEME];
   enum SCOPE scope;
   enum TYPE type;
   enum CAT category;
