@@ -13,15 +13,10 @@
 #define GREEN "\033[32m"
 
 int main(int argc, char *argv[]) {
-  /*if (argc != 2) {*/
-  /*  fprintf(stderr, "Error. Usage: croc <code>\n");*/
-  /*  return EXIT_FAILURE;*/
-  /*}*/
-
   FILE *fd;
   int lineCount = 1;
 
-  fd = fopen("./doc/examples/fatrec.proc", "r");
+  fd = fopen("./doc/examples/variables.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
@@ -51,7 +46,8 @@ int main(int argc, char *argv[]) {
   int line = 1;
   lc = &line;
 
-  fd = fopen("./doc/examples/fatrec.proc", "r");
+  // opening the file again... should use rewind() instead
+  fd = fopen("./doc/examples/variables.proc", "r");
   if (fd == NULL) {
     fprintf(stderr, "Error opening file\n");
     return EXIT_FAILURE;
@@ -63,11 +59,12 @@ int main(int argc, char *argv[]) {
   struct Parser parser = {
       .fd = fd, .lineCount = lc, .token = token};
 
-  enum SYNTAX_ERROR error = prog(&parser);
-  if (error != NO_ERROR) {
-    printSyntaxError(error, lc);
-    exit(EXIT_FAILURE);
+  enum SYNTAX_ERROR error = parse(&parser);
+  if (error) {
+    printSyntaxError(error, parser.lineCount);
+    return EXIT_FAILURE;
   }
 
   printf(GREEN "Parsing successful!" RESET "\n");
+  return EXIT_SUCCESS;
 }

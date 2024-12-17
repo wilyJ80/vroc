@@ -1,6 +1,5 @@
 #include "lexer_test.h"
-#include "parser_integration_tests.h"
-#include "parser_unit_tests.h"
+#include "new_parser_tests.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,84 +15,7 @@ int main(void) {
 
   printf("--- Lexer tests passed\n");
 
-  opRelTest();
-  opRelTest2();
-  fatorConTest();
-  fatorNegFatorTest();
-  fatorArrayOutroTest();
-  fatorArrayOutroTest2();
-  fatorArrayUniTest();
-  fatorSingle();
-  declVarArrayBadInitCurly();
-  // fatorArrayMultTest();
-
-  printf("--- Parser unit tests passed\n");
-
-  progStartKeyword();
-
-  declListVarInvalidType();
-  declVarNoId();
-  declListVarMulti();
-  declListVarMultiFail();
-  declVarArrayInvalidSubscript();
-  declVarArrayDidntClose();
-  declVarBadInit();
-  declVarArrayBadInitCurly();
-  declVarArrayMultiTooMany();
-  declVarArrayInvalidTypeInit();
-  declVarArrayMultiInit();
-  declVarArrayBadClose();
-
-  declDefProcNoId();
-  declDefProcProtNoOpenParen();
-  declDefProcProtoInvalidParamType();
-  declDefProcProtoNoParamId();
-  declDefProcProtoNoValidTokenAfterType();
-  declDefProcProtoUnclosedArrayParam();
-  declDefProcProtoInvalid2dArrayOpen();
-  declDefProcProtoInvalid2dArrayClose();
-  declDefProcProtoInvalid3dArray();
-  declDefProcProtoMultiParams();
-  declDefProcProtoNoParenClose();
-  declDefProcProtoTwoProts();
-
-  declDefProcDefDefWorksToo();
-  declDefProcDefNoParenOpen();
-  declDefProcDefBadParamType();
-  declDefProcDefNoParamId();
-  declDefProcDefNoValidTokenAfterId();
-  declDefProcDefValidTokenAfterClosePar();
-  declDefProcDefArrayBadSubscriptType();
-  declDefProcDefArrayUnclosedBracket();
-  declDefProcDefArrayMultidimension();
-  declDefProcDefArrayMultiParamMultiDimension();
-
-  declDefProcDefFollowedByDeclListVarError();
-  declDefProcDefFollowedByCmdError();
-  declDefProcDefFollowedByDeclListVarFollowedByCmdError();
-
-  perfectlyValidVariableDeclarationOnlyProgram();
-  perfectlyValidPrototypeOnlyProgram();
-  perfectlyValidFunctionDefinitionOnlyProgram();
-  perfectlyValidProgramWithDeclListVarThenProtThenDefThenDeclListVarThenCmdThenEndp();
-  butEndpWasNotThere();
-
-  getoutWorks();
-  getrealError();
-  getcharError();
-  getstrError();
-  putintError();
-  putrealError();
-  putcharError();
-  putstrError();
-
-  doButNotIdproc();
-  doButNoParenOpen();
-  doButNoClosingParen();
-
-  atribNoValidAfterId();
-  atribAssignedToABadExprAStringcon();
-  // atribBadClosedParen();
+  declarationsTest();
 
   printf("--- Parser integration tests passed\n");
 

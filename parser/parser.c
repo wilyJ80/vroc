@@ -2,14 +2,34 @@
 #include "../lexer/lexer.h"
 #include "syntax_error.h"
 #include "token_match.h"
+#include <stdio.h>
 
-#define MAX_STATES 12
-#define MAX_TRANSITIONS 2
+#define MAX_STATES 13
+#define MAX_TRANSITIONS 3
+#define MAX_NONCONSUMING 2
+
+enum STATE_ALIAS nonConsumingStates[MAX_NONCONSUMING] = {STATE_CONST,
+                                                         STATE_DLV};
+
+bool isNonconsuming(enum STATE_ALIAS alias) {
+  bool foundState = false;
+  for (int i = 0; i < MAX_NONCONSUMING; i++) {
+    if (alias == nonConsumingStates[i]) {
+      foundState = !foundState;
+    }
+  }
+  return foundState;
+}
 
 // No error means transition is optional.
 // Optional transition: keep traversing to find next errors.
 struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
-    // 0: initial: accepting
+    // 0: initial
+    {
+        {STATE_VALID_START, tkIsConstOrType, NONACCEPTING,
+         INVALID_PROG_START_KEYWORD},
+    },
+    // 1: valid start
     {
         {STATE_CONST, tkIsConst, NONACCEPTING, NO_ERROR},
         {STATE_DLV, tkIsType, NONACCEPTING, NO_ERROR},
@@ -26,6 +46,7 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
     {
         {STATE_ASS, tkIsAssign, NONACCEPTING, NO_ERROR},
         {STATE_ARROPEN, tkIsBracketOpen, NONACCEPTING, NO_ERROR},
+        {STATE_DLV, tkIsComma, NONACCEPTING, NO_ERROR},
     },
     // 4: assign single
     {
@@ -73,7 +94,7 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
 
   // the parser starts with an initial consumed token, file and line count
   enum STATE_ALIAS currentState = STATE_INITIAL;
-  bool currentIsAccepting = true;
+  bool currentIsAccepting = false;
 
   while (parser->token.category != END_OF_FILE) {
     bool transitionFound = false;
@@ -91,13 +112,16 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
         currentState = possibility->targetState;
         currentIsAccepting = possibility->isAccepting;
         transitionFound = true;
-        parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        if (!isNonconsuming(possibility->targetState)) {
+          parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
+        }
         break;
       }
     }
 
     if (!transitionFound) {
       if (currentIsAccepting) {
+        currentState = STATE_INITIAL;
         continue;
       } else {
         return possibleTransitions[currentState][0].error;

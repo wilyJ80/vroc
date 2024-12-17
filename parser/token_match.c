@@ -1,3 +1,4 @@
+#include "token_match.h"
 #include "../lexer/transition.h"
 #include "../lexer/types.h"
 
@@ -44,4 +45,8 @@ bool tkIsComma(struct Token token) {
 
 bool tkIsCurlyClose(struct Token token) {
   return (token.category == SIGN && token.signCode == CLOSE_CURLY);
+}
+
+bool tkIsConstOrType(struct Token token) {
+  return (token.category == RSV && (token.signCode == CONST || token.signCode == INT || token.signCode == REAL || token.signCode == CHAR || token.signCode == BOOL));
 }

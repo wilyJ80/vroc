@@ -2,6 +2,7 @@
 #define TOKEN_MATCH_H
 
 #include <stdbool.h>
+#include "../lexer/types.h"
 
 bool tkIsConst(struct Token token);
 bool tkIsType(struct Token token);
@@ -14,5 +15,6 @@ bool tkIsBracketClose(struct Token token);
 bool tkIsCurlyOpen(struct Token token);
 bool tkIsComma(struct Token token);
 bool tkIsCurlyClose(struct Token token);
+bool tkIsConstOrType(struct Token token);
 
 #endif

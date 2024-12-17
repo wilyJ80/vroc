@@ -19,28 +19,30 @@ enum STATE_ALIAS {
   // 0
   STATE_INITIAL,
   // 1
-  STATE_CONST,
+  STATE_VALID_START,
   // 2
-  STATE_DLV,
+  STATE_CONST,
   // 3
-  STATE_DV,
+  STATE_DLV,
   // 4
-  STATE_ASS,
+  STATE_DV,
   // 5
-  STATE_ASSEND,
+  STATE_ASS,
   // 6
-  STATE_ARROPEN,
+  STATE_ASSEND,
   // 7
-  STATE_SUBS,
+  STATE_ARROPEN,
   // 8
-  STATE_ARRCLOSE,
+  STATE_SUBS,
   // 9
-  STATE_ARRASS,
+  STATE_ARRCLOSE,
   // 10
-  STATE_ARRCURLYO,
+  STATE_ARRASS,
   // 11
-  STATE_ARRINITTYPE,
+  STATE_ARRCURLYO,
   // 12
+  STATE_ARRINITTYPE,
+  // 13
   STATE_ARRCURLCLOSE
 };
 
@@ -53,5 +55,7 @@ struct ParserTransition {
 };
 
 enum SYNTAX_ERROR parse(struct Parser *parser);
+
+bool isNonconsuming(enum STATE_ALIAS alias);
 
 #endif
