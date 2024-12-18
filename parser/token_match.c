@@ -48,5 +48,29 @@ bool tkIsCurlyClose(struct Token token) {
 }
 
 bool tkIsConstOrType(struct Token token) {
-  return (token.category == RSV && (token.signCode == CONST || token.signCode == INT || token.signCode == REAL || token.signCode == CHAR || token.signCode == BOOL));
+  return (token.category == RSV &&
+          (token.signCode == CONST || token.signCode == INT ||
+           token.signCode == REAL || token.signCode == CHAR ||
+           token.signCode == BOOL));
+}
+
+bool tkIsProtOrDef(struct Token token) {
+  return (token.category == RSV &&
+          (token.signCode == PROT || token.signCode == DEF));
+}
+
+bool tkIsProt(struct Token token) {
+  return (token.category == RSV && token.signCode == PROT);
+}
+
+bool tkIsParenOpen(struct Token token) {
+  return (token.category == SIGN && token.signCode == OPEN_PAR);
+}
+
+bool tkIsParenClose(struct Token token) {
+  return (token.category == SIGN && token.signCode == CLOSE_PAR);
+}
+
+bool tkIsRef(struct Token token) {
+  return (token.category == SIGN && token.signCode == REF);
 }

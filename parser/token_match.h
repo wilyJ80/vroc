@@ -16,5 +16,12 @@ bool tkIsCurlyOpen(struct Token token);
 bool tkIsComma(struct Token token);
 bool tkIsCurlyClose(struct Token token);
 bool tkIsConstOrType(struct Token token);
+bool tkIsProtOrDef(struct Token token);
+bool tkIsProt(struct Token token);
+bool tkIsParenOpen(struct Token token);
+bool tkIsParenClose(struct Token token);
+bool tkIsRef(struct Token token);
+
+bool tkIsDef(struct Token token);
 
 #endif
