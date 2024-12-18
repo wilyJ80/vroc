@@ -17,6 +17,8 @@ enum IS_OPTIONAL { NOT_OPTIONAL, OPTIONAL };
 
 enum IS_CONSUMING { NON_CONSUMING, CONSUMING };
 
+enum SETS_CHECKPOINT_STATE {NO_SET_CHECKPOINT, SET_CHECKPOINT};
+
 enum STATE_ALIAS {
   // 0
   STATE_INITIAL,
@@ -45,7 +47,25 @@ enum STATE_ALIAS {
   // 12
   STATE_ARRINITTYPE,
   // 13
-  STATE_ARRCURLCLOSE
+  STATE_ARRCURLCLOSE,
+  // 14
+  STATE_FUNCTION,
+  // 15
+  STATE_PROT,
+  // 16
+  STATE_PROTID,
+  // 17
+  STATE_PROTOPAR,
+  // 18
+  STATE_PROTCPAR,
+  // 19
+  STATE_PROTREF,
+  // 20
+  STATE_PROTTYPE,
+  // 21
+  STATE_PROTOBRACK,
+  // 22
+  STATE_PROTCBRACK,
 };
 
 struct ParserTransition {
@@ -54,6 +74,7 @@ struct ParserTransition {
   enum IS_ACCEPTING isAccepting;
   enum SYNTAX_ERROR error;
   enum IS_CONSUMING isConsuming;
+  enum SETS_CHECKPOINT_STATE setsCheckpoint;
 };
 
 enum SYNTAX_ERROR parse(struct Parser *parser);

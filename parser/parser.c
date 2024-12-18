@@ -82,6 +82,7 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
 };
 
 enum SYNTAX_ERROR parse(struct Parser *parser) {
+  enum STATE_ALIAS initialState = STATE_INITIAL;
 
   // the parser starts with an initial consumed token, file and line count
   enum STATE_ALIAS currentState = STATE_INITIAL;
@@ -111,7 +112,7 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
 
     if (!transitionFound) {
       if (currentIsAccepting) {
-        currentState = STATE_INITIAL;
+        currentState = initialState;
         // parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
         currentIsAccepting = false;
         continue;
@@ -121,9 +122,9 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
     }
   }
 
-    if (parser->token.category == END_OF_FILE && !currentIsAccepting) {
-        return possibleTransitions[currentState][0].error;
-    }
+  if (parser->token.category == END_OF_FILE && !currentIsAccepting) {
+    return possibleTransitions[currentState][0].error;
+  }
 
   return NO_ERROR;
 }
