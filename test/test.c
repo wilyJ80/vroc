@@ -16,6 +16,7 @@ int main(void) {
   printf("--- Lexer tests passed\n");
 
   declarationsTest();
+  protTest();
 
   printf("--- Parser integration tests passed\n");
 

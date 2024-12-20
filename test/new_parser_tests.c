@@ -34,3 +34,9 @@ void declarationsTest() {
   enum SYNTAX_ERROR error = newSetupError(mockData);
   assert(error == INVALID_PROG_START_KEYWORD);
 }
+
+void protTest() {
+  const char* mockData = "prot i() prot i (int) prot i(&int) prot i(&int, int[]) int\n";
+  enum SYNTAX_ERROR error = newSetupError(mockData);
+  assert(error == INVALID_FUNCTION_KEYWORD);
+}
