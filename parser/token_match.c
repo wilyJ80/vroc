@@ -105,3 +105,39 @@ bool tkIsCmdStarter(struct Token token) {
 bool tkIsDef(struct Token token) {
   return (token.category == RSV && token.signCode == DEF);
 }
+
+bool tkIsGetout(struct Token token) {
+  return (token.category == RSV && token.signCode == GETOUT);
+}
+
+bool tkIsGetint(struct Token token) {
+  return (token.category == RSV && token.signCode == GETINT);
+}
+
+bool tkIsGetreal(struct Token token) {
+  return (token.category == RSV && token.signCode == GETREAL);
+}
+
+bool tkIsGetchar(struct Token token) {
+  return (token.category == RSV && token.signCode == GETCHAR);
+}
+
+bool tkIsGetstr(struct Token token) {
+  return (token.category == RSV && token.signCode == GETSTR);
+}
+
+bool tkIsPutint(struct Token token) {
+  return (token.category == RSV && token.signCode == PUTINT);
+}
+
+bool tkIsPutreal(struct Token token) {
+  return (token.category == RSV && token.signCode == PUTREAL);
+}
+
+bool tkIsPutchar(struct Token token) {
+  return (token.category == RSV && token.signCode == PUTCHAR);
+}
+
+bool tkIsPutstr(struct Token token) {
+  return (token.category == RSV && token.signCode == PUTSTR);
+}

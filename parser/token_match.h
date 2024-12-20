@@ -28,4 +28,16 @@ bool tkIsTypeOrRef(struct Token token);
 bool tkIsEndp(struct Token token);
 bool tkIsCmdStarter(struct Token token);
 
+bool tkIsGetout(struct Token token);
+
+bool tkIsGetint(struct Token token);
+bool tkIsGetreal(struct Token token);
+bool tkIsGetchar(struct Token token);
+bool tkIsGetstr(struct Token token);
+
+bool tkIsPutint(struct Token token);
+bool tkIsPutreal(struct Token token);
+bool tkIsPutchar(struct Token token);
+bool tkIsPutstr(struct Token token);
+
 #endif

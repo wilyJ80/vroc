@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define MAX_STATES 51
-#define MAX_TRANSITIONS 3
+#define MAX_TRANSITIONS 11
 
 // No error means transition is optional.
 // Optional transition: keep traversing to find next errors.
@@ -182,6 +182,52 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
          CONSUMING, NO_SET_CHECKPOINT},
         {STATE_CMD, tkIsCmdStarter, NONACCEPTING,
          NO_DEF_VALID_TOKEN_AFTER_PAREN, CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 28: def end: accepting
+    {},
+    // 29: we found a ref
+    {
+        {STATE_DEFTYPE, tkIsType, NONACCEPTING, NO_DEF_TYPE_AFTER_REF,
+         CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 30: we have a type here
+    {
+        {STATE_DEFPARAMID, tkIsId, NONACCEPTING, NO_DEF_PARAM_ID, CONSUMING,
+         NO_SET_CHECKPOINT},
+    },
+    // 31: deciding what we want to do after id
+    {
+        {STATE_DEFBROPEN, tkIsBracketOpen, NONACCEPTING,
+         NO_DEF_VALID_TOKEN_AFTER_ID, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_DEFTYPEORREF, tkIsComma, NONACCEPTING,
+         NO_DEF_VALID_TOKEN_AFTER_ID, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_DEFPARCLO, tkIsParenClose, NONACCEPTING,
+         NO_DEF_VALID_TOKEN_AFTER_ID, CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 32: found array bracket open
+    {
+        {STATE_DEFSUBS, tkIsIntconOrId, NONACCEPTING, INVALID_ARRAY_DEF_PARAM_SUBSCRIPT_TYPE, CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 33: we want to close this array declaration
+    {
+        {STATE_DEFPARAMID, tkIsId, NONACCEPTING, INVALID_ARRAY_DEF_PARAM_BRACKET_OPEN, CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 34: finally, the cmd state. should go back to cmd for repetition
+    {
+        {STATE_DEFEND, tkIsEndp, ACCEPTING, NO_DEF_END_KEYWORD, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_GETOUT, tkIsGetout, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISGETINT, tkIsGetint, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISGETREAL, tkIsGetreal, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISGETCHAR, tkIsGetchar, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISGETSTR, tkIsGetstr, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISPUTINT, tkIsPutint, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISPUTREAL, tkIsPutreal, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISPUTCHAR, tkIsPutchar, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_ISPUTSTR, tkIsPutstr, NONACCEPTING, NO_ERROR, CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 35: getout - for specific cmd states, after valid, we should go back to cmd (repetition)
+    {
+        {},
     },
 };
 

@@ -1,19 +1,2 @@
-// int a
-// int a, 5
-// 5
-// int a, b = 5
-// int a = 5, b = 5
-// int a = 5, b[4]
-int b[1], c[2]
-int b[1] = {'a'}
-int c[b] = {1, 2}
-int c[1][b] = {1, 2, 3}
-int a[1] = {1}
-int a = 5, b
-prot i()
-prot i (int)
-prot i(&int)
-prot i(&int,int[])
-// int a = 5
-prot i(int, int, int)
-def init() endp
+def stuff()
+getint 1
