@@ -74,3 +74,30 @@ bool tkIsParenClose(struct Token token) {
 bool tkIsRef(struct Token token) {
   return (token.category == SIGN && token.signCode == REF);
 }
+
+bool tkIsIdOrInit(struct Token token) {
+  return (token.category == ID ||
+          (token.category == RSV && token.signCode == INIT));
+}
+
+bool tkIsTypeOrRef(struct Token token) {
+  return ((token.category == SIGN && token.signCode == REF) ||
+          token.category == RSV &&
+              (token.signCode == INT || token.signCode == CHAR ||
+               token.signCode == REAL || token.signCode == BOOL));
+  ;
+}
+
+bool tkIsEndp(struct Token token) {
+  return (token.category == RSV && token.signCode == ENDP);
+}
+
+bool tkIsCmdStarter(struct Token token) {
+  return (token.category == ID ||
+          (token.category == RSV &&
+           (token.signCode == GETOUT || token.signCode == GETINT ||
+            token.signCode == GETREAL || token.signCode == GETCHAR ||
+            token.signCode == GETSTR || token.signCode == PUTINT ||
+            token.signCode == PUTREAL || token.signCode == PUTCHAR ||
+            token.signCode == PUTSTR)));
+}

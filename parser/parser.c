@@ -95,6 +95,8 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
     {
         {STATE_PROT, tkIsProt, NONACCEPTING, INVALID_FUNCTION_KEYWORD,
          CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_DEF, tkIsDef, NONACCEPTING, INVALID_FUNCTION_KEYWORD, CONSUMING,
+         NO_SET_CHECKPOINT},
     },
     // 15: check for id
     {
@@ -132,8 +134,10 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
          NO_PROTO_VALID_TOKEN_AFTER_TYPE, CONSUMING, NO_SET_CHECKPOINT},
     },
     // 21: array bracket open
-    {STATE_PROTCBRACK, tkIsBracketClose, NONACCEPTING,
-     INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE, CONSUMING, NO_SET_CHECKPOINT},
+    {
+        {STATE_PROTCBRACK, tkIsBracketClose, NONACCEPTING,
+         INVALID_ARRAY_PROTO_PARAM_BRACKET_CLOSE, CONSUMING, NO_SET_CHECKPOINT},
+    },
     // 22: ending the array param
     {
         {STATE_PROTOBRACK, tkIsBracketOpen, NONACCEPTING,
@@ -145,6 +149,39 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
         {STATE_PROTCPAR, tkIsParenClose, ACCEPTING,
          NO_PROTO_VALID_TOKEN_AFTER_BRACKET_CLOSE, CONSUMING,
          NO_SET_CHECKPOINT},
+    },
+    // 23: we found a def
+    {
+        {STATE_DEFID, tkIsIdOrInit, NONACCEPTING, NO_DEF_ID, CONSUMING,
+         NO_SET_CHECKPOINT},
+    },
+    // 24: we found a def id
+    {
+        {STATE_DEFPAROP, tkIsParenOpen, NONACCEPTING, INVALID_DEF_PAREN_OPEN,
+         CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 25: we're inside the param
+    {
+        {STATE_DEFTYPEORREF, tkIsTypeOrRef, NONACCEPTING, NO_ERROR,
+         NON_CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_DEFPARCLO, tkIsParenClose, NONACCEPTING, INVALID_DEF_PAREN_CLOSE,
+         CONSUMING, NO_SET_CHECKPOINT},
+    },
+    // 26: we're evaluating the param type/ref
+    {
+        {STATE_DEFTYPE, tkIsType, NONACCEPTING, NO_ERROR, CONSUMING,
+         NO_SET_CHECKPOINT},
+        {STATE_DEFREF, tkIsRef, NONACCEPTING, NO_ERROR, CONSUMING,
+         NO_SET_CHECKPOINT},
+    },
+    // 27: we closed the def
+    {
+        {STATE_VALID_START, tkIsConstOrType, NONACCEPTING,
+         NO_DEF_VALID_TOKEN_AFTER_PAREN, NON_CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_DEFEND, tkIsEndp, ACCEPTING, NO_DEF_VALID_TOKEN_AFTER_PAREN,
+         CONSUMING, NO_SET_CHECKPOINT},
+        {STATE_CMD, tkIsCmdStarter, NONACCEPTING,
+         NO_DEF_VALID_TOKEN_AFTER_PAREN, CONSUMING, NO_SET_CHECKPOINT},
     },
 };
 

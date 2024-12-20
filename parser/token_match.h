@@ -1,8 +1,8 @@
 #ifndef TOKEN_MATCH_H
 #define TOKEN_MATCH_H
 
-#include <stdbool.h>
 #include "../lexer/types.h"
+#include <stdbool.h>
 
 bool tkIsConst(struct Token token);
 bool tkIsType(struct Token token);
@@ -23,5 +23,9 @@ bool tkIsParenClose(struct Token token);
 bool tkIsRef(struct Token token);
 
 bool tkIsDef(struct Token token);
+bool tkIsIdOrInit(struct Token token);
+bool tkIsTypeOrRef(struct Token token);
+bool tkIsEndp(struct Token token);
+bool tkIsCmdStarter(struct Token token);
 
 #endif
