@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_STATES 22
+#define MAX_STATES 51
 #define MAX_TRANSITIONS 3
 
 // No error means transition is optional.
