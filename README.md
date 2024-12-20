@@ -37,6 +37,7 @@
 
 # problemas
 
+- [ ] Remover codigo sem uso
 - [ ] Objeto lexer
 - [ ] `rewind()` ao inves de abrir o arquivo novamente
 - [ ] Descartar metodo descendente recursivo? Utilizar metodo de tabela descrevendo as regras de sintaxe? PDA/EFSM?
