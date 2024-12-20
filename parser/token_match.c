@@ -101,3 +101,7 @@ bool tkIsCmdStarter(struct Token token) {
             token.signCode == PUTREAL || token.signCode == PUTCHAR ||
             token.signCode == PUTSTR)));
 }
+
+bool tkIsDef(struct Token token) {
+  return (token.category == RSV && token.signCode == DEF);
+}
