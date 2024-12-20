@@ -9,4 +9,6 @@ void declarationsTest();
 
 void protTest();
 
+void defTest();
+
 #endif

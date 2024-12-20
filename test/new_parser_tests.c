@@ -40,3 +40,9 @@ void protTest() {
   enum SYNTAX_ERROR error = newSetupError(mockData);
   assert(error == INVALID_FUNCTION_KEYWORD);
 }
+
+void defTest() {
+  const char* mockData = "def init() endp int a\n";
+  enum SYNTAX_ERROR error = newSetupError(mockData);
+  assert(error == INVALID_FUNCTION_KEYWORD);
+}

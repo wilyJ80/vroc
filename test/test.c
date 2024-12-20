@@ -17,6 +17,7 @@ int main(void) {
 
   declarationsTest();
   protTest();
+  defTest();
 
   printf("--- Parser integration tests passed\n");
 

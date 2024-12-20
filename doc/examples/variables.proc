@@ -16,4 +16,4 @@ prot i(&int)
 prot i(&int,int[])
 // int a = 5
 prot i(int, int, int)
-int a = 5
+def init() endp
