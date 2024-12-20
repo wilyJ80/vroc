@@ -16,7 +16,7 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
         {STATE_VALID_START, tkIsConstOrType, NONACCEPTING,
          INVALID_PROG_START_KEYWORD, NON_CONSUMING, NO_SET_CHECKPOINT},
         {STATE_FUNCTION, tkIsProtOrDef, NONACCEPTING,
-         INVALID_PROG_START_KEYWORD, NON_CONSUMING, SET_CHECKPOINT},
+         INVALID_PROG_START_KEYWORD, NON_CONSUMING, NO_SET_CHECKPOINT},
     },
     // 1: valid start
     {
@@ -176,7 +176,6 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
 
         if (possibility->setsCheckpoint) {
           initialState = possibility->targetState;
-          currentState = possibility->targetState;
         }
         break;
       }

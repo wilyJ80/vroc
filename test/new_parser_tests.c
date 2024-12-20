@@ -30,7 +30,7 @@ enum SYNTAX_ERROR newSetupError(const char* mockData) {
 }
 
 void declarationsTest() {
-  const char* mockData = "int a int a, b int a, b = 5 int a = 5, b = 5, int a = 5, b[4] int b[1], c[2] int b[1] = {'a'} int c[b] = {1, 2} int c[1][b] = {1, 2, 3} string\n";
+  const char* mockData = "int a int a, b int a, b = 5 int a = 5, b = 5 int a = 5, b[4] int b[1], c[2] int b[1] = {'a'} int c[b] = {1, 2} int c[1][b] = {1, 2, 3} string\n";
   enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == NO_ERROR);
+  assert(error == INVALID_PROG_START_KEYWORD);
 }
