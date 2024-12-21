@@ -18,6 +18,7 @@ int main(void) {
   declarationsTest();
   protTest();
   defTest();
+  defTestWithRepeatedVariableList();
 
   printf("--- Parser integration tests passed\n");
 

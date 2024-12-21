@@ -19,6 +19,8 @@ enum IS_CONSUMING { NON_CONSUMING, CONSUMING };
 
 enum SETS_CHECKPOINT_STATE { NO_SET_CHECKPOINT, SET_CHECKPOINT };
 
+enum SETS_STACKED_STATE { DONT_STACK, STACK_STATE };
+
 enum STATE_ALIAS {
   // 0
   STATE_INITIAL,
@@ -133,6 +135,7 @@ struct ParserTransition {
   enum SYNTAX_ERROR error;
   enum IS_CONSUMING isConsuming;
   enum SETS_CHECKPOINT_STATE setsCheckpoint;
+  enum SETS_STACKED_STATE setsStackedState;
 };
 
 enum SYNTAX_ERROR parse(struct Parser *parser);

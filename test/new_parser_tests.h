@@ -11,4 +11,6 @@ void protTest();
 
 void defTest();
 
+void defTestWithRepeatedVariableList();
+
 #endif

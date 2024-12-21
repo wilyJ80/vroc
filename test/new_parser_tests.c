@@ -46,3 +46,9 @@ void defTest() {
   enum SYNTAX_ERROR error = newSetupError(mockData);
   assert(error == INVALID_FUNCTION_KEYWORD);
 }
+
+void defTestWithRepeatedVariableList() {
+  const char* mockData = "def init() int a = 5, int x endp int a\n";
+  enum SYNTAX_ERROR error = newSetupError(mockData);
+  assert(error == INVALID_FUNCTION_KEYWORD);
+}
