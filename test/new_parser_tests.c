@@ -57,3 +57,9 @@ void defTestWithFailedCmd() {
   enum SYNTAX_ERROR error = newSetupError(mockData);
   assert(error == NO_GETCHAR_ID);
 }
+
+void defTestDoesNotGoBackToDeclListVar() {
+  const char* mockData = "def init() getint i endp int i = 5\n";
+  enum SYNTAX_ERROR error = newSetupError(mockData);
+  assert(error == INVALID_FUNCTION_KEYWORD);
+}

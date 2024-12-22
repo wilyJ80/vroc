@@ -20,6 +20,7 @@ int main(void) {
   defTest();
   defTestWithRepeatedVariableList();
   defTestWithFailedCmd();
+  defTestDoesNotGoBackToDeclListVar();
 
   printf("--- Parser integration tests passed\n");
 
