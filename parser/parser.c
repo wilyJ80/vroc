@@ -179,10 +179,10 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
     },
     // 25: we're inside the param
     {
-        {STATE_DEFTYPEORREF, tkIsTypeOrRef, NONACCEPTING, NO_ERROR,
-         NON_CONSUMING, NO_SET_CHECKPOINT, DONT_STACK},
         {STATE_DEFPARCLO, tkIsParenClose, NONACCEPTING, INVALID_DEF_PAREN_CLOSE,
          CONSUMING, NO_SET_CHECKPOINT, DONT_STACK},
+        {STATE_DEFTYPEORREF, tkIsTypeOrRef, NONACCEPTING, NO_ERROR,
+         NON_CONSUMING, NO_SET_CHECKPOINT, DONT_STACK},
     },
     // 26: we're evaluating the param type/ref
     {
