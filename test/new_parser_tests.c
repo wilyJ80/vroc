@@ -1,5 +1,4 @@
 #include "new_parser_tests.h"
-#include "parser_integration_tests.h"
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -48,7 +47,7 @@ void defTest() {
 }
 
 void defTestWithRepeatedVariableList() {
-  const char* mockData = "def init() int a = 5, int x endp int a\n";
+  const char* mockData = "def init() int a = 5, x endp int a\n";
   enum SYNTAX_ERROR error = newSetupError(mockData);
   assert(error == INVALID_FUNCTION_KEYWORD);
 }
