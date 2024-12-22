@@ -19,6 +19,7 @@ int main(void) {
   protTest();
   defTest();
   defTestWithRepeatedVariableList();
+  defTestWithFailedCmd();
 
   printf("--- Parser integration tests passed\n");
 

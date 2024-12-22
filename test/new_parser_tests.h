@@ -16,4 +16,10 @@ void defTest();
 
 void defTestWithRepeatedVariableList();
 
+void defTestWithFailedCmd();
+
+void defTestWithRepeatedCmd();
+
+void defTestDoesNotGoBackToDeclListVar();
+
 #endif

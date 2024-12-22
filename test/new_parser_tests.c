@@ -51,3 +51,9 @@ void defTestWithRepeatedVariableList() {
   enum SYNTAX_ERROR error = newSetupError(mockData);
   assert(error == INVALID_FUNCTION_KEYWORD);
 }
+
+void defTestWithFailedCmd() {
+  const char* mockData = "def init() getint i getreal a getchar 1\n";
+  enum SYNTAX_ERROR error = newSetupError(mockData);
+  assert(error == NO_GETCHAR_ID);
+}

@@ -96,7 +96,9 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
          DONT_STACK},
     },
     // 13: terminal - finished array initialization
-    {},
+    {
+        {},
+    },
     // 14: checkpoint state for functions
     {
         {STATE_PROT, tkIsProt, NONACCEPTING, INVALID_FUNCTION_KEYWORD,
@@ -127,7 +129,9 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
          DONT_STACK},
     },
     // 18: terminal: we finished the prot
-    {},
+    {
+        {},
+    },
     // 19: mandatory to complete the ref
     {
         {STATE_PROTTYPE, tkIsType, NONACCEPTING, NO_PROTO_TYPE_AFTER_REF,
@@ -199,7 +203,9 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
          DONT_STACK},
     },
     // 28: def end: accepting
-    {},
+    {
+        {},
+    },
     // 29: we found a ref
     {
         {STATE_DEFTYPE, tkIsType, NONACCEPTING, NO_DEF_TYPE_AFTER_REF,
@@ -231,7 +237,8 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
          INVALID_ARRAY_DEF_PARAM_BRACKET_OPEN, CONSUMING, NO_SET_CHECKPOINT,
          DONT_STACK},
     },
-    // 34: finally, the cmd state. should go back to cmd for repetition
+    // 34: finally, the cmd state. should go back to cmd for repetition (stack
+    // state)
     {
         {STATE_DEFEND, tkIsEndp, ACCEPTING, NO_DEF_END_KEYWORD, CONSUMING,
          NO_SET_CHECKPOINT, DONT_STACK},
@@ -262,6 +269,73 @@ struct ParserTransition possibleTransitions[MAX_STATES + 1][MAX_TRANSITIONS] = {
     {
         {STATE_GETINT, tkIsId, ACCEPTING, NO_GETINT_ID, CONSUMING,
          NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 37: accepting
+    {
+        {},
+    },
+    // 38: isgetreal
+    {
+        {STATE_GETREAL, tkIsId, ACCEPTING, NO_GETREAL_ID, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 39: getreal: accepting
+    {
+        {},
+    },
+    // 40: isgetchar
+    {
+        {STATE_GETCHAR, tkIsId, ACCEPTING, NO_GETCHAR_ID, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 41: getchar: accepting
+    {
+        {},
+    },
+    // 42: isgetstr
+    {
+        {STATE_GETSTR, tkIsId, ACCEPTING, NO_GETSTR_ID, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 43: getstr: accepting
+    {
+        {},
+    },
+    // 44: isputint
+    {
+        {STATE_PUTINT, tkIsId, ACCEPTING, INVALID_PUTINT_ELEMENT, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 45: putint: accepting
+    {
+        {},
+    },
+    // 46: isputreal
+    {
+        {STATE_PUTREAL, tkIsId, ACCEPTING, INVALID_PUTREAL_ELEMENT, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 47: putreal: accepting
+    {
+        {},
+    },
+    // 48: isputchar
+    {
+        {STATE_PUTCHAR, tkIsId, ACCEPTING, INVALID_PUTCHAR_ELEMENT, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 49: putchar: accepting
+    {
+        {},
+    },
+    // 50: isputstr
+    {
+        {STATE_ISPUTSTR, tkIsId, ACCEPTING, INVALID_PUTSTR_ELEMENT, CONSUMING,
+         NO_SET_CHECKPOINT, DONT_STACK},
+    },
+    // 51: putstr: accepting
+    {
+        {},
     },
 };
 
