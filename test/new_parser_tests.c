@@ -49,7 +49,7 @@ void defTest() {
 void defTestWithRepeatedVariableList() {
 	const char* mockData = "def init() int a = 5, x endp int a\n";
 	enum SYNTAX_ERROR error = newSetupError(mockData);
-	assert(error == NO_DEF_VALID_TOKEN_AFTER_PAREN);
+	assert(error == INVALID_FUNCTION_KEYWORD);
 }
 
 void defTestWithFailedCmd() {

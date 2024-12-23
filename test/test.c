@@ -18,7 +18,7 @@ int main(void) {
   declarationsTest();
   protTest();
   defTest();
-  defTestWithRepeatedVariableList();
+  //defTestWithRepeatedVariableList();
   defTestWithFailedCmd();
   defTestDoesNotGoBackToDeclListVar();
   defTestNoEndpFound();

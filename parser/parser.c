@@ -368,6 +368,7 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
         if (stackedState != -1) {
           currentState = stackedState;
           stackedState = -1;
+          parser->token = lexerGetNextChar(parser->fd, parser->lineCount);
           continue;
         }
         currentState = possibility->targetState;
