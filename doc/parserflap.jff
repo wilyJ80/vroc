@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 7.1.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="q0">
+			<x>1347.0</x>
+			<y>420.0</y>
+			<label>STARTTOKEN</label>
+			<initial/>
+		</state>
+		<state id="1" name="q1">
+			<x>1391.0</x>
+			<y>241.0</y>
+			<label>VALIDSTART</label>
+		</state>
+		<state id="2" name="q2">
+			<x>1359.0</x>
+			<y>43.0</y>
+			<label>CONST</label>
+		</state>
+		<state id="3" name="q3">
+			<x>1553.0</x>
+			<y>153.0</y>
+			<label>DECLLISTVAR</label>
+		</state>
+		<state id="4" name="q4">
+			<x>1709.0</x>
+			<y>225.0</y>
+			<label>DECLV</label>
+			<final/>
+		</state>
+		<state id="5" name="q5">
+			<x>1718.0</x>
+			<y>56.0</y>
+			<label>ASSIGN</label>
+		</state>
+		<state id="6" name="q6">
+			<x>1508.0</x>
+			<y>35.0</y>
+			<label>ENDASSIGN</label>
+			<final/>
+		</state>
+		<state id="7" name="q7">
+			<x>1577.0</x>
+			<y>315.0</y>
+			<label>ARRDEC</label>
+		</state>
+		<state id="8" name="q8">
+			<x>1729.0</x>
+			<y>357.0</y>
+			<label>SUBS</label>
+		</state>
+		<state id="9" name="q9">
+			<x>1478.0</x>
+			<y>494.0</y>
+			<label>ARRAY</label>
+			<final/>
+		</state>
+		<state id="10" name="q10">
+			<x>1678.0</x>
+			<y>493.0</y>
+			<label>ARRINIT</label>
+		</state>
+		<state id="11" name="q11">
+			<x>1783.0</x>
+			<y>442.0</y>
+			<label>AIOPEN</label>
+		</state>
+		<state id="12" name="q12">
+			<x>1788.0</x>
+			<y>211.0</y>
+			<label>AICONTENT</label>
+		</state>
+		<state id="13" name="q13">
+			<x>1820.0</x>
+			<y>69.0</y>
+			<label>AICLOSE</label>
+			<final/>
+		</state>
+		<state id="14" name="q14">
+			<x>1175.0</x>
+			<y>281.0</y>
+			<label>FUN</label>
+		</state>
+		<state id="15" name="q15">
+			<x>1291.0</x>
+			<y>203.0</y>
+			<label>PROT</label>
+		</state>
+		<state id="16" name="q16">
+			<x>1287.0</x>
+			<y>39.0</y>
+			<label>PROTID</label>
+		</state>
+		<state id="17" name="q17">
+			<x>1111.0</x>
+			<y>28.0</y>
+			<label>PROTPAR</label>
+		</state>
+		<state id="18" name="q18">
+			<x>971.0</x>
+			<y>162.0</y>
+			<label>PROTCPAR</label>
+			<final/>
+		</state>
+		<state id="19" name="q19">
+			<x>983.0</x>
+			<y>24.0</y>
+			<label>PROTREF</label>
+		</state>
+		<state id="20" name="q20">
+			<x>859.0</x>
+			<y>209.0</y>
+			<label>PROTTYPE</label>
+		</state>
+		<state id="21" name="q21">
+			<x>1055.0</x>
+			<y>275.0</y>
+			<label>PROTOBRO</label>
+		</state>
+		<state id="22" name="q22">
+			<x>1162.0</x>
+			<y>162.0</y>
+			<label>PROTOBRC</label>
+		</state>
+		<state id="23" name="q23">
+			<x>1166.0</x>
+			<y>408.0</y>
+			<label>DEF</label>
+		</state>
+		<state id="24" name="q24">
+			<x>1023.0</x>
+			<y>382.0</y>
+			<label>DEFID</label>
+		</state>
+		<state id="25" name="q25">
+			<x>975.0</x>
+			<y>298.0</y>
+			<label>DEFPO</label>
+		</state>
+		<state id="26" name="q26">
+			<x>777.0</x>
+			<y>239.0</y>
+			<label>DEFTOR</label>
+		</state>
+		<state id="27" name="q27">
+			<x>701.0</x>
+			<y>309.0</y>
+			<label>DEFPC</label>
+		</state>
+		<state id="28" name="q28">
+			<x>955.0</x>
+			<y>429.0</y>
+			<label>DEFEND</label>
+			<final/>
+		</state>
+		<state id="29" name="q29">
+			<x>895.0</x>
+			<y>50.0</y>
+			<label>DEFREF</label>
+		</state>
+		<state id="30" name="q30">
+			<x>693.0</x>
+			<y>104.0</y>
+			<label>DEFTYPE</label>
+		</state>
+		<state id="31" name="q31">
+			<x>521.0</x>
+			<y>122.0</y>
+			<label>DEFID</label>
+		</state>
+		<state id="32" name="q32">
+			<x>573.0</x>
+			<y>20.0</y>
+			<label>DEFBO</label>
+		</state>
+		<state id="33" name="q33">
+			<x>798.0</x>
+			<y>28.0</y>
+			<label>DEFSUBS</label>
+		</state>
+		<state id="34" name="q34">
+			<x>527.0</x>
+			<y>326.0</y>
+			<label>CMD</label>
+		</state>
+		<state id="35" name="q35">
+			<x>440.0</x>
+			<y>120.0</y>
+			<label>GETOUT</label>
+			<final/>
+		</state>
+		<state id="36" name="q36">
+			<x>307.0</x>
+			<y>40.0</y>
+			<label>ISGETINT</label>
+		</state>
+		<state id="37" name="q37">
+			<x>476.0</x>
+			<y>29.0</y>
+			<label>GETINT</label>
+			<final/>
+		</state>
+		<state id="38" name="q38">
+			<x>292.0</x>
+			<y>112.0</y>
+			<label>ISGETREAL</label>
+		</state>
+		<state id="39" name="q39">
+			<x>228.0</x>
+			<y>35.0</y>
+			<label>GETREAL</label>
+			<final/>
+		</state>
+		<state id="40" name="q40">
+			<x>229.0</x>
+			<y>129.0</y>
+			<label>ISGETCHAR</label>
+		</state>
+		<state id="41" name="q41">
+			<x>139.0</x>
+			<y>40.0</y>
+			<label>GETCHAR</label>
+			<final/>
+		</state>
+		<state id="42" name="q42">
+			<x>161.0</x>
+			<y>141.0</y>
+			<label>ISGETSTR</label>
+		</state>
+		<state id="43" name="q43">
+			<x>50.0</x>
+			<y>46.0</y>
+			<label>GETSTR</label>
+			<final/>
+		</state>
+		<state id="44" name="q44">
+			<x>106.0</x>
+			<y>188.0</y>
+			<label>ISPUTINT</label>
+		</state>
+		<state id="45" name="q45">
+			<x>28.0</x>
+			<y>136.0</y>
+			<label>PUTINT</label>
+			<final/>
+		</state>
+		<state id="46" name="q46">
+			<x>167.0</x>
+			<y>276.0</y>
+			<label>ISPUTREAL</label>
+		</state>
+		<state id="47" name="q47">
+			<x>34.0</x>
+			<y>244.0</y>
+			<label>PUTREAL</label>
+			<final/>
+		</state>
+		<state id="48" name="q48">
+			<x>153.0</x>
+			<y>342.0</y>
+			<label>ISPUTCHAR</label>
+		</state>
+		<state id="49" name="q49">
+			<x>24.0</x>
+			<y>303.0</y>
+			<label>PUTCHAR</label>
+			<final/>
+		</state>
+		<state id="50" name="q50">
+			<x>153.0</x>
+			<y>414.0</y>
+			<label>ISPUTSTR</label>
+		</state>
+		<state id="51" name="q51">
+			<x>38.0</x>
+			<y>369.0</y>
+			<label>PUTSTR</label>
+			<final/>
+		</state>
+		<state id="52" name="*1">
+			<x>513.0</x>
+			<y>212.0</y>
+			<label>GOTO 1</label>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>const | tipo, NC</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>intcon | id</read>
+		</transition>
+		<transition>
+			<from>33</from>
+			<to>31</to>
+			<read>]</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>3</to>
+			<read>comma, OPT</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>11</to>
+			<read>{</read>
+		</transition>
+		<transition>
+			<from>17</from>
+			<to>19</to>
+			<read>&amp;</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>4</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>15</from>
+			<to>16</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>22</from>
+			<to>17</to>
+			<read>comma</read>
+		</transition>
+		<transition>
+			<from>50</from>
+			<to>51</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>15</to>
+			<read>prot</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>38</to>
+			<read>getreal, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>38</from>
+			<to>39</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>42</from>
+			<to>43</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>36</to>
+			<read>getint, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>25</from>
+			<to>26</to>
+			<read>tipo | &amp;, OPT, NC</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>3</to>
+			<read>tipo, OPT</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>14</to>
+			<read>def | prot, NC, SETINITIAL</read>
+		</transition>
+		<transition>
+			<from>21</from>
+			<to>22</to>
+			<read>]</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>23</to>
+			<read>def</read>
+		</transition>
+		<transition>
+			<from>22</from>
+			<to>21</to>
+			<read>[</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>46</to>
+			<read>putreal, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>32</from>
+			<to>33</to>
+			<read>intcon | id</read>
+		</transition>
+		<transition>
+			<from>31</from>
+			<to>27</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>40</to>
+			<read>getchar, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>28</to>
+			<read>endp</read>
+		</transition>
+		<transition>
+			<from>20</from>
+			<to>21</to>
+			<read>[</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>5</to>
+			<read>=, OPT</read>
+		</transition>
+		<transition>
+			<from>24</from>
+			<to>25</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>46</from>
+			<to>47</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>9</from>
+			<to>7</to>
+			<read>[, OPT</read>
+		</transition>
+		<transition>
+			<from>27</from>
+			<to>28</to>
+			<read>endp</read>
+		</transition>
+		<transition>
+			<from>22</from>
+			<to>18</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>17</from>
+			<to>18</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>31</from>
+			<to>26</to>
+			<read>comma</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>35</to>
+			<read>getout, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>23</from>
+			<to>24</to>
+			<read>int | id</read>
+		</transition>
+		<transition>
+			<from>19</from>
+			<to>20</to>
+			<read>tipo</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>42</to>
+			<read>getstr, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>31</from>
+			<to>32</to>
+			<read>[</read>
+		</transition>
+		<transition>
+			<from>36</from>
+			<to>37</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>5</from>
+			<to>6</to>
+			<read>intcon | realcon | charcon</read>
+		</transition>
+		<transition>
+			<from>12</from>
+			<to>13</to>
+			<read>}</read>
+		</transition>
+		<transition>
+			<from>30</from>
+			<to>31</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>27</from>
+			<to>52</to>
+			<read>const | tipo, NC, STACk</read>
+		</transition>
+		<transition>
+			<from>44</from>
+			<to>45</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>const, OPT</read>
+		</transition>
+		<transition>
+			<from>9</from>
+			<to>3</to>
+			<read>comma, OPT</read>
+		</transition>
+		<transition>
+			<from>11</from>
+			<to>12</to>
+			<read>intcon | realcon | charcon</read>
+		</transition>
+		<transition>
+			<from>27</from>
+			<to>34</to>
+			<read>rsvcmd | id, NC</read>
+		</transition>
+		<transition>
+			<from>16</from>
+			<to>17</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>26</from>
+			<to>29</to>
+			<read>&amp;, OPT</read>
+		</transition>
+		<transition>
+			<from>9</from>
+			<to>10</to>
+			<read>=, OPT</read>
+		</transition>
+		<transition>
+			<from>48</from>
+			<to>49</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>3</to>
+			<read>tipo</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>7</to>
+			<read>[, OPT</read>
+		</transition>
+		<transition>
+			<from>17</from>
+			<to>20</to>
+			<read>tipo</read>
+		</transition>
+		<transition>
+			<from>26</from>
+			<to>30</to>
+			<read>tipo, OPT</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>48</to>
+			<read>putchar, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>2</to>
+			<read>comma, OPT</read>
+		</transition>
+		<transition>
+			<from>29</from>
+			<to>30</to>
+			<read>tipo</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>50</to>
+			<read>putstr, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>44</to>
+			<read>putint, OPT, STACK</read>
+		</transition>
+		<transition>
+			<from>25</from>
+			<to>27</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>40</from>
+			<to>41</to>
+			<read>id</read>
+		</transition>
+		<transition>
+			<from>8</from>
+			<to>9</to>
+			<read>]</read>
+		</transition>
+	</automaton>
+</structure>
