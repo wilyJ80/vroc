@@ -20,4 +20,6 @@ void defTestWithFailedCmd();
 
 void defTestDoesNotGoBackToDeclListVar();
 
+void defTestNoEndpFound();
+
 #endif

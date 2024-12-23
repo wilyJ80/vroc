@@ -1,2 +1,2 @@
 def stuff()
-getint 1
+getint a

@@ -21,6 +21,7 @@ int main(void) {
   defTestWithRepeatedVariableList();
   defTestWithFailedCmd();
   defTestDoesNotGoBackToDeclListVar();
+  defTestNoEndpFound();
 
   printf("--- Parser integration tests passed\n");
 

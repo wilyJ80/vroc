@@ -347,7 +347,7 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
   bool currentIsAccepting = false;
   int stackedState = -1;
 
-  while (parser->token.category != END_OF_FILE) {
+  while (parser->token.category != END_OF_FILE && stackedState != 1) {
     bool transitionFound = false;
 
     for (int possibleTransition = 0;
@@ -365,6 +365,11 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
         if (possibility->setsStackedState) {
           stackedState = currentState;
         }
+        if (stackedState != -1) {
+          currentState = stackedState;
+          stackedState = -1;
+          continue;
+        }
         currentState = possibility->targetState;
         currentIsAccepting = possibility->isAccepting;
         transitionFound = true;
@@ -378,11 +383,6 @@ enum SYNTAX_ERROR parse(struct Parser *parser) {
 
     if (!transitionFound) {
       if (currentIsAccepting) {
-        if (stackedState != -1) {
-          currentState = stackedState;
-          stackedState = -1;
-          continue;
-        }
         currentState = initialState;
         currentIsAccepting = false;
         continue;

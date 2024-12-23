@@ -4,62 +4,68 @@
 #include <assert.h>
 
 enum SYNTAX_ERROR newSetupError(const char* mockData) {
-  FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
+	FILE *mockFile = fmemopen((void *)mockData, strlen(mockData), "r");
 
-  if (mockFile == NULL) {
-    fprintf(stderr, "Error opening source file.\n");
-    exit(EXIT_FAILURE);
-  }
+	if (mockFile == NULL) {
+		fprintf(stderr, "Error opening source file.\n");
+		exit(EXIT_FAILURE);
+	}
 
-  int *lineCount;
-  int line = 1;
-  lineCount = &line;
+	int *lineCount;
+	int line = 1;
+	lineCount = &line;
 
-  struct Token token = lexerGetNextChar(mockFile, lineCount);
-  struct Parser parser = {
-    .fd = mockFile, .lineCount = lineCount, .token = token
-  };
+	struct Token token = lexerGetNextChar(mockFile, lineCount);
+	struct Parser parser = {
+		.fd = mockFile, .lineCount = lineCount, .token = token
+	};
 
-  enum SYNTAX_ERROR error = parse(&parser);
-  if (error) {
-    printSyntaxError(error, parser.lineCount);
-  }
+	enum SYNTAX_ERROR error = parse(&parser);
+	if (error) {
+		printSyntaxError(error, parser.lineCount);
+	}
 
-  return error;
+	return error;
 }
 
 void declarationsTest() {
-  const char* mockData = "int a int a, b int a, b = 5 int a = 5, b = 5 int a = 5, b[4] int b[1], c[2] int b[1] = {'a'} int c[b] = {1, 2} int c[1][b] = {1, 2, 3} string\n";
-  enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == INVALID_PROG_START_KEYWORD);
+	const char* mockData = "int a int a, b int a, b = 5 int a = 5, b = 5 int a = 5, b[4] int b[1], c[2] int b[1] = {'a'} int c[b] = {1, 2} int c[1][b] = {1, 2, 3} string\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == INVALID_PROG_START_KEYWORD);
 }
 
 void protTest() {
-  const char* mockData = "prot i() prot i (int) prot i(&int) prot i(&int, int[]) int\n";
-  enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == INVALID_FUNCTION_KEYWORD);
+	const char* mockData = "prot i() prot i (int) prot i(&int) prot i(&int, int[]) int\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == INVALID_FUNCTION_KEYWORD);
 }
 
 void defTest() {
-  const char* mockData = "def init() endp int a\n";
-  enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == INVALID_FUNCTION_KEYWORD);
+	const char* mockData = "def init() endp int a\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == INVALID_FUNCTION_KEYWORD);
 }
 
 void defTestWithRepeatedVariableList() {
-  const char* mockData = "def init() int a = 5, x endp int a\n";
-  enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == INVALID_FUNCTION_KEYWORD);
+	const char* mockData = "def init() int a = 5, x endp int a\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == NO_DEF_VALID_TOKEN_AFTER_PAREN);
 }
 
 void defTestWithFailedCmd() {
-  const char* mockData = "def init() getint i getreal a getchar 1\n";
-  enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == NO_GETCHAR_ID);
+	const char* mockData = "def init() getint i getchar 1\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == NO_GETCHAR_ID);
 }
 
 void defTestDoesNotGoBackToDeclListVar() {
-  const char* mockData = "def init() getint i endp int i = 5\n";
-  enum SYNTAX_ERROR error = newSetupError(mockData);
-  assert(error == INVALID_FUNCTION_KEYWORD);
+	const char* mockData = "def init() getint i endp int i = 5\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == INVALID_FUNCTION_KEYWORD);
+}
+
+void defTestNoEndpFound() {
+	const char* mockData = "def init() getint i\n";
+	enum SYNTAX_ERROR error = newSetupError(mockData);
+	assert(error == NO_DEF_END_KEYWORD);
 }
