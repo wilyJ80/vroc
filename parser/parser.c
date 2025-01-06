@@ -4,6 +4,7 @@
 #include "symbol_table.h"
 #include "syntax_error.h"
 #include "token_cmp.h"
+#include <complex.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -121,7 +122,7 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
         row.constValue.intValue = parser->token.intValue;
         break;
       case REALCON:
-        row.constValue.doubleValue = parser->token.intValue;
+        row.constValue.doubleValue = parser->token.doubleValue;
         break;
       case CHARCON:
         // does it work?
@@ -153,18 +154,20 @@ enum SYNTAX_ERROR declVar(struct Parser *parser) {
       } else if (dimensions == 2) {
         row.dim2 = parser->token.intValue;
       } else {
-        // TODO:
+        return INVALID_ARRAY_DIMENSION_DECLARATION;
       }
     } else if (tokenCategoryMatchAll(parser, 1, ID)) {
       if (dimensions == 1) {
-        // TODO:
-        row.dim1 = 1;
+        row.dim1 = parser->token.intValue;
       } else if (dimensions == 2) {
-        row.dim2 = 1;
+        row.dim2 = parser->token.intValue;
+      } else {
+        return INVALID_ARRAY_DIMENSION_DECLARATION;
       }
     }
 
     consumeTokenFrom(parser);
+    fillArrayType(&row, dimensions);
     if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
           tokenSignCodeMatchAny(parser, 1, CLOSE_BRACK))) {
       return INVALID_ARRAY_BRACKET_DEC_CLOSE;
@@ -280,10 +283,13 @@ enum SYNTAX_ERROR declDefProc(struct Parser *parser) {
 }
 
 enum SYNTAX_ERROR declProt(struct Parser *parser) {
-  addTableRow(parser, row);
+  row.category = PRT;
   if (!(tokenCategoryMatchAll(parser, 1, ID))) {
     return NO_PROTO_ID;
   }
+  strcpy(row.lexeme, parser->token.lexeme);
+  addTableRow(parser, row);
+  clearRow(&row);
 
   consumeTokenFrom(parser);
   if (tokenCategoryMatchAll(parser, 1, SIGN) &&
@@ -307,10 +313,17 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
         tokenSignCodeMatchAny(parser, 1, COMMA)) {
       consumeTokenFrom(parser);
     }
+    row.zombie = ZOMBIE_NA;
+    row.category = PAR;
+    row.scope = LCL;
+    row.isConst = false;
     if (tokenCategoryMatchAll(parser, 1, SIGN) &&
         tokenSignCodeMatchAny(parser, 1, REF)) {
       paramMandatory = true;
+      row.passage = PASS_REF;
       consumeTokenFrom(parser);
+    } else {
+      row.passage = VAL;
     }
 
     if (paramMandatory &&
@@ -323,8 +336,13 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
         tokenSignCodeMatchAny(parser, 4, CHAR, INT, REAL, BOOL)) {
       consumeTokenFrom(parser);
 
+      int dimensions = 0;
       while (tokenCategoryMatchAll(parser, 1, SIGN) &&
              tokenSignCodeMatchAny(parser, 1, OPEN_BRACK)) {
+        dimensions++;
+        if (dimensions > 2) {
+          return INVALID_ARRAY_DIMENSION_DECLARATION;
+        }
         consumeTokenFrom(parser);
 
         if (!(tokenCategoryMatchAll(parser, 1, SIGN) &&
@@ -334,6 +352,7 @@ enum SYNTAX_ERROR declProtParam(struct Parser *parser) {
         consumeTokenFrom(parser);
       }
     }
+    addTableRow(parser, row);
 
   } while (tokenCategoryMatchAll(parser, 1, SIGN) &&
            tokenSignCodeMatchAny(parser, 1, COMMA));
